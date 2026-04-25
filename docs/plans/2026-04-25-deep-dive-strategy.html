@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocana.Studio &mdash; Deep Dive Strategy Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&amp;family=Nunito:wght@400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --obsidian-black: #000000;
+            --sage-olive: #8B8660;
+            --sand-cream: #E5E2D1;
+            --deep-moss: #4A4D39;
+            --warm-stone: #A69F8A;
+            --ivory-white: #F5F3EC;
+            --charcoal: #2C2C2C;
+            --muted-gold: #B8A88A;
+            --text-primary: #000000;
+            --text-secondary: #4A4D39;
+            --text-muted: #8B8660;
+            --bg-primary: #F5F3EC;
+            --bg-secondary: #E5E2D1;
+            --border-color: #D4D0C2;
+            --font-display: 'Cormorant', Georgia, serif;
+            --font-heading: 'Nunito', 'Helvetica Neue', sans-serif;
+            --font-body: 'Inter', 'Helvetica Neue', sans-serif;
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --space-4xl: 96px;
+            --space-5xl: 128px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: var(--font-body); color: var(--text-primary); background-color: var(--bg-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 243, 236, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); padding: 0 var(--space-2xl); }
+        .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-brand img { height: 32px; width: auto; }
+        .nav-brand-text { font-family: var(--font-heading); font-weight: 900; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--obsidian-black); }
+        .nav-links { display: flex; gap: var(--space-md); list-style: none; flex-wrap: wrap; }
+        .nav-links a { font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--obsidian-black); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-2xl); }
+        .section { padding: var(--space-5xl) 0; border-bottom: 1px solid var(--border-color); }
+        .section:last-child { border-bottom: none; }
+        .section-number { font-family: var(--font-heading); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-md); display: block; }
+        .section-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; line-height: 1.1; color: var(--obsidian-black); margin-bottom: var(--space-lg); letter-spacing: -0.02em; }
+        .section-subtitle { font-family: var(--font-body); font-size: 16px; font-weight: 400; color: var(--text-muted); max-width: 700px; line-height: 1.7; margin-bottom: var(--space-3xl); }
+        .sub-section-label { font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-sm); margin-top: var(--space-3xl); }
+        .sub-section-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 500; color: var(--obsidian-black); margin-bottom: var(--space-lg); }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--obsidian-black); color: var(--ivory-white); padding: var(--space-4xl) var(--space-2xl); position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 30% 50%, rgba(139, 134, 96, 0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(74, 77, 57, 0.06) 0%, transparent 60%); pointer-events: none; }
+        .hero-logo { width: 200px; margin-bottom: var(--space-3xl); position: relative; z-index: 1; }
+        .hero-logo img { width: 100%; height: auto; object-fit: contain; filter: brightness(0) invert(1); }
+        .hero-divider { width: 60px; height: 1px; background: var(--sage-olive); margin: var(--space-lg) auto; position: relative; z-index: 1; }
+        .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; line-height: 1.15; color: var(--ivory-white); margin-bottom: var(--space-lg); position: relative; z-index: 1; letter-spacing: -0.02em; }
+        .hero-title em { font-style: italic; color: var(--sage-olive); }
+        .hero-description { font-family: var(--font-body); font-size: 16px; font-weight: 400; color: rgba(245, 243, 236, 0.6); max-width: 640px; line-height: 1.8; margin-bottom: var(--space-3xl); position: relative; z-index: 1; }
+        .hero-stats { display: flex; gap: var(--space-3xl); position: relative; z-index: 1; margin-bottom: var(--space-3xl); }
+        .hero-stat { text-align: center; }
+        .hero-stat-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 600; color: var(--sage-olive); line-height: 1; margin-bottom: var(--space-xs); }
+        .hero-stat-label { font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245, 243, 236, 0.4); }
+        .hero-meta { position: absolute; bottom: var(--space-2xl); font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245, 243, 236, 0.4); z-index: 1; }
+        .data-table { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0; font-size: 14px; }
+        .data-table th { font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage-olive); text-align: left; padding: var(--space-md); border-bottom: 2px solid var(--border-color); }
+        .data-table td { padding: var(--space-md); border-bottom: 1px solid var(--border-color); color: var(--text-secondary); vertical-align: top; line-height: 1.6; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: rgba(139, 134, 96, 0.04); }
+        .data-table td strong { color: var(--obsidian-black); }
+        .data-table tr.total-row td { border-top: 2px solid var(--border-color); font-weight: 700; }
+        .data-table tr.total-row td strong { color: var(--deep-moss); }
+        .data-table tr.peak td { background: rgba(74, 77, 57, 0.06); }
+        .data-table tr.low td { background: rgba(139, 58, 58, 0.04); }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 3px; font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+        .badge--high { background: var(--sage-olive); color: white; }
+        .badge--medium { background: var(--sand-cream); color: var(--deep-moss); }
+        .badge--low { background: rgba(139, 134, 96, 0.1); color: var(--warm-stone); }
+        .badge--critical { background: var(--deep-moss); color: var(--sand-cream); }
+        .badge--popular { background: var(--muted-gold); color: white; }
+        .badge--video { background: var(--deep-moss); color: var(--sand-cream); }
+        .badge--flagship { background: var(--obsidian-black); color: var(--muted-gold); border: 1px solid var(--muted-gold); }
+        .badge--premium { background: var(--charcoal); color: var(--ivory-white); }
+        .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-xl); margin: var(--space-xl) 0; }
+        .card-grid--3 { grid-template-columns: repeat(3, 1fr); }
+        .card { padding: var(--space-xl); background: white; border: 1px solid var(--border-color); border-radius: 4px; }
+        .card-label { font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-sm); }
+        .card-title { font-family: var(--font-heading); font-size: 14px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--obsidian-black); margin-bottom: var(--space-md); }
+        .card-text { font-size: 14px; line-height: 1.7; color: var(--text-muted); }
+        .card-text ul { list-style: none; padding: 0; }
+        .card-text ul li { padding-left: var(--space-md); position: relative; margin-bottom: var(--space-xs); }
+        .card-text ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--sage-olive); border-radius: 50%; }
+        .blockquote { margin: var(--space-xl) 0; padding: var(--space-lg) var(--space-xl); background: var(--sand-cream); border-left: 3px solid var(--sage-olive); border-radius: 0 4px 4px 0; }
+        .blockquote p { font-family: var(--font-display); font-size: 1.15rem; font-style: italic; color: var(--deep-moss); line-height: 1.7; }
+        .blockquote p strong { font-style: normal; color: var(--obsidian-black); }
+        .insight-box { margin: var(--space-xl) 0; padding: var(--space-lg) var(--space-xl); background: var(--obsidian-black); border-radius: 4px; color: var(--ivory-white); }
+        .insight-box-label { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-sm); }
+        .insight-box p { font-size: 14px; line-height: 1.7; color: rgba(245, 243, 236, 0.8); }
+        .insight-box p strong { color: var(--sage-olive); }
+        .check-table { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0; font-size: 13px; }
+        .check-table th { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage-olive); text-align: center; padding: var(--space-md) var(--space-sm); border-bottom: 2px solid var(--border-color); }
+        .check-table th:first-child { text-align: left; }
+        .check-table td { padding: var(--space-sm); border-bottom: 1px solid var(--border-color); text-align: center; vertical-align: middle; }
+        .check-table td:first-child { text-align: left; font-weight: 500; color: var(--text-secondary); }
+        .check-table tr:last-child td { border-bottom: none; }
+        .check-yes { display: inline-block; padding: 2px 8px; background: var(--deep-moss); color: var(--sand-cream); border-radius: 3px; font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; }
+        .check-no { display: inline-block; padding: 2px 8px; background: rgba(139, 58, 58, 0.1); color: #8B3A3A; border-radius: 3px; font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; }
+        .funnel { background: var(--obsidian-black); border-radius: 4px; padding: var(--space-xl) var(--space-2xl); display: flex; align-items: center; justify-content: center; gap: var(--space-lg); margin: var(--space-xl) 0; flex-wrap: wrap; }
+        .funnel-step { text-align: center; flex: 1; min-width: 100px; }
+        .funnel-price { font-family: var(--font-display); font-size: 1.8rem; font-weight: 600; color: var(--sage-olive); margin-bottom: var(--space-xs); }
+        .funnel-label { font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245, 243, 236, 0.5); }
+        .funnel-sublabel { font-family: var(--font-body); font-size: 11px; color: rgba(245, 243, 236, 0.3); margin-top: 2px; }
+        .funnel-arrow { font-family: var(--font-body); font-size: 1.2rem; color: var(--sage-olive); opacity: 0.5; }
+        .timeline { position: relative; margin: var(--space-xl) 0; padding-left: var(--space-2xl); }
+        .timeline::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: var(--border-color); }
+        .timeline-phase { position: relative; margin-bottom: var(--space-3xl); }
+        .timeline-phase:last-child { margin-bottom: 0; }
+        .timeline-dot { position: absolute; left: calc(-1 * var(--space-2xl) + 4px); top: 4px; width: 16px; height: 16px; background: var(--sage-olive); border-radius: 50%; border: 3px solid var(--bg-primary); }
+        .timeline-label { font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-xs); }
+        .timeline-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; color: var(--obsidian-black); margin-bottom: var(--space-sm); }
+        .timeline-goal { font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-lg); font-style: italic; }
+        .tagline-section { text-align: center; padding: var(--space-5xl) var(--space-2xl); background: var(--obsidian-black); color: var(--ivory-white); }
+        .tagline-logo { max-width: 80px; margin: 0 auto var(--space-2xl); opacity: 0.3; }
+        .tagline-logo img { width: 100%; height: auto; filter: brightness(0) invert(1); }
+        .tagline-main { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 400; font-style: italic; line-height: 1.2; color: var(--sage-olive); margin-bottom: var(--space-lg); letter-spacing: 0.02em; }
+        .tagline-brand { font-family: var(--font-heading); font-size: 14px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245, 243, 236, 0.4); }
+        .footer { padding: var(--space-3xl) var(--space-2xl); text-align: center; background: var(--sand-cream); }
+        .footer-text { font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+
+        /* ===== DEEP DIVE ADDITIONAL STYLES ===== */
+        .visual-identity-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-xl); margin: var(--space-xl) 0; }
+        .vi-card { border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); }
+        .vi-card-header { padding: var(--space-xl); color: white; position: relative; }
+        .vi-card-header .badge { position: absolute; top: var(--space-md); right: var(--space-md); }
+        .vi-card-name { font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; margin-bottom: var(--space-xs); }
+        .vi-card-price { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; opacity: 0.8; }
+        .vi-card-body { padding: var(--space-xl); background: white; }
+        .vi-card-body .vi-row { display: flex; gap: var(--space-md); padding: var(--space-sm) 0; border-bottom: 1px solid var(--border-color); font-size: 13px; }
+        .vi-card-body .vi-row:last-child { border-bottom: none; }
+        .vi-row-label { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage-olive); min-width: 110px; flex-shrink: 0; padding-top: 2px; }
+        .vi-row-value { color: var(--text-secondary); line-height: 1.6; }
+        .vi-row-value em { font-style: italic; color: var(--deep-moss); }
+        .vi-row-value code { font-size: 11px; background: var(--sand-cream); padding: 1px 6px; border-radius: 3px; }
+        .vi-header--bali-moment { background: linear-gradient(135deg, #E5E2D1, #D4D0C2); color: var(--deep-moss); }
+        .vi-header--golden-hour { background: linear-gradient(135deg, #B8A88A, #A69F8A); }
+        .vi-header--island-story { background: linear-gradient(135deg, #4A4D39, #3A3D2E); }
+        .vi-header--soul-cinema { background: linear-gradient(135deg, #1a1a1a, #000000); }
+        .vi-header--eternal { background: linear-gradient(135deg, #2C2C2C, #1a1a1a); }
+        .vi-header--wedding { background: linear-gradient(135deg, #F5F3EC, #E5E2D1); color: var(--deep-moss); }
+        .email-template { margin: var(--space-xl) 0; border-radius: 4px; overflow: hidden; border: 1px solid rgba(139, 134, 96, 0.3); }
+        .email-template-header { padding: var(--space-md) var(--space-xl); background: var(--charcoal); }
+        .email-template-title { font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-olive); }
+        .email-template-body { padding: var(--space-xl) var(--space-2xl); background: #1a1a1a; font-family: var(--font-body); font-size: 13px; line-height: 1.9; color: rgba(245, 243, 236, 0.75); white-space: pre-wrap; }
+        .email-subject { color: var(--sage-olive); font-weight: 600; margin-bottom: var(--space-md); display: block; }
+        .email-highlight { color: var(--muted-gold); }
+        .email-bullet { color: var(--sage-olive); }
+        .wireframe { background: var(--obsidian-black); border-radius: 4px; padding: var(--space-2xl); margin: var(--space-xl) 0; }
+        .wireframe-section { margin-bottom: var(--space-lg); }
+        .wireframe-section:last-child { margin-bottom: 0; }
+        .wireframe-hero { padding: var(--space-2xl); border: 1px solid rgba(139, 134, 96, 0.3); border-radius: 4px; text-align: center; margin-bottom: var(--space-lg); }
+        .wireframe-hero h3 { font-family: var(--font-display); font-size: 1.5rem; color: var(--ivory-white); margin-bottom: var(--space-sm); }
+        .wireframe-hero p { font-size: 12px; color: rgba(245, 243, 236, 0.5); margin-bottom: var(--space-md); }
+        .wireframe-toggle { display: flex; gap: var(--space-sm); justify-content: center; }
+        .wireframe-toggle span { padding: 4px 14px; border-radius: 3px; font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border: 1px solid rgba(139, 134, 96, 0.4); color: rgba(245, 243, 236, 0.5); }
+        .wireframe-toggle span.active { background: var(--sage-olive); color: white; border-color: var(--sage-olive); }
+        .wireframe-packages { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); margin-bottom: var(--space-lg); }
+        .wireframe-pkg { padding: var(--space-lg); border: 1px solid rgba(139, 134, 96, 0.25); border-radius: 4px; text-align: center; }
+        .wireframe-pkg-name { font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245, 243, 236, 0.6); margin-bottom: var(--space-xs); }
+        .wireframe-pkg-price { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--sage-olive); margin-bottom: var(--space-sm); }
+        .wireframe-pkg .badge { font-size: 9px; }
+        .wireframe-pkg-btn { display: inline-block; margin-top: var(--space-sm); padding: 4px 16px; border: 1px solid var(--sage-olive); border-radius: 3px; font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sage-olive); }
+        .wireframe-full { padding: var(--space-xl); border: 1px solid rgba(139, 134, 96, 0.25); border-radius: 4px; margin-bottom: var(--space-lg); display: flex; align-items: center; justify-content: space-between; }
+        .wireframe-full-name { font-family: var(--font-heading); font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245, 243, 236, 0.7); }
+        .wireframe-full-price { font-family: var(--font-display); font-size: 1.8rem; font-weight: 600; color: var(--sage-olive); }
+        .wireframe-full-desc { font-size: 12px; color: rgba(245, 243, 236, 0.4); margin-top: var(--space-xs); }
+        .wireframe-addons { display: flex; gap: var(--space-md); margin-bottom: var(--space-lg); flex-wrap: wrap; }
+        .wireframe-addon { padding: var(--space-sm) var(--space-md); border: 1px solid rgba(139, 134, 96, 0.2); border-radius: 4px; font-size: 11px; color: rgba(245, 243, 236, 0.5); text-align: center; }
+        .wireframe-addon strong { color: var(--sage-olive); display: block; font-size: 13px; }
+        .wireframe-label { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-md); }
+        .wireframe-bar { padding: var(--space-md) var(--space-lg); border: 1px solid rgba(139, 134, 96, 0.2); border-radius: 4px; font-size: 12px; color: rgba(245, 243, 236, 0.4); margin-bottom: var(--space-md); text-align: center; }
+        .wireframe-cta { padding: var(--space-lg); border: 1px dashed var(--sage-olive); border-radius: 4px; text-align: center; }
+        .wireframe-cta p { font-family: var(--font-display); font-size: 1.1rem; font-style: italic; color: rgba(245, 243, 236, 0.6); margin-bottom: var(--space-sm); }
+        .wireframe-cta-btn { display: inline-block; padding: 6px 20px; background: var(--sage-olive); color: white; border-radius: 3px; font-family: var(--font-heading); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+        .room-card-mockup { max-width: 360px; margin: var(--space-xl) auto; padding: var(--space-2xl) var(--space-xl); background: var(--sand-cream); border-radius: 4px; text-align: center; border: 2px solid var(--sage-olive); }
+        .room-card-mockup .rcm-logo { font-family: var(--font-heading); font-size: 12px; font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-lg); }
+        .room-card-mockup .rcm-headline { font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; color: var(--obsidian-black); margin-bottom: var(--space-sm); }
+        .room-card-mockup .rcm-desc { font-size: 13px; color: var(--text-muted); margin-bottom: var(--space-md); line-height: 1.6; }
+        .room-card-mockup .rcm-qr { width: 80px; height: 80px; background: var(--obsidian-black); border-radius: 4px; margin: 0 auto var(--space-sm); display: flex; align-items: center; justify-content: center; font-family: var(--font-heading); font-size: 9px; color: var(--sage-olive); letter-spacing: 0.05em; }
+        .room-card-mockup .rcm-scan { font-size: 11px; color: var(--text-muted); margin-bottom: var(--space-lg); }
+        .room-card-mockup .rcm-concierge { font-size: 12px; color: var(--warm-stone); font-style: italic; margin-bottom: var(--space-md); }
+        .room-card-mockup .rcm-ig { font-family: var(--font-heading); font-size: 11px; font-weight: 700; color: var(--sage-olive); letter-spacing: 0.05em; }
+        .room-card-mockup .rcm-size { font-size: 10px; color: var(--warm-stone); margin-top: var(--space-md); }
+        .journey-flow { background: var(--obsidian-black); border-radius: 4px; padding: var(--space-xl) var(--space-lg); display: flex; align-items: center; justify-content: center; gap: 0; margin: var(--space-xl) 0; flex-wrap: wrap; }
+        .journey-step { text-align: center; padding: var(--space-md) var(--space-lg); }
+        .journey-step-number { font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--sage-olive); line-height: 1; margin-bottom: var(--space-xs); }
+        .journey-step-name { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245, 243, 236, 0.6); }
+        .journey-arrow { font-family: var(--font-body); font-size: 1.2rem; color: var(--sage-olive); opacity: 0.4; }
+        .stage-block { margin: var(--space-3xl) 0; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; }
+        .stage-header { padding: var(--space-lg) var(--space-xl); background: var(--sand-cream); display: flex; align-items: center; gap: var(--space-md); }
+        .stage-number { font-family: var(--font-display); font-size: 2rem; font-weight: 600; color: var(--sage-olive); line-height: 1; min-width: 40px; }
+        .stage-name { font-family: var(--font-heading); font-size: 14px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--obsidian-black); }
+        .stage-question { font-family: var(--font-display); font-size: 1.1rem; font-style: italic; color: var(--text-muted); margin-left: auto; }
+        .stage-body { padding: var(--space-xl); background: white; }
+        .stage-body ul { list-style: none; padding: 0; margin: var(--space-md) 0; }
+        .stage-body ul li { font-size: 14px; line-height: 1.7; color: var(--text-muted); padding-left: var(--space-md); position: relative; margin-bottom: var(--space-xs); }
+        .stage-body ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--sage-olive); border-radius: 50%; }
+        .stage-body ul li strong { color: var(--obsidian-black); }
+        .stage-metric { margin-top: var(--space-lg); padding: var(--space-md) var(--space-lg); background: var(--sand-cream); border-radius: 4px; display: flex; align-items: center; gap: var(--space-md); }
+        .stage-metric-label { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-olive); min-width: 100px; }
+        .stage-metric-value { font-size: 14px; color: var(--deep-moss); font-weight: 600; }
+        .partner-tier { margin: var(--space-3xl) 0; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; }
+        .partner-tier-header { padding: var(--space-lg) var(--space-xl); background: var(--sand-cream); display: flex; align-items: center; justify-content: space-between; }
+        .partner-tier-name { font-family: var(--font-heading); font-size: 14px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--obsidian-black); }
+        .partner-tier-body { padding: var(--space-xl); background: white; }
+        .partner-tier-body p { font-size: 14px; line-height: 1.7; color: var(--text-muted); margin-bottom: var(--space-md); }
+        .partner-tier-body p strong { color: var(--obsidian-black); }
+        .partner-tier-body ul { list-style: none; padding: 0; margin: var(--space-md) 0; }
+        .partner-tier-body ul li { font-size: 14px; line-height: 1.7; color: var(--text-muted); padding-left: var(--space-md); position: relative; margin-bottom: var(--space-xs); }
+        .partner-tier-body ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--sage-olive); border-radius: 50%; }
+        .scenario-card { margin: var(--space-xl) 0; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; }
+        .scenario-header { padding: var(--space-md) var(--space-xl); background: var(--sand-cream); display: flex; align-items: center; justify-content: space-between; }
+        .scenario-name { font-family: var(--font-heading); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--obsidian-black); }
+        .scenario-body { padding: 0; background: white; }
+        .scenario-body .data-table { margin: 0; }
+        .scenario-summary { padding: var(--space-lg) var(--space-xl); background: rgba(139, 134, 96, 0.06); border-top: 1px solid var(--border-color); }
+        .scenario-summary p { font-size: 14px; line-height: 1.7; color: var(--text-muted); }
+        .scenario-summary p strong { color: var(--deep-moss); }
+        .journey-map { background: var(--obsidian-black); border-radius: 4px; padding: var(--space-2xl); margin: var(--space-xl) 0; }
+        .journey-map-title { font-family: var(--font-heading); font-size: 12px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); text-align: center; margin-bottom: var(--space-xl); }
+        .journey-map-phase { margin-bottom: var(--space-xl); }
+        .journey-map-phase:last-child { margin-bottom: 0; }
+        .journey-map-phase-label { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245, 243, 236, 0.3); margin-bottom: var(--space-md); text-align: center; padding: var(--space-sm); border-bottom: 1px solid rgba(139, 134, 96, 0.2); }
+        .journey-map-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-md); }
+        .journey-map-grid--3 { grid-template-columns: repeat(3, 1fr); }
+        .journey-map-card { padding: var(--space-md); border: 1px solid rgba(139, 134, 96, 0.25); border-radius: 4px; }
+        .journey-map-card-name { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-sm); }
+        .journey-map-card ul { list-style: none; padding: 0; }
+        .journey-map-card ul li { font-size: 11px; color: rgba(245, 243, 236, 0.5); padding-left: var(--space-sm); position: relative; margin-bottom: 2px; line-height: 1.5; }
+        .journey-map-card ul li::before { content: ''; position: absolute; left: 0; top: 7px; width: 3px; height: 3px; background: var(--sage-olive); border-radius: 50%; }
+        .journey-map-automation { margin-top: var(--space-xl); padding-top: var(--space-lg); border-top: 1px solid rgba(139, 134, 96, 0.2); }
+        .journey-map-automation-title { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-md); }
+        .journey-map-automation ul { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-sm); }
+        .journey-map-automation ul li { font-size: 12px; color: rgba(245, 243, 236, 0.5); padding-left: var(--space-md); position: relative; line-height: 1.6; }
+        .journey-map-automation ul li::before { content: ''; position: absolute; left: 0; top: 8px; width: 4px; height: 4px; background: var(--sage-olive); border-radius: 50%; }
+
+        @media (max-width: 1024px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .card-grid--3 { grid-template-columns: 1fr; }
+            .visual-identity-grid { grid-template-columns: 1fr; }
+            .wireframe-packages { grid-template-columns: repeat(2, 1fr); }
+            .journey-map-grid { grid-template-columns: repeat(3, 1fr); }
+            .journey-map-automation ul { grid-template-columns: 1fr; }
+            .check-table { font-size: 11px; }
+            .check-table th, .check-table td { padding: var(--space-xs); }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .container { padding: 0 var(--space-lg); }
+            .section { padding: var(--space-4xl) 0; }
+            .hero-stats { flex-direction: column; gap: var(--space-xl); }
+            .funnel { flex-direction: column; }
+            .funnel-arrow { transform: rotate(90deg); }
+            .journey-flow { flex-direction: column; }
+            .journey-arrow { transform: rotate(90deg); }
+            .wireframe-packages { grid-template-columns: 1fr; }
+            .wireframe-full { flex-direction: column; text-align: center; gap: var(--space-md); }
+            .journey-map-grid { grid-template-columns: 1fr 1fr; }
+            .journey-map-grid--3 { grid-template-columns: 1fr; }
+            .stage-header { flex-direction: column; align-items: flex-start; }
+            .stage-question { margin-left: 0; margin-top: var(--space-sm); }
+            .data-table { font-size: 12px; }
+            .data-table th, .data-table td { padding: var(--space-sm); }
+        }
+        @media print {
+            .nav { display: none; }
+            .section { page-break-inside: avoid; }
+            body { background: white; }
+            .hero { min-height: auto; padding: var(--space-3xl); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <img src="../../rocana studio logo mark.png" alt="Rocana Studio">
+                <span class="nav-brand-text">Rocana.Studio</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#branding">Branding</a></li>
+                <li><a href="#partnerships">Partnerships</a></li>
+                <li><a href="#financial">Financial</a></li>
+                <li><a href="#experience">Experience</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero / Cover -->
+    <header class="hero">
+        <div class="hero-logo">
+            <img src="../../rocana studio logo main.png" alt="Rocana Studio Logo">
+        </div>
+        <div class="hero-divider"></div>
+        <h1 class="hero-title">Deep Dive<br><em>Strategy Document</em></h1>
+        <p class="hero-description">
+            Package branding, partnership strategy, financial model, and client experience map &mdash; the operational companion to the business model.
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">4 Parts</div>
+                <div class="hero-stat-label">Document Scope</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">8 Stages</div>
+                <div class="hero-stat-label">Client Journey</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">$33K</div>
+                <div class="hero-stat-label">Year 1 Net Profit</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">$630</div>
+                <div class="hero-stat-label">Startup Investment</div>
+            </div>
+        </div>
+        <p class="hero-meta">25 April 2026 &mdash; Companion Document</p>
+    </header>
+
+    <!-- PART A - PACKAGE VISUAL BRANDING -->
+    <section id="branding" class="section">
+        <div class="container">
+            <span class="section-number">Part A &mdash; Package Visual Branding</span>
+            <h2 class="section-title">Every Package<br>Tells a Story</h2>
+            <p class="section-subtitle">
+                Each package name is inspired by Bali&rsquo;s elements and spiritual journey &mdash; not generic numbers. This creates an emotional connection and makes clients feel they&rsquo;re buying an <em>experience</em>, not a service.
+            </p>
+
+            <div class="sub-section-label">A.1 Package Naming Philosophy</div>
+            <div class="sub-section-title">The Name is the First Impression</div>
+
+            <table class="data-table">
+                <thead><tr><th>Tier</th><th>Name</th><th>Inspiration</th><th>Emotional Hook</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>$59</strong></td><td><strong>Bali Moment</strong></td><td>Satu momen singkat yang abadi</td><td>&ldquo;Even 30 minutes in Bali can last forever&rdquo;</td></tr>
+                    <tr><td><strong>$149</strong></td><td><strong>Golden Hour</strong></td><td>Waktu emas saat matahari terbenam di Bali</td><td>&ldquo;The hour when Bali glows &mdash; and so will you&rdquo;</td></tr>
+                    <tr><td><strong>$249</strong></td><td><strong>Island Story</strong></td><td>Setiap pulau punya cerita, begitu juga kamu</td><td>&ldquo;Your story, told through the island&rsquo;s eyes&rdquo;</td></tr>
+                    <tr><td><strong>$399</strong></td><td><strong>Soul Cinema</strong></td><td>Sinema jiwa &mdash; foto + video + udara</td><td>&ldquo;Not just photos. A film about your soul.&rdquo;</td></tr>
+                    <tr><td><strong>$799</strong></td><td><strong>Eternal</strong></td><td>Abadi &mdash; kenangan yang tidak pernah pudar</td><td>&ldquo;Some moments deserve to live forever&rdquo;</td></tr>
+                    <tr><td><strong>Wedding</strong></td><td><strong>Sacred / Devoted / Infinite</strong></td><td>Upacara suci, kesetiaan, tak terbatas</td><td>&ldquo;Where two souls become one story&rdquo;</td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label">A.2 Visual Identity Per Package</div>
+            <div class="sub-section-title">Each Package Has a Visual Personality</div>
+
+            <div class="visual-identity-grid">
+                <div class="vi-card">
+                    <div class="vi-card-header vi-header--bali-moment">
+                        <div class="vi-card-name">Bali Moment</div>
+                        <div class="vi-card-price">$59 &mdash; The Entry</div>
+                    </div>
+                    <div class="vi-card-body">
+                        <div class="vi-row"><span class="vi-row-label">Visual Mood</span><span class="vi-row-value">Light, airy, approachable</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Primary Color</span><span class="vi-row-value">Sand Cream <code>#E5E2D1</code> background</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Accent</span><span class="vi-row-value">Sage Olive <code>#8B8660</code> text</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Typography</span><span class="vi-row-value">Nunito 700 for name, Inter for description</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Card Style</span><span class="vi-row-value">Clean white card, thin Sage Olive border</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Icon</span><span class="vi-row-value">Minimalist camera shutter / sun icon</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Photo Example</span><span class="vi-row-value">Single candid portrait, bright, natural light</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Feeling</span><span class="vi-row-value"><em>&ldquo;This is easy. This is affordable. Let me try.&rdquo;</em></span></div>
+                    </div>
+                </div>
+
+                <div class="vi-card">
+                    <div class="vi-card-header vi-header--golden-hour">
+                        <span class="badge badge--popular">&starf; Most Popular</span>
+                        <div class="vi-card-name">Golden Hour</div>
+                        <div class="vi-card-price">$149 &mdash; The Sweet Spot</div>
+                    </div>
+                    <div class="vi-card-body">
+                        <div class="vi-row"><span class="vi-row-label">Visual Mood</span><span class="vi-row-value">Warm, golden, romantic</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Primary Color</span><span class="vi-row-value">Muted Gold <code>#B8A88A</code> gradient overlay</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Accent</span><span class="vi-row-value">Deep Moss <code>#4A4D39</code> text</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Typography</span><span class="vi-row-value">Cormorant italic for name, Inter for description</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Card Style</span><span class="vi-row-value">Warm-toned photo background with text overlay</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Icon</span><span class="vi-row-value">Setting sun / golden circle</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Photo Example</span><span class="vi-row-value">Couple silhouette at sunset, warm tones</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Feeling</span><span class="vi-row-value"><em>&ldquo;This is the one. Perfect balance of value and quality.&rdquo;</em></span></div>
+                    </div>
+                </div>
+
+                <div class="vi-card">
+                    <div class="vi-card-header vi-header--island-story">
+                        <span class="badge badge--video">&#9654; Includes Video</span>
+                        <div class="vi-card-name">Island Story</div>
+                        <div class="vi-card-price">$249 &mdash; The Differentiator</div>
+                    </div>
+                    <div class="vi-card-body">
+                        <div class="vi-row"><span class="vi-row-label">Visual Mood</span><span class="vi-row-value">Cinematic, layered, storytelling</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Primary Color</span><span class="vi-row-value">Deep Moss <code>#4A4D39</code> background</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Accent</span><span class="vi-row-value">Sand Cream <code>#E5E2D1</code> text, Sage Olive highlights</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Typography</span><span class="vi-row-value">Cormorant for name, Nunito for &ldquo;PHOTO + VIDEO&rdquo; badge</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Card Style</span><span class="vi-row-value">Dark card with cinematic photo, play button overlay</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Icon</span><span class="vi-row-value">Film strip + camera combined</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Photo Example</span><span class="vi-row-value">Wide landscape with couple small in frame, cinematic ratio</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Feeling</span><span class="vi-row-value"><em>&ldquo;Photo AND video? In one session? That&rsquo;s incredible value.&rdquo;</em></span></div>
+                    </div>
+                </div>
+
+                <div class="vi-card">
+                    <div class="vi-card-header vi-header--soul-cinema">
+                        <span class="badge badge--flagship">&#9670; Flagship</span>
+                        <div class="vi-card-name">Soul Cinema</div>
+                        <div class="vi-card-price">$399 &mdash; The Flagship</div>
+                    </div>
+                    <div class="vi-card-body">
+                        <div class="vi-row"><span class="vi-row-label">Visual Mood</span><span class="vi-row-value">Premium, aerial, expansive</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Primary Color</span><span class="vi-row-value">Obsidian Black <code>#000000</code> background</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Accent</span><span class="vi-row-value">Muted Gold <code>#B8A88A</code> text, Sage Olive accents</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Typography</span><span class="vi-row-value">Cormorant display for name, gold color</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Card Style</span><span class="vi-row-value">Full-bleed drone aerial photo, dark overlay, gold text</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Icon</span><span class="vi-row-value">Drone + film camera + camera trinity icon</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Photo Example</span><span class="vi-row-value">Aerial drone shot of couple on Bali cliff/beach</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Feeling</span><span class="vi-row-value"><em>&ldquo;This is the ultimate Bali experience. I need this.&rdquo;</em></span></div>
+                    </div>
+                </div>
+
+                <div class="vi-card">
+                    <div class="vi-card-header vi-header--eternal">
+                        <span class="badge badge--premium">&#9829; Premium Experience</span>
+                        <div class="vi-card-name">Eternal</div>
+                        <div class="vi-card-price">$799 &mdash; The Premium</div>
+                    </div>
+                    <div class="vi-card-body">
+                        <div class="vi-row"><span class="vi-row-label">Visual Mood</span><span class="vi-row-value">Luxurious, editorial, magazine-quality</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Primary Color</span><span class="vi-row-value">Charcoal <code>#2C2C2C</code> with Muted Gold <code>#B8A88A</code> accents</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Accent</span><span class="vi-row-value">Ivory White <code>#F5F3EC</code> text</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Typography</span><span class="vi-row-value">Cormorant display italic, generous letter-spacing</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Card Style</span><span class="vi-row-value">Split layout &mdash; editorial photo left, details right</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Icon</span><span class="vi-row-value">Infinity symbol / crown</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Photo Example</span><span class="vi-row-value">Fashion-editorial style portrait, dramatic lighting</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Feeling</span><span class="vi-row-value"><em>&ldquo;This is for people who want the absolute best.&rdquo;</em></span></div>
+                    </div>
+                </div>
+
+                <div class="vi-card">
+                    <div class="vi-card-header vi-header--wedding">
+                        <div class="vi-card-name">Wedding Packages</div>
+                        <div class="vi-card-price">From $1,200 &mdash; The Sacred</div>
+                    </div>
+                    <div class="vi-card-body">
+                        <div class="vi-row"><span class="vi-row-label">Visual Mood</span><span class="vi-row-value">Timeless, emotional, sacred</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Primary Color</span><span class="vi-row-value">Ivory White <code>#F5F3EC</code> with Sage Olive accents</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Accent</span><span class="vi-row-value">Deep Moss <code>#4A4D39</code> for text</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Typography</span><span class="vi-row-value">Cormorant for all headings (full serif elegance)</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Card Style</span><span class="vi-row-value">Full-width section, large hero wedding photo</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Icon</span><span class="vi-row-value">Intertwined rings / Balinese offering symbol</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Photo Example</span><span class="vi-row-value">Emotional ceremony moment, Bali temple backdrop</span></div>
+                        <div class="vi-row"><span class="vi-row-label">Feeling</span><span class="vi-row-value"><em>&ldquo;They understand weddings. They understand Bali. They understand us.&rdquo;</em></span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sub-section-label">A.3 Website Pricing Page Layout</div>
+            <div class="sub-section-title">Pricing Page Wireframe</div>
+
+            <div class="wireframe">
+                <div class="wireframe-section">
+                    <div class="wireframe-hero">
+                        <h3>&ldquo;Choose Your Bali Story&rdquo;</h3>
+                        <p>Every package includes our signature warm editing style and a private online gallery.</p>
+                        <div class="wireframe-toggle">
+                            <span class="active">Photography</span>
+                            <span>Photo+Video</span>
+                            <span>Weddings</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="wireframe-section">
+                    <div class="wireframe-packages">
+                        <div class="wireframe-pkg"><div class="wireframe-pkg-name">Bali Moment</div><div class="wireframe-pkg-price">$59</div><div class="wireframe-pkg-btn">Book</div></div>
+                        <div class="wireframe-pkg"><div class="wireframe-pkg-name">Golden Hour</div><div class="wireframe-pkg-price">$149</div><span class="badge badge--popular">&starf; Popular</span><div class="wireframe-pkg-btn">Book</div></div>
+                        <div class="wireframe-pkg"><div class="wireframe-pkg-name">Island Story</div><div class="wireframe-pkg-price">$249</div><span class="badge badge--video">&#9654; Video</span><div class="wireframe-pkg-btn">Book</div></div>
+                        <div class="wireframe-pkg"><div class="wireframe-pkg-name">Soul Cinema</div><div class="wireframe-pkg-price">$399</div><span class="badge badge--flagship">&#9670; Flagship</span><div class="wireframe-pkg-btn">Book</div></div>
+                    </div>
+                </div>
+                <div class="wireframe-section">
+                    <div class="wireframe-full"><div><div class="wireframe-full-name">Eternal</div><div class="wireframe-full-price">$799</div><div class="wireframe-full-desc">Full-width premium card with editorial photo</div></div><span class="badge badge--premium">&#9829; Premium</span></div>
+                </div>
+                <div class="wireframe-section">
+                    <div class="wireframe-full"><div><div class="wireframe-full-name">Weddings</div><div class="wireframe-full-price">From $1,200</div><div class="wireframe-full-desc">Separate elegant section with 3 sub-tiers: Sacred &middot; Devoted &middot; Infinite</div></div></div>
+                </div>
+                <div class="wireframe-section">
+                    <div class="wireframe-label">Add-Ons</div>
+                    <div class="wireframe-addons">
+                        <div class="wireframe-addon"><strong>+$75</strong>Drone</div>
+                        <div class="wireframe-addon"><strong>+$100</strong>Video</div>
+                        <div class="wireframe-addon"><strong>+$150</strong>Model</div>
+                        <div class="wireframe-addon"><strong>+$120</strong>MUA</div>
+                    </div>
+                </div>
+                <div class="wireframe-section"><div class="wireframe-bar">Comparison Table &mdash; Shows all features side by side (expandable/collapsible)</div></div>
+                <div class="wireframe-section"><div class="wireframe-bar">FAQ Accordion &mdash; &ldquo;What&rsquo;s included?&rdquo; &middot; &ldquo;How do I book?&rdquo; &middot; &ldquo;What if it rains?&rdquo;</div></div>
+                <div class="wireframe-section"><div class="wireframe-cta"><p>&ldquo;Not sure which package? Let our AI assistant help.&rdquo;</p><span class="wireframe-cta-btn">Chat Now</span></div></div>
+            </div>
+
+            <div class="sub-section-label">A.4 Package Comparison Table</div>
+            <div class="sub-section-title">Feature-by-Feature Comparison</div>
+
+            <table class="check-table">
+                <thead><tr><th>Feature</th><th>Bali Moment</th><th>Golden Hour</th><th>Island Story</th><th>Soul Cinema</th><th>Eternal</th></tr></thead>
+                <tbody>
+                    <tr><td>Price</td><td>$59</td><td>$149</td><td>$249</td><td>$399</td><td>$799</td></tr>
+                    <tr><td>Duration</td><td>30 min</td><td>1 hour</td><td>2 hours</td><td>3 hours</td><td>6 hours</td></tr>
+                    <tr><td>Photographer</td><td>1</td><td>1</td><td>1</td><td>1</td><td>2</td></tr>
+                    <tr><td>Videographer</td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-yes">1</span></td><td><span class="check-yes">1</span></td><td><span class="check-yes">1</span></td></tr>
+                    <tr><td>Edited Photos</td><td>15</td><td>40</td><td>60</td><td>80</td><td>150+</td></tr>
+                    <tr><td>Cinematic Video</td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-yes">60 sec</span></td><td><span class="check-yes">90 sec</span></td><td><span class="check-yes">3 min</span></td></tr>
+                    <tr><td>Reel/TikTok Edit</td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-yes">1x 30s</span></td><td><span class="check-yes">3x 30s</span></td></tr>
+                    <tr><td>Drone Aerial</td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-yes">Yes</span></td><td><span class="check-yes">Yes</span></td></tr>
+                    <tr><td>Locations</td><td>1</td><td>1&ndash;2</td><td>2&ndash;3</td><td>3&ndash;4</td><td>Unlimited</td></tr>
+                    <tr><td>Sneak Peek (24hr)</td><td><span class="check-no">&mdash;</span></td><td><span class="check-yes">5 photos</span></td><td><span class="check-yes">10 photos</span></td><td><span class="check-yes">15 photos</span></td><td><span class="check-yes">20 photos</span></td></tr>
+                    <tr><td>BTS Content</td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-yes">Yes</span></td></tr>
+                    <tr><td>Outfit Guidance</td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-no">&mdash;</span></td><td><span class="check-yes">AI Planner</span></td><td><span class="check-yes">AI + Personal</span></td></tr>
+                    <tr><td>Delivery</td><td>7 days</td><td>5 days</td><td>7 days</td><td>7 days</td><td>10 days</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- PART B - PARTNERSHIP STRATEGY -->
+    <section id="partnerships" class="section">
+        <div class="container">
+            <span class="section-number">Part B &mdash; Partnership Strategy</span>
+            <h2 class="section-title">Building the<br>Referral Network</h2>
+            <p class="section-subtitle">Currently clients come from Instagram and word-of-mouth. That&rsquo;s great but not scalable. Partnerships open 3 new channels simultaneously.</p>
+
+            <div class="sub-section-label">B.1 Why Partnerships Matter</div>
+            <div class="card-grid card-grid--3">
+                <div class="card"><div class="card-label">Channel 1</div><div class="card-title">Hotels &amp; Villas</div><p class="card-text">Access to tourists who are ALREADY in Bali and have budget. They&rsquo;re staying at premium properties and looking for experiences.</p></div>
+                <div class="card"><div class="card-label">Channel 2</div><div class="card-title">Wedding Planners</div><p class="card-text">Access to high-value clients who DEFINITELY need a photographer. Wedding planners are the gatekeepers to the highest-revenue bookings.</p></div>
+                <div class="card"><div class="card-label">Channel 3</div><div class="card-title">Tour Guides &amp; Drivers</div><p class="card-text">A &ldquo;street team&rdquo; that meets tourists every single day. They&rsquo;re constantly asked &ldquo;do you know a good photographer?&rdquo; &mdash; give them a reason to say Rocana.</p></div>
+            </div>
+
+            <div class="sub-section-label">B.2 Partnership Tiers</div>
+
+            <!-- Tier 1 -->
+            <div class="partner-tier">
+                <div class="partner-tier-header"><span class="partner-tier-name">Tier 1: Hotels &amp; Villas</span><span class="badge badge--critical">Highest Priority</span></div>
+                <div class="partner-tier-body">
+                    <p><strong>Target:</strong> Boutique hotels and private villas in Ubud, Seminyak, Canggu, Uluwatu &mdash; frequently used by international tourists for honeymoon, anniversary, or family vacation.</p>
+                    <p><strong>Value proposition for hotels:</strong></p>
+                    <ul>
+                        <li>Additional revenue without effort (commission per referral)</li>
+                        <li>Enhanced guest experience (&ldquo;We can arrange a professional photographer for you&rdquo;)</li>
+                        <li>Free content &mdash; Rocana can photograph their property as barter</li>
+                    </ul>
+
+                    <div class="sub-section-label" style="margin-top: var(--space-xl);">Commission Structure</div>
+                    <table class="data-table">
+                        <thead><tr><th>Model</th><th>Detail</th><th>Best For</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Flat referral fee</strong></td><td>$15&ndash;25 per successful booking</td><td>Villa managers, front desk staff</td></tr>
+                            <tr><td><strong>Percentage commission</strong></td><td>10&ndash;15% of total booking</td><td>Hotel management, concierge desk</td></tr>
+                            <tr><td><strong>Barter</strong></td><td>Free property photoshoot (10 photos) per 5 referrals</td><td>New/small properties that need content</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="sub-section-label" style="margin-top: var(--space-xl);">Approach Strategy (Cold Outreach)</div>
+                    <div class="timeline">
+                        <div class="timeline-phase"><div class="timeline-dot"></div><div class="timeline-label">Phase 1 &mdash; Week 1&ndash;2</div><div class="timeline-title">Research</div>
+                            <ul><li>Identify 30 boutique hotels/villas in target areas</li><li>Check their Instagram &mdash; do they already recommend photographers?</li><li>Find the concierge/manager contact (Instagram DM, email, visit)</li></ul>
+                        </div>
+                        <div class="timeline-phase"><div class="timeline-dot"></div><div class="timeline-label">Phase 2 &mdash; Week 3&ndash;4</div><div class="timeline-title">First Contact</div>
+                            <ul><li>Visit in person with a printed portfolio booklet + business card</li><li>Bring a small gift (framed sample photo of their area)</li><li>Pitch: &ldquo;We&rsquo;d love to be your recommended photographer for guests&rdquo;</li></ul>
+                        </div>
+                        <div class="timeline-phase"><div class="timeline-dot"></div><div class="timeline-label">Phase 3 &mdash; Week 5&ndash;6</div><div class="timeline-title">Formalize</div>
+                            <ul><li>Send partnership proposal via email (see template below)</li><li>Set up tracking system (unique referral code per property)</li><li>Provide marketing materials (QR code card for guest rooms)</li></ul>
+                        </div>
+                    </div>
+
+                    <div class="sub-section-label" style="margin-top: var(--space-xl);">Cold Outreach Email Template</div>
+                    <div class="email-template">
+                        <div class="email-template-header"><span class="email-template-title">Hotel Partnership Email</span></div>
+                        <div class="email-template-body"><span class="email-subject">Subject: Photography Partnership &mdash; [Hotel Name] x Rocana.Studio</span>
+Dear [Name],
+
+I&rsquo;m [Your Name] from Rocana.Studio, a Bali-based photography and videography studio specializing in international guests.
+
+We&rsquo;d love to become [Hotel Name]&rsquo;s recommended photography partner. Here&rsquo;s what we offer your guests:
+
+<span class="email-bullet">&bull;</span> Professional photo, video &amp; drone packages from $59
+<span class="email-bullet">&bull;</span> AI-powered shoot planning (we handle everything)
+<span class="email-bullet">&bull;</span> Same-day sneak peek photos (guests can post while still at your property)
+<span class="email-bullet">&bull;</span> Signature warm Bali aesthetic that guests love
+
+What&rsquo;s in it for [Hotel Name]:
+<span class="email-bullet">&bull;</span> <span class="email-highlight">15% commission</span> on every booking from your referral
+<span class="email-bullet">&bull;</span> <span class="email-highlight">Free property photography</span> (10 edited photos) as a welcome gift
+<span class="email-bullet">&bull;</span> QR code cards for guest rooms &mdash; zero effort from your team
+<span class="email-bullet">&bull;</span> Enhanced guest experience and reviews
+
+I&rsquo;d love to drop by with our portfolio. Would [day] work for a quick 10-minute introduction?
+
+Warm regards,
+[Name]
+Rocana.Studio
+rocana.studio | @rocana.studio</div>
+                    </div>
+
+                    <div class="sub-section-label" style="margin-top: var(--space-xl);">In-Room Marketing Materials</div>
+                    <div class="room-card-mockup">
+                        <div class="rcm-logo">Rocana.Studio</div>
+                        <div class="rcm-headline">&ldquo;Capture Your Bali Story&rdquo;</div>
+                        <div class="rcm-desc">Professional photography &amp;<br>cinematic videography<br>starting from $59</div>
+                        <div class="rcm-qr">QR CODE</div>
+                        <div class="rcm-scan">rocana.studio/book?ref=HOTELNAME</div>
+                        <div class="rcm-concierge">Or ask your concierge</div>
+                        <div class="rcm-ig">@rocana.studio</div>
+                        <div class="rcm-size">A6 card (105&times;148mm) &middot; Sand Cream stock &middot; Sage Olive print</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier 2 -->
+            <div class="partner-tier">
+                <div class="partner-tier-header"><span class="partner-tier-name">Tier 2: Wedding Planners &amp; Event Organizers</span><span class="badge badge--high">High Priority</span></div>
+                <div class="partner-tier-body">
+                    <p><strong>Target:</strong> Wedding planners who handle destination weddings in Bali for international clients.</p>
+                    <p><strong>Value proposition:</strong></p>
+                    <ul>
+                        <li>Reliable, full-service vendor (photo + video + drone = one vendor, not three)</li>
+                        <li>Consistent quality and style</li>
+                        <li>Easy to work with &mdash; AI planning tools reduce coordination overhead</li>
+                        <li>Commission on every wedding referral</li>
+                    </ul>
+
+                    <div class="sub-section-label" style="margin-top: var(--space-xl);">Commission Structure</div>
+                    <table class="data-table">
+                        <thead><tr><th>Wedding Package</th><th>Planner Commission</th><th>Amount</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Intimate ($1,200)</strong></td><td>10%</td><td><strong>$120</strong></td></tr>
+                            <tr><td><strong>Classic ($2,200)</strong></td><td>12%</td><td><strong>$264</strong></td></tr>
+                            <tr><td><strong>Grand ($3,500)</strong></td><td>15%</td><td><strong>$525</strong></td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="sub-section-label" style="margin-top: var(--space-xl);">Approach Strategy</div>
+                    <div class="timeline">
+                        <div class="timeline-phase"><div class="timeline-dot"></div><div class="timeline-label">Phase 1 &mdash; Week 1&ndash;2</div><div class="timeline-title">Identify</div>
+                            <ul><li>Research top 20 Bali wedding planners on Google, Instagram, The Knot</li><li>Check who they currently use as photographers</li><li>Look for planners who DON&rsquo;T have an exclusive photographer yet</li></ul>
+                        </div>
+                        <div class="timeline-phase"><div class="timeline-dot"></div><div class="timeline-label">Phase 2 &mdash; Week 3&ndash;4</div><div class="timeline-title">Portfolio Delivery</div>
+                            <ul><li>Create a dedicated &ldquo;Wedding Planner Kit&rdquo;: PDF lookbook (20 pages), pricing sheet, testimonials, link to full online portfolio</li><li>Send via email + Instagram DM</li></ul>
+                        </div>
+                        <div class="timeline-phase"><div class="timeline-dot"></div><div class="timeline-label">Phase 3 &mdash; Ongoing</div><div class="timeline-title">Relationship Building</div>
+                            <ul><li>Offer to shoot one styled shoot for FREE with the planner (they get content, you get portfolio + relationship)</li><li>Attend wedding industry events in Bali</li><li>Join Bali Wedding Association if one exists</li></ul>
+                        </div>
+                    </div>
+
+                    <div class="sub-section-label" style="margin-top: var(--space-xl);">Outreach Email Template</div>
+                    <div class="email-template">
+                        <div class="email-template-header"><span class="email-template-title">Wedding Planner Email</span></div>
+                        <div class="email-template-body"><span class="email-subject">Subject: Vendor Introduction &mdash; Rocana.Studio (Photo + Video + Drone)</span>
+Hi [Planner Name],
+
+I&rsquo;m [Name] from Rocana.Studio. We specialize in destination wedding photography and videography in Bali.
+
+What makes us different: we&rsquo;re a one-stop creative team &mdash; photography, cinematic video, AND drone aerial &mdash; so your couples only need to coordinate with one vendor instead of three.
+
+I&rsquo;ve attached our Wedding Planner Kit with portfolio samples and partner pricing. We offer <span class="email-highlight">10&ndash;15% referral commission</span> on all bookings.
+
+Would you be open to a quick coffee to discuss how we could work together? I&rsquo;d also love to offer a <span class="email-highlight">complimentary styled shoot collaboration</span> if you&rsquo;re interested.
+
+Best,
+[Name]
+Rocana.Studio</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tier 3 -->
+            <div class="partner-tier">
+                <div class="partner-tier-header"><span class="partner-tier-name">Tier 3: Tour Guides &amp; Drivers (Street Team)</span><span class="badge badge--medium">Medium Priority</span></div>
+                <div class="partner-tier-body">
+                    <p><strong>Target:</strong> Private drivers and tour guides who serve international tourists daily.</p>
+                    <p><strong>Value proposition:</strong></p>
+                    <ul><li>Easy passive income &mdash; just hand out a card or mention Rocana</li><li>$10&ndash;15 flat fee per successful booking (cash or transfer)</li><li>No effort required beyond a recommendation</li></ul>
+
+                    <div class="sub-section-label" style="margin-top: var(--space-xl);">How It Works</div>
+                    <table class="data-table">
+                        <thead><tr><th>Step</th><th>Action</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>1</strong></td><td>Recruit 10&ndash;15 reliable drivers/guides</td></tr>
+                            <tr><td><strong>2</strong></td><td>Give each a stack of Rocana referral cards with unique code</td></tr>
+                            <tr><td><strong>3</strong></td><td>When their tourist books through the card&rsquo;s QR code, driver gets $10&ndash;15 per booking (paid weekly via transfer)</td></tr>
+                            <tr><td><strong>4</strong></td><td>Top referrers get bonus: $50/month for 5+ referrals</td></tr>
+                        </tbody>
+                    </table>
+
+                    <div class="insight-box"><div class="insight-box-label">Why This Works</div><p>Drivers spend 8&ndash;10 hours/day with tourists. They&rsquo;re asked &ldquo;do you know a good photographer?&rdquo; constantly. Currently they recommend random freelancers. <strong>Give them a reason to recommend Rocana.</strong></p></div>
+                </div>
+            </div>
+
+            <!-- Tier 4 -->
+            <div class="partner-tier">
+                <div class="partner-tier-header"><span class="partner-tier-name">Tier 4: MUA / Hair Stylists (Mutual Referral)</span><span class="badge badge--low">Supportive</span></div>
+                <div class="partner-tier-body">
+                    <p><strong>Target:</strong> Freelance makeup artists who serve international clients in Bali.</p>
+                    <p><strong>Model:</strong> Pure mutual referral &mdash; no commission needed.</p>
+                    <ul><li>Rocana recommends them to clients who need MUA (+$120 add-on, MUA keeps 100%)</li><li>They recommend Rocana to their clients who need photography</li><li>Collaborate on styled shoots for mutual portfolio building</li></ul>
+                </div>
+            </div>
+
+            <div class="sub-section-label">B.3 Partnership Tracking System</div>
+            <table class="data-table">
+                <thead><tr><th>Element</th><th>Tool</th><th>Purpose</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Unique referral codes</strong></td><td><code>?ref=PARTNER_NAME</code> in booking URL</td><td>Track which partner sent the client</td></tr>
+                    <tr><td><strong>Referral dashboard</strong></td><td>Google Sheet or simple CRM</td><td>Track bookings, commissions owed</td></tr>
+                    <tr><td><strong>Monthly payout</strong></td><td>Bank transfer, 1st of each month</td><td>Keep partners happy and motivated</td></tr>
+                    <tr><td><strong>Quarterly review</strong></td><td>In-person or WhatsApp</td><td>Maintain relationship, discuss performance</td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label">B.4 Partnership Roadmap</div>
+            <table class="data-table">
+                <thead><tr><th>Timeline</th><th>Target</th><th>Action</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Month 1&ndash;2</strong></td><td>5 hotels/villas</td><td>In-person visits with portfolio</td></tr>
+                    <tr><td><strong>Month 2&ndash;3</strong></td><td>3 wedding planners</td><td>Email + styled shoot offer</td></tr>
+                    <tr><td><strong>Month 3&ndash;4</strong></td><td>10 drivers/guides</td><td>Recruit through existing network</td></tr>
+                    <tr><td><strong>Month 4&ndash;5</strong></td><td>3 MUA/stylists</td><td>Instagram outreach + collab shoot</td></tr>
+                    <tr><td><strong>Month 6</strong></td><td>Review &amp; optimize</td><td>Double down on top-performing partners</td></tr>
+                    <tr><td><strong>Month 12</strong></td><td>15 hotels, 8 planners, 20 drivers, 5 MUA</td><td>Full network operational</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- PART C - FINANCIAL MODEL -->
+    <section id="financial" class="section">
+        <div class="container">
+            <span class="section-number">Part C &mdash; Financial Model</span>
+            <h2 class="section-title">The Numbers<br>in Detail</h2>
+            <p class="section-subtitle">A detailed financial analysis covering cost per shoot, break-even, revenue scenarios, cash flow projections, and startup investment requirements.</p>
+
+            <div class="sub-section-label">C.1 Cost Per Shoot Analysis</div>
+            <div class="sub-section-title">Understanding the Unit Economics</div>
+            <div class="blockquote"><p><strong>Assumptions:</strong> Based on current operational costs (under Rp 3 juta/month), 2-person core team, Bali-based.</p></div>
+
+            <div class="sub-section-label" style="margin-top: var(--space-xl);">Fixed Monthly Costs</div>
+            <table class="data-table">
+                <thead><tr><th>Item</th><th>Monthly (IDR)</th><th>Monthly (USD)</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Transportation (fuel, bike)</strong></td><td>Rp 800,000</td><td>$50</td><td>2 bikes, daily commute + shoots</td></tr>
+                    <tr><td><strong>Software (Lightroom, Premiere, hosting)</strong></td><td>Rp 500,000</td><td>$31</td><td>Adobe CC + website hosting</td></tr>
+                    <tr><td><strong>Internet + phone</strong></td><td>Rp 400,000</td><td>$25</td><td>Fast internet for uploads</td></tr>
+                    <tr><td><strong>Equipment maintenance</strong></td><td>Rp 300,000</td><td>$19</td><td>Cleaning, minor repairs, insurance</td></tr>
+                    <tr><td><strong>Cloud storage (Google/Dropbox)</strong></td><td>Rp 200,000</td><td>$12</td><td>Client gallery hosting</td></tr>
+                    <tr><td><strong>Marketing (minimal)</strong></td><td>Rp 500,000</td><td>$31</td><td>Social media boost, Google Ads test</td></tr>
+                    <tr><td><strong>Miscellaneous</strong></td><td>Rp 300,000</td><td>$19</td><td>Batteries, memory cards, props</td></tr>
+                    <tr class="total-row"><td><strong>Total Fixed</strong></td><td><strong>Rp 3,000,000</strong></td><td><strong>$187</strong></td><td></td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label" style="margin-top: var(--space-xl);">Variable Cost Per Shoot</div>
+            <table class="check-table">
+                <thead><tr><th>Cost Item</th><th>Bali Moment ($59)</th><th>Golden Hour ($149)</th><th>Island Story ($249)</th><th>Soul Cinema ($399)</th><th>Eternal ($799)</th></tr></thead>
+                <tbody>
+                    <tr><td>Transport to location</td><td>$3</td><td>$5</td><td>$8</td><td>$10</td><td>$15</td></tr>
+                    <tr><td>Editing time (opportunity cost)</td><td>$5 (30min)</td><td>$12 (1hr)</td><td>$25 (2.5hr)</td><td>$35 (3.5hr)</td><td>$60 (6hr)</td></tr>
+                    <tr><td>Video editing</td><td>&mdash;</td><td>&mdash;</td><td>$20 (2hr)</td><td>$30 (3hr)</td><td>$50 (5hr)</td></tr>
+                    <tr><td>Drone battery/wear</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>$3</td><td>$5</td></tr>
+                    <tr><td>Gallery hosting</td><td>$1</td><td>$1</td><td>$1</td><td>$1</td><td>$1</td></tr>
+                    <tr><td>Freelance 2nd shooter</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>&mdash;</td><td>$50</td></tr>
+                    <tr style="font-weight:700;"><td><strong>Total Variable</strong></td><td><strong>$9</strong></td><td><strong>$18</strong></td><td><strong>$54</strong></td><td><strong>$79</strong></td><td><strong>$181</strong></td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label" style="margin-top: var(--space-xl);">Profit Per Shoot (Direct Booking)</div>
+            <table class="data-table">
+                <thead><tr><th>Package</th><th>Price</th><th>Variable Cost</th><th>Gross Profit</th><th>Margin</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Bali Moment</strong></td><td>$59</td><td>$9</td><td><strong>$50</strong></td><td><span class="badge badge--high">85%</span></td></tr>
+                    <tr><td><strong>Golden Hour</strong></td><td>$149</td><td>$18</td><td><strong>$131</strong></td><td><span class="badge badge--high">88%</span></td></tr>
+                    <tr><td><strong>Island Story</strong></td><td>$249</td><td>$54</td><td><strong>$195</strong></td><td><span class="badge badge--high">78%</span></td></tr>
+                    <tr><td><strong>Soul Cinema</strong></td><td>$399</td><td>$79</td><td><strong>$320</strong></td><td><span class="badge badge--high">80%</span></td></tr>
+                    <tr><td><strong>Eternal</strong></td><td>$799</td><td>$181</td><td><strong>$618</strong></td><td><span class="badge badge--high">77%</span></td></tr>
+                    <tr><td><strong>Wedding Intimate</strong></td><td>$1,200</td><td>$250</td><td><strong>$950</strong></td><td><span class="badge badge--high">79%</span></td></tr>
+                    <tr><td><strong>Wedding Classic</strong></td><td>$2,200</td><td>$400</td><td><strong>$1,800</strong></td><td><span class="badge badge--high">82%</span></td></tr>
+                    <tr><td><strong>Wedding Grand</strong></td><td>$3,500</td><td>$600</td><td><strong>$2,900</strong></td><td><span class="badge badge--high">83%</span></td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label" style="margin-top: var(--space-xl);">Profit Per Shoot (Platform Booking &mdash; 30% Commission)</div>
+            <table class="data-table">
+                <thead><tr><th>Package</th><th>Price</th><th>Platform Cut (30%)</th><th>Variable Cost</th><th>Gross Profit</th><th>Margin</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Bali Moment</strong></td><td>$59</td><td>$18</td><td>$9</td><td><strong>$32</strong></td><td><span class="badge badge--medium">54%</span></td></tr>
+                    <tr><td><strong>Golden Hour</strong></td><td>$149</td><td>$45</td><td>$18</td><td><strong>$86</strong></td><td><span class="badge badge--medium">58%</span></td></tr>
+                    <tr><td><strong>Island Story</strong></td><td>$249</td><td>$75</td><td>$54</td><td><strong>$120</strong></td><td><span class="badge badge--medium">48%</span></td></tr>
+                    <tr><td><strong>Soul Cinema</strong></td><td>$399</td><td>$120</td><td>$79</td><td><strong>$200</strong></td><td><span class="badge badge--medium">50%</span></td></tr>
+                </tbody>
+            </table>
+            <div class="insight-box"><div class="insight-box-label">Key Insight</div><p>Platform bookings are still profitable, but margin drops ~30%. This is acceptable for the early phase (review building), but <strong>long-term must shift to direct booking</strong>.</p></div>
+
+            <!-- C.2 Break-Even -->
+            <div class="sub-section-label">C.2 Break-Even Analysis</div>
+            <div class="sub-section-title">Monthly Fixed Costs: $187</div>
+            <table class="data-table">
+                <thead><tr><th>Scenario</th><th>Package Mix</th><th>Bookings Needed</th><th>Revenue</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>All Bali Moment</strong></td><td>100% $59</td><td>4 bookings/month</td><td>$236</td></tr>
+                    <tr><td><strong>All Golden Hour</strong></td><td>100% $149</td><td>2 bookings/month</td><td>$298</td></tr>
+                    <tr><td><strong>Realistic mix</strong></td><td>40% $59, 30% $149, 20% $249, 10% $399</td><td>2 bookings/month</td><td>$175 avg</td></tr>
+                </tbody>
+            </table>
+            <div class="insight-box"><div class="insight-box-label">Break-Even</div><p><strong>~2 bookings per month</strong> at realistic mix. This is very achievable even in the first month.</p></div>
+
+            <!-- C.3 Revenue Scenarios -->
+            <div class="sub-section-label">C.3 Monthly Revenue Scenarios</div>
+
+            <div class="scenario-card">
+                <div class="scenario-header"><span class="scenario-name">Scenario A: Conservative (Year 1 Average)</span></div>
+                <div class="scenario-body"><table class="data-table">
+                    <thead><tr><th>Package</th><th>Bookings/Month</th><th>Revenue</th><th>Gross Profit</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Bali Moment ($59)</strong></td><td>6</td><td>$354</td><td>$300</td></tr>
+                        <tr><td><strong>Golden Hour ($149)</strong></td><td>5</td><td>$745</td><td>$655</td></tr>
+                        <tr><td><strong>Island Story ($249)</strong></td><td>3</td><td>$747</td><td>$585</td></tr>
+                        <tr><td><strong>Soul Cinema ($399)</strong></td><td>2</td><td>$798</td><td>$640</td></tr>
+                        <tr><td><strong>Eternal ($799)</strong></td><td>0.5</td><td>$400</td><td>$309</td></tr>
+                        <tr><td><strong>Add-ons</strong></td><td>&mdash;</td><td>$200</td><td>$180</td></tr>
+                        <tr class="total-row"><td><strong>Monthly Total</strong></td><td><strong>16.5</strong></td><td><strong>$3,244</strong></td><td><strong>$2,669</strong></td></tr>
+                    </tbody>
+                </table></div>
+                <div class="scenario-summary"><p>Fixed costs: -$187 &rarr; <strong>Net Monthly: $2,482</strong> &rarr; <strong>Net Annual: $29,784</strong><br>Split between 2 founders: <strong>~$1,241/month/person</strong> (~Rp 20 juta/month/person)</p></div>
+            </div>
+
+            <div class="scenario-card">
+                <div class="scenario-header"><span class="scenario-name">Scenario B: Target (Month 6-12)</span></div>
+                <div class="scenario-body"><table class="data-table">
+                    <thead><tr><th>Package</th><th>Bookings/Month</th><th>Revenue</th><th>Gross Profit</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Bali Moment ($59)</strong></td><td>8</td><td>$472</td><td>$400</td></tr>
+                        <tr><td><strong>Golden Hour ($149)</strong></td><td>8</td><td>$1,192</td><td>$1,048</td></tr>
+                        <tr><td><strong>Island Story ($249)</strong></td><td>5</td><td>$1,245</td><td>$975</td></tr>
+                        <tr><td><strong>Soul Cinema ($399)</strong></td><td>3</td><td>$1,197</td><td>$960</td></tr>
+                        <tr><td><strong>Eternal ($799)</strong></td><td>1</td><td>$799</td><td>$618</td></tr>
+                        <tr><td><strong>Wedding</strong></td><td>1</td><td>$2,200</td><td>$1,800</td></tr>
+                        <tr><td><strong>Add-ons</strong></td><td>&mdash;</td><td>$400</td><td>$360</td></tr>
+                        <tr class="total-row"><td><strong>Monthly Total</strong></td><td><strong>26</strong></td><td><strong>$7,505</strong></td><td><strong>$6,161</strong></td></tr>
+                    </tbody>
+                </table></div>
+                <div class="scenario-summary"><p>Fixed costs (scaled): -$250 &rarr; <strong>Net Monthly: $5,911</strong> &rarr; <strong>Net Annual: $70,932</strong><br>Split: <strong>~$2,956/month/person</strong> (~Rp 47 juta/month/person)</p></div>
+            </div>
+
+            <div class="scenario-card">
+                <div class="scenario-header"><span class="scenario-name">Scenario C: Growth (Year 2 Peak Season)</span></div>
+                <div class="scenario-body"><table class="data-table">
+                    <thead><tr><th>Package</th><th>Bookings/Month</th><th>Revenue</th><th>Gross Profit</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Bali Moment ($59)</strong></td><td>10</td><td>$590</td><td>$500</td></tr>
+                        <tr><td><strong>Golden Hour ($149)</strong></td><td>12</td><td>$1,788</td><td>$1,572</td></tr>
+                        <tr><td><strong>Island Story ($249)</strong></td><td>8</td><td>$1,992</td><td>$1,560</td></tr>
+                        <tr><td><strong>Soul Cinema ($399)</strong></td><td>5</td><td>$1,995</td><td>$1,600</td></tr>
+                        <tr><td><strong>Eternal ($799)</strong></td><td>2</td><td>$1,598</td><td>$1,236</td></tr>
+                        <tr><td><strong>Wedding</strong></td><td>2</td><td>$4,400</td><td>$3,600</td></tr>
+                        <tr><td><strong>Add-ons</strong></td><td>&mdash;</td><td>$800</td><td>$720</td></tr>
+                        <tr class="total-row"><td><strong>Monthly Total</strong></td><td><strong>39</strong></td><td><strong>$13,163</strong></td><td><strong>$10,788</strong></td></tr>
+                    </tbody>
+                </table></div>
+                <div class="scenario-summary"><p>Fixed costs + freelancer: -$600 &rarr; <strong>Net Monthly: $10,188</strong><br>Split: <strong>~$5,094/month/person</strong> (~Rp 81 juta/month/person)</p></div>
+            </div>
+
+            <!-- C.4 Cash Flow -->
+            <div class="sub-section-label">C.4 Cash Flow Projection &mdash; Year 1 (12 Months)</div>
+            <table class="data-table">
+                <thead><tr><th>Month</th><th>Bookings</th><th>Revenue</th><th>Costs</th><th>Net Profit</th><th>Cumulative</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>1</strong></td><td>5</td><td>$600</td><td>$400</td><td>$200</td><td>$200</td></tr>
+                    <tr><td><strong>2</strong></td><td>8</td><td>$1,100</td><td>$400</td><td>$700</td><td>$900</td></tr>
+                    <tr><td><strong>3</strong></td><td>10</td><td>$1,600</td><td>$450</td><td>$1,150</td><td>$2,050</td></tr>
+                    <tr><td><strong>4</strong></td><td>14</td><td>$2,400</td><td>$500</td><td>$1,900</td><td>$3,950</td></tr>
+                    <tr><td><strong>5</strong></td><td>16</td><td>$3,000</td><td>$500</td><td>$2,500</td><td>$6,450</td></tr>
+                    <tr><td><strong>6</strong></td><td>18</td><td>$3,500</td><td>$550</td><td>$2,950</td><td>$9,400</td></tr>
+                    <tr class="peak"><td><strong>7 (peak)</strong></td><td>25</td><td>$5,500</td><td>$700</td><td>$4,800</td><td>$14,200</td></tr>
+                    <tr class="peak"><td><strong>8 (peak)</strong></td><td>28</td><td>$6,500</td><td>$750</td><td>$5,750</td><td>$19,950</td></tr>
+                    <tr><td><strong>9</strong></td><td>22</td><td>$4,800</td><td>$600</td><td>$4,200</td><td>$24,150</td></tr>
+                    <tr><td><strong>10</strong></td><td>18</td><td>$3,800</td><td>$550</td><td>$3,250</td><td>$27,400</td></tr>
+                    <tr class="low"><td><strong>11 (low)</strong></td><td>12</td><td>$2,200</td><td>$450</td><td>$1,750</td><td>$29,150</td></tr>
+                    <tr><td><strong>12 (holiday)</strong></td><td>20</td><td>$4,500</td><td>$600</td><td>$3,900</td><td>$33,050</td></tr>
+                    <tr class="total-row"><td><strong>TOTAL</strong></td><td><strong>196</strong></td><td><strong>$39,500</strong></td><td><strong>$6,450</strong></td><td><strong>$33,050</strong></td><td></td></tr>
+                </tbody>
+            </table>
+            <div class="blockquote"><p><strong>Year 1 net profit: ~$33,000</strong> (Rp 528 juta) &mdash; split 2 people = <strong>Rp 264 juta/person/year</strong> or <strong>Rp 22 juta/month/person</strong>. This is a conservative scenario without weddings. Add 6&ndash;8 weddings and the number rises to <strong>$45,000&ndash;55,000 net</strong>.</p></div>
+
+            <!-- C.5 Investment -->
+            <div class="sub-section-label">C.5 Investment Needed</div>
+            <table class="data-table">
+                <thead><tr><th>Item</th><th>Cost</th><th>Priority</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Website development</strong></td><td>$0&ndash;500</td><td><span class="badge badge--critical">Critical</span></td><td>Self-built (you have the skills) or low-cost template</td></tr>
+                    <tr><td><strong>Domain + hosting (1 year)</strong></td><td>$100</td><td><span class="badge badge--critical">Critical</span></td><td>rocana.studio domain</td></tr>
+                    <tr><td><strong>Portfolio print booklet (50 copies)</strong></td><td>$150</td><td><span class="badge badge--high">High</span></td><td>For hotel/planner visits</td></tr>
+                    <tr><td><strong>Referral cards (500 copies)</strong></td><td>$50</td><td><span class="badge badge--high">High</span></td><td>QR code cards for partners</td></tr>
+                    <tr><td><strong>Business cards (200 copies)</strong></td><td>$30</td><td><span class="badge badge--high">High</span></td><td>Premium stock, foil stamp</td></tr>
+                    <tr><td><strong>Google Ads initial test</strong></td><td>$200</td><td><span class="badge badge--medium">Medium</span></td><td>Test keywords for 1 month</td></tr>
+                    <tr><td><strong>Styled shoot (props, location fee)</strong></td><td>$100</td><td><span class="badge badge--medium">Medium</span></td><td>For portfolio + planner collab</td></tr>
+                    <tr class="total-row"><td><strong>Total startup investment</strong></td><td><strong>$630&ndash;1,130</strong></td><td></td><td>Very low barrier to entry</td></tr>
+                </tbody>
+            </table>
+            <div class="insight-box"><div class="insight-box-label">Low Barrier to Entry</div><p>Total startup investment of <strong>$630&ndash;1,130</strong> is remarkably low for a professional photography business. The main assets (cameras, lenses, drone) are already owned. This is primarily marketing and branding investment.</p></div>
+        </div>
+    </section>
+
+    <!-- PART D - CLIENT EXPERIENCE MAP -->
+    <section id="experience" class="section">
+        <div class="container">
+            <span class="section-number">Part D &mdash; Client Experience Map</span>
+            <h2 class="section-title">The Complete<br>Client Journey</h2>
+            <p class="section-subtitle">An 8-stage client experience map from discovery to advocacy &mdash; every touchpoint designed to delight, convert, and create lifelong brand ambassadors.</p>
+
+            <!-- D.1 The Full Journey -->
+            <div class="sub-section-label">D.1 The Full Journey &mdash; 8 Stages</div>
+            <div class="journey-flow">
+                <div class="journey-step"><div class="journey-step-number">1</div><div class="journey-step-name">Discover</div></div>
+                <span class="journey-arrow">&rarr;</span>
+                <div class="journey-step"><div class="journey-step-number">2</div><div class="journey-step-name">Explore</div></div>
+                <span class="journey-arrow">&rarr;</span>
+                <div class="journey-step"><div class="journey-step-number">3</div><div class="journey-step-name">Plan</div></div>
+                <span class="journey-arrow">&rarr;</span>
+                <div class="journey-step"><div class="journey-step-number">4</div><div class="journey-step-name">Book</div></div>
+                <span class="journey-arrow">&rarr;</span>
+                <div class="journey-step"><div class="journey-step-number">5</div><div class="journey-step-name">Prepare</div></div>
+                <span class="journey-arrow">&rarr;</span>
+                <div class="journey-step"><div class="journey-step-number">6</div><div class="journey-step-name">Shoot</div></div>
+                <span class="journey-arrow">&rarr;</span>
+                <div class="journey-step"><div class="journey-step-number">7</div><div class="journey-step-name">Deliver</div></div>
+                <span class="journey-arrow">&rarr;</span>
+                <div class="journey-step"><div class="journey-step-number">8</div><div class="journey-step-name">Advocate</div></div>
+            </div>
+
+            <!-- D.2 Stage-by-Stage -->
+            <div class="sub-section-label">D.2 Stage-by-Stage Breakdown</div>
+
+            <!-- Stage 1: DISCOVER -->
+            <div class="stage-block">
+                <div class="stage-header"><span class="stage-number">1</span><span class="stage-name">Discover</span><span class="stage-question">&ldquo;How do they find us?&rdquo;</span></div>
+                <div class="stage-body">
+                    <table class="data-table">
+                        <thead><tr><th>Touchpoint</th><th>Channel</th><th>Experience</th><th>Rocana Action</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Google search &ldquo;bali photographer&rdquo;</strong></td><td>SEO</td><td>Finds Rocana on page 1, clicks through</td><td>Invest in SEO content from day 1</td></tr>
+                            <tr><td><strong>Instagram explore/hashtag</strong></td><td>Social</td><td>Sees stunning Rocana photo, taps profile</td><td>Post 3&ndash;4x/week with location tags</td></tr>
+                            <tr><td><strong>Hotel room QR card</strong></td><td>Partnership</td><td>Sees card on nightstand, scans QR code</td><td>Distribute cards to partner hotels</td></tr>
+                            <tr><td><strong>Wedding planner recommendation</strong></td><td>Referral</td><td>Planner sends Rocana portfolio link</td><td>Build planner relationships</td></tr>
+                            <tr><td><strong>Flytographer/Localgrapher listing</strong></td><td>Platform</td><td>Browses Bali photographers, finds Rocana</td><td>Apply to platforms Month 1</td></tr>
+                            <tr><td><strong>Word of mouth</strong></td><td>Organic</td><td>Friend says &ldquo;use Rocana in Bali&rdquo;</td><td>Deliver exceptional experience &rarr; referrals</td></tr>
+                            <tr><td><strong>Driver/guide recommendation</strong></td><td>Street team</td><td>&ldquo;I know a great photographer&rdquo;</td><td>Recruit driver referral network</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="stage-metric"><span class="stage-metric-label">Key Metric</span><span class="stage-metric-value">500 website visits/month by Month 3, 2,000 by Month 6</span></div>
+                </div>
+            </div>
+
+            <!-- Stage 2: EXPLORE -->
+            <div class="stage-block">
+                <div class="stage-header"><span class="stage-number">2</span><span class="stage-name">Explore</span><span class="stage-question">&ldquo;They&rsquo;re on our website. What do they see?&rdquo;</span></div>
+                <div class="stage-body">
+                    <table class="data-table">
+                        <thead><tr><th>Page</th><th>Purpose</th><th>Key Elements</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Homepage</strong></td><td>First impression, brand story</td><td>Hero video/photo, tagline, &ldquo;From $59&rdquo; CTA, trust badges</td></tr>
+                            <tr><td><strong>Portfolio</strong></td><td>Prove quality</td><td>Categorized galleries (Wedding, Couple, Family, Content), consistent warm editing</td></tr>
+                            <tr><td><strong>Packages</strong></td><td>Show value</td><td>6 tiers with visual branding (see Part A), comparison table, add-ons</td></tr>
+                            <tr><td><strong>About</strong></td><td>Build trust</td><td>Team photo, story, &ldquo;Why Rocana&rdquo;, equipment list</td></tr>
+                            <tr><td><strong>Reviews</strong></td><td>Social proof</td><td>Google Reviews widget, Flytographer reviews, client testimonials with photos</td></tr>
+                            <tr><td><strong>Blog</strong></td><td>SEO + expertise</td><td>Location guides, &ldquo;What to Wear&rdquo;, Bali tips</td></tr>
+                            <tr><td><strong>Contact/Book</strong></td><td>Convert</td><td>AI assistant chat, booking calendar, WhatsApp button</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">Critical UX Rules</div>
+                    <ul>
+                        <li><strong>Mobile-first</strong> (80%+ of tourists browse on phone)</li>
+                        <li><strong>Page load under 3 seconds</strong></li>
+                        <li><strong>WhatsApp button</strong> floating on every page</li>
+                        <li><strong>AI chat widget</strong> bottom-right on every page</li>
+                        <li><strong>&ldquo;From $59&rdquo;</strong> visible above the fold on homepage</li>
+                        <li><strong>No &ldquo;contact for pricing&rdquo;</strong> &mdash; full transparency</li>
+                    </ul>
+                    <div class="stage-metric"><span class="stage-metric-label">Key Metric</span><span class="stage-metric-value">30%+ of homepage visitors reach pricing page</span></div>
+                </div>
+            </div>
+
+            <!-- Stage 3: PLAN -->
+            <div class="stage-block">
+                <div class="stage-header"><span class="stage-number">3</span><span class="stage-name">Plan</span><span class="stage-question">&ldquo;They&rsquo;re interested. Now they need help deciding.&rdquo;</span></div>
+                <div class="stage-body">
+                    <table class="data-table">
+                        <thead><tr><th>Interaction</th><th>Channel</th><th>Experience</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>AI assistant conversation</strong></td><td>Website chat</td><td>&ldquo;Hi! I&rsquo;m planning a trip to Bali with my partner. We want photos at rice terraces.&rdquo; &rarr; AI recommends Golden Hour or Island Story, suggests Tegalalang at 4:30pm</td></tr>
+                            <tr><td><strong>WhatsApp inquiry</strong></td><td>WhatsApp</td><td>Quick personal response within 1 hour (during Bali business hours)</td></tr>
+                            <tr><td><strong>Email inquiry</strong></td><td>Email</td><td>Detailed response with portfolio samples relevant to their request</td></tr>
+                            <tr><td><strong>AI Shoot Planner</strong></td><td>Website tool</td><td>Client inputs date + preferences &rarr; receives custom shoot plan with locations, timing, outfit tips</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">Automation Opportunities</div>
+                    <ul>
+                        <li>AI chatbot handles <strong>70% of initial inquiries</strong> without human intervention</li>
+                        <li>Auto-send portfolio samples based on inquiry type (wedding &rarr; wedding portfolio)</li>
+                        <li>AI Shoot Planner generates PDF automatically</li>
+                    </ul>
+                    <div class="stage-metric"><span class="stage-metric-label">Key Metric</span><span class="stage-metric-value">40%+ inquiry-to-booking conversion rate</span></div>
+                </div>
+            </div>
+
+            <!-- Stage 4: BOOK -->
+            <div class="stage-block">
+                <div class="stage-header"><span class="stage-number">4</span><span class="stage-name">Book</span><span class="stage-question">&ldquo;They&rsquo;ve decided. Make it frictionless.&rdquo;</span></div>
+                <div class="stage-body">
+                    <table class="data-table">
+                        <thead><tr><th>Step</th><th>Action</th><th>Tool</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>1</strong></td><td>Select package on website</td><td>Package page with &ldquo;Book Now&rdquo; buttons</td></tr>
+                            <tr><td><strong>2</strong></td><td>Choose date + time</td><td>Integrated calendar (Calendly or custom)</td></tr>
+                            <tr><td><strong>3</strong></td><td>Select add-ons</td><td>Checkbox list with prices</td></tr>
+                            <tr><td><strong>4</strong></td><td>Fill brief questionnaire</td><td>&ldquo;Tell us about your shoot&rdquo; &mdash; occasion, group size, style preference, locations</td></tr>
+                            <tr><td><strong>5</strong></td><td>Payment</td><td>50% deposit via Stripe/PayPal, remaining 50% on shoot day</td></tr>
+                            <tr><td><strong>6</strong></td><td>Confirmation</td><td>Instant email + WhatsApp confirmation with booking details</td></tr>
+                            <tr><td><strong>7</strong></td><td>AI Shoot Plan delivery</td><td>Within 24 hours &mdash; personalized PDF with locations, timing, outfit guide, weather forecast</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">Payment Options</div>
+                    <ul>
+                        <li><strong>Credit card (Stripe)</strong> &mdash; for international clients</li>
+                        <li><strong>PayPal</strong> &mdash; alternative for those who prefer it</li>
+                        <li><strong>Bank transfer</strong> &mdash; for local/Indonesian clients</li>
+                        <li><strong>50/50 split:</strong> 50% deposit to confirm, 50% on shoot day (or day before)</li>
+                    </ul>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">Cancellation Policy</div>
+                    <ul>
+                        <li><strong>7+ days before:</strong> full refund minus $20 processing fee</li>
+                        <li><strong>3&ndash;7 days before:</strong> 50% refund</li>
+                        <li><strong>Under 3 days:</strong> no refund (reschedule available)</li>
+                        <li><strong>Bad weather:</strong> free reschedule, no penalty</li>
+                    </ul>
+                    <div class="stage-metric"><span class="stage-metric-label">Key Metric</span><span class="stage-metric-value">Under 30% cart abandonment rate</span></div>
+                </div>
+            </div>
+
+            <!-- Stage 5: PREPARE -->
+            <div class="stage-block">
+                <div class="stage-header"><span class="stage-number">5</span><span class="stage-name">Prepare</span><span class="stage-question">&ldquo;Between booking and shoot day.&rdquo;</span></div>
+                <div class="stage-body">
+                    <table class="data-table">
+                        <thead><tr><th>Timeline</th><th>Action</th><th>Channel</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Immediately after booking</strong></td><td>Send confirmation + AI Shoot Plan PDF</td><td>Email + WhatsApp</td></tr>
+                            <tr><td><strong>3 days before shoot</strong></td><td>&ldquo;Getting excited!&rdquo; reminder with weather update, outfit reminder, meeting point</td><td>WhatsApp</td></tr>
+                            <tr><td><strong>1 day before shoot</strong></td><td>Final confirmation: time, location, photographer name, what to bring</td><td>WhatsApp</td></tr>
+                            <tr><td><strong>Morning of shoot</strong></td><td>&ldquo;See you at [time]! Weather looks [great/we have a backup plan]&rdquo;</td><td>WhatsApp</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">AI Shoot Plan PDF Includes</div>
+                    <ul>
+                        <li>Map with pin locations and route</li>
+                        <li>Golden hour time for the specific date</li>
+                        <li>Weather forecast</li>
+                        <li>Outfit color suggestions (based on location palette)</li>
+                        <li>&ldquo;What to bring&rdquo; checklist</li>
+                        <li>Photographer name + photo</li>
+                        <li>Emergency contact number</li>
+                    </ul>
+                    <div class="stage-metric"><span class="stage-metric-label">Key Metric</span><span class="stage-metric-value">Under 5% no-show / late cancellation rate</span></div>
+                </div>
+            </div>
+
+            <!-- Stage 6: SHOOT -->
+            <div class="stage-block">
+                <div class="stage-header"><span class="stage-number">6</span><span class="stage-name">Shoot</span><span class="stage-question">&ldquo;The actual experience. This is where the magic happens.&rdquo;</span></div>
+                <div class="stage-body">
+                    <table class="data-table">
+                        <thead><tr><th>Moment</th><th>Action</th><th>Impact</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Arrival</strong></td><td>Photographer arrives 10 min early, greets warmly, explains the plan</td><td>First impression = professional</td></tr>
+                            <tr><td><strong>Icebreaker</strong></td><td>5 min casual chat, no camera yet. Learn names, story, what they&rsquo;re celebrating</td><td>Builds comfort, reduces stiffness</td></tr>
+                            <tr><td><strong>Direction</strong></td><td>Gentle posing guidance: &ldquo;Walk toward each other&hellip; now look at the view&hellip;&rdquo;</td><td>Clients feel guided, not bossed</td></tr>
+                            <tr><td><strong>Candid moments</strong></td><td>Capture in-between moments &mdash; laughing, adjusting hair, genuine reactions</td><td>These become the favorite photos</td></tr>
+                            <tr><td><strong>Drone</strong></td><td>&ldquo;Let&rsquo;s get an aerial shot!&rdquo; &mdash; wow moment, clients feel special</td><td>Differentiator, creates excitement</td></tr>
+                            <tr><td><strong>Video</strong></td><td>Videographer captures cinematic B-roll throughout, minimal direction needed</td><td>Seamless, doesn&rsquo;t interrupt photo flow</td></tr>
+                            <tr><td><strong>Sneak peek</strong></td><td>At the end: &ldquo;Let me show you one on the back of the camera&rdquo;</td><td>Instant gratification, builds excitement for gallery</td></tr>
+                            <tr><td><strong>Wrap-up</strong></td><td>Thank them, explain delivery timeline, ask if they&rsquo;d like any add-ons</td><td>Upsell opportunity (extra Reel, rush delivery)</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">On-Shoot Upsell Opportunities</div>
+                    <ul>
+                        <li>&ldquo;Would you like a quick Reel edit for Instagram? We can add that for <strong>$50</strong>&rdquo;</li>
+                        <li>&ldquo;The light is incredible &mdash; want to extend 30 minutes for <strong>$50</strong>?&rdquo;</li>
+                        <li>&ldquo;We have a drone &mdash; want to add aerial shots for <strong>$75</strong>?&rdquo;</li>
+                    </ul>
+                    <div class="stage-metric"><span class="stage-metric-label">Key Metric</span><span class="stage-metric-value">4.8+ out of 5.0 client satisfaction score</span></div>
+                </div>
+            </div>
+
+            <!-- Stage 7: DELIVER -->
+            <div class="stage-block">
+                <div class="stage-header"><span class="stage-number">7</span><span class="stage-name">Deliver</span><span class="stage-question">&ldquo;The product. This is what they paid for.&rdquo;</span></div>
+                <div class="stage-body">
+                    <table class="data-table">
+                        <thead><tr><th>Timeline</th><th>Deliverable</th><th>Channel</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Within 24 hours</strong></td><td>5&ndash;20 sneak peek photos (depending on package)</td><td>WhatsApp + email with gallery link</td></tr>
+                            <tr><td><strong>5&ndash;10 business days</strong></td><td>Full edited photo gallery</td><td>Private online gallery (Pic-Time, Pixieset, or CloudSpot)</td></tr>
+                            <tr><td><strong>14&ndash;21 business days</strong></td><td>Cinematic video + Reel edits (if applicable)</td><td>Gallery + direct download link</td></tr>
+                            <tr><td><strong>Same day (if add-on)</strong></td><td>1 same-day edited photo</td><td>WhatsApp</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">Gallery Experience</div>
+                    <ul>
+                        <li>Private link, password-protected</li>
+                        <li>Mobile-optimized (clients will view on phone)</li>
+                        <li>Download in full resolution</li>
+                        <li>Option to order prints/albums directly from gallery</li>
+                        <li>Gallery stays live for 6 months</li>
+                    </ul>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">Sneak Peek Strategy (Critical for Marketing)</div>
+                    <ul>
+                        <li>Send sneak peeks while client is <strong>STILL IN BALI</strong></li>
+                        <li>They post on Instagram &rarr; tag @rocana.studio &rarr; <strong>free marketing</strong></li>
+                        <li>Include a subtle watermark or &ldquo;Shot by Rocana.Studio&rdquo; in metadata</li>
+                    </ul>
+                    <div class="stage-metric"><span class="stage-metric-label">Key Metric</span><span class="stage-metric-value">95%+ gallery delivery on time</span></div>
+                </div>
+            </div>
+
+            <!-- Stage 8: ADVOCATE -->
+            <div class="stage-block">
+                <div class="stage-header"><span class="stage-number">8</span><span class="stage-name">Advocate</span><span class="stage-question">&ldquo;Turn happy clients into marketing machines.&rdquo;</span></div>
+                <div class="stage-body">
+                    <table class="data-table">
+                        <thead><tr><th>Timeline</th><th>Action</th><th>Channel</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>With gallery delivery</strong></td><td>&ldquo;We&rsquo;d love your feedback! Here&rsquo;s a quick link to leave a Google Review&rdquo;</td><td>Email + WhatsApp</td></tr>
+                            <tr><td><strong>1 day after delivery</strong></td><td>&ldquo;Feel free to tag us @rocana.studio when you share your photos!&rdquo;</td><td>WhatsApp</td></tr>
+                            <tr><td><strong>1 week after</strong></td><td>&ldquo;Thank you again! If any friends are visiting Bali, we&rsquo;d love to photograph them too. Here&rsquo;s a $20 referral credit for you and your friend.&rdquo;</td><td>Email</td></tr>
+                            <tr><td><strong>3 months after</strong></td><td>&ldquo;Happy 3-month anniversary of your Bali trip! Here&rsquo;s a favorite memory from your gallery.&rdquo;</td><td>Email (automated)</td></tr>
+                            <tr><td><strong>1 year after</strong></td><td>&ldquo;One year ago today, we captured your story in Bali. Planning a return?&rdquo;</td><td>Email (automated)</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">Review Collection Strategy</div>
+                    <ul>
+                        <li>Ask <strong>EVERY</strong> client for a Google Review (this is the #1 priority)</li>
+                        <li>Make it easy: send direct link to Google Review form</li>
+                        <li>Also ask for Flytographer/TripAdvisor review if applicable</li>
+                        <li>Offer incentive: &ldquo;Leave a review and get 1 extra edited photo from your gallery&rdquo;</li>
+                    </ul>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">Referral Program</div>
+                    <ul>
+                        <li>Client refers a friend &rarr; both get <strong>$20 off</strong> their next booking</li>
+                        <li>Track via unique referral code per client</li>
+                        <li>Announce on social media: &ldquo;Refer a friend, both save $20&rdquo;</li>
+                    </ul>
+                    <div class="sub-section-label" style="margin-top: var(--space-lg);">User-Generated Content</div>
+                    <ul>
+                        <li>Repost client photos/stories that tag @rocana.studio (with permission)</li>
+                        <li>Create &ldquo;Client Stories&rdquo; highlight on Instagram</li>
+                        <li>Feature client testimonials on website with their photos</li>
+                    </ul>
+                    <div class="stage-metric"><span class="stage-metric-label">Review Rate</span><span class="stage-metric-value">Goal: 50%+ of clients leave a Google Review</span></div>
+                    <div class="stage-metric" style="margin-top: var(--space-sm);"><span class="stage-metric-label">Referral Rate</span><span class="stage-metric-value">Goal: 10%+ of clients refer someone</span></div>
+                    <div class="stage-metric" style="margin-top: var(--space-sm);"><span class="stage-metric-label">Tag Rate</span><span class="stage-metric-value">Goal: 30%+ tag @rocana.studio on social media</span></div>
+                </div>
+            </div>
+
+            <!-- D.3 Client Journey Summary -->
+            <div class="sub-section-label">D.3 Client Journey Summary &mdash; Visual Map</div>
+
+            <div class="journey-map">
+                <div class="journey-map-title">Rocana.Studio Client Journey</div>
+
+                <div class="journey-map-phase">
+                    <div class="journey-map-phase-label">&mdash;&mdash; Pre-Shoot (days to weeks) &mdash;&mdash;</div>
+                    <div class="journey-map-grid">
+                        <div class="journey-map-card">
+                            <div class="journey-map-card-name">Discover</div>
+                            <ul><li>Google</li><li>Instagram</li><li>Hotel QR</li><li>Referral</li><li>Platform</li></ul>
+                        </div>
+                        <div class="journey-map-card">
+                            <div class="journey-map-card-name">Explore</div>
+                            <ul><li>Website</li><li>Portfolio</li><li>Packages</li><li>Reviews</li><li>Blog</li></ul>
+                        </div>
+                        <div class="journey-map-card">
+                            <div class="journey-map-card-name">Plan</div>
+                            <ul><li>AI Chat</li><li>WhatsApp</li><li>Shoot Planner</li></ul>
+                        </div>
+                        <div class="journey-map-card">
+                            <div class="journey-map-card-name">Book</div>
+                            <ul><li>Select Package</li><li>Pay 50%</li><li>Confirm</li></ul>
+                        </div>
+                        <div class="journey-map-card">
+                            <div class="journey-map-card-name">Prepare</div>
+                            <ul><li>Shoot Plan PDF</li><li>Weather Update</li><li>Reminder</li></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="journey-map-phase">
+                    <div class="journey-map-phase-label">&mdash;&mdash; Post-Shoot (days to months) &mdash;&mdash;</div>
+                    <div class="journey-map-grid journey-map-grid--3">
+                        <div class="journey-map-card">
+                            <div class="journey-map-card-name">Shoot</div>
+                            <ul><li>Icebreaker</li><li>Guide</li><li>Candid</li><li>Drone</li><li>Video</li><li>Upsell</li></ul>
+                        </div>
+                        <div class="journey-map-card">
+                            <div class="journey-map-card-name">Deliver</div>
+                            <ul><li>Sneak Peek 24h</li><li>Gallery 5-10 day</li><li>Video 14-21 day</li></ul>
+                        </div>
+                        <div class="journey-map-card">
+                            <div class="journey-map-card-name">Advocate</div>
+                            <ul><li>Review Request</li><li>Referral Program</li><li>Follow-up 3mo</li><li>Anniversary 1yr</li></ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="journey-map-automation">
+                    <div class="journey-map-automation-title">Automation Points</div>
+                    <ul>
+                        <li>AI Chat &rarr; 70% inquiries handled automatically</li>
+                        <li>Booking confirmation &rarr; auto email + WhatsApp</li>
+                        <li>Shoot Plan PDF &rarr; AI-generated within 24hr</li>
+                        <li>Pre-shoot reminders &rarr; automated WhatsApp sequence</li>
+                        <li>Sneak peek delivery &rarr; templated WhatsApp message</li>
+                        <li>Gallery delivery &rarr; auto email with review request</li>
+                        <li>Follow-up sequence &rarr; automated email at 1wk, 3mo, 1yr</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- D.4 Tools & Tech Stack -->
+            <div class="sub-section-label">D.4 Tools &amp; Tech Stack for Client Experience</div>
+
+            <table class="data-table">
+                <thead><tr><th>Function</th><th>Recommended Tool</th><th>Cost</th><th>Priority</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Website</strong></td><td>Custom build (Next.js/WordPress)</td><td>$0&ndash;100/yr</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                    <tr><td><strong>Booking calendar</strong></td><td>Calendly Pro or Cal.com</td><td>$0&ndash;12/mo</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                    <tr><td><strong>Payment</strong></td><td>Stripe + PayPal</td><td>2.9% + $0.30/tx</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                    <tr><td><strong>AI Chatbot</strong></td><td>Tidio / Crisp + GPT API</td><td>$0&ndash;29/mo</td><td><span class="badge badge--high">High</span></td></tr>
+                    <tr><td><strong>WhatsApp Business</strong></td><td>WhatsApp Business App (free)</td><td>$0</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                    <tr><td><strong>Email automation</strong></td><td>Mailchimp Free or Brevo</td><td>$0&ndash;13/mo</td><td><span class="badge badge--high">High</span></td></tr>
+                    <tr><td><strong>Photo gallery</strong></td><td>Pic-Time or CloudSpot</td><td>$0&ndash;20/mo</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                    <tr><td><strong>CRM / client tracking</strong></td><td>Notion or Google Sheets</td><td>$0</td><td><span class="badge badge--high">High</span></td></tr>
+                    <tr><td><strong>Review collection</strong></td><td>Direct Google Review link</td><td>$0</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                    <tr><td><strong>Social scheduling</strong></td><td>Later or Buffer</td><td>$0&ndash;15/mo</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                    <tr class="total-row"><td><strong>Total monthly tech cost</strong></td><td></td><td><strong>$12&ndash;89/mo</strong></td><td></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- TAGLINE SECTION -->
+    <div class="tagline-section">
+        <div class="tagline-logo">
+            <img src="../../rocana studio logo mark.png" alt="Rocana">
+        </div>
+        <p class="tagline-main">&ldquo;Capturing Souls in the Island of Gods&rdquo;</p>
+        <p class="tagline-brand">Rocana.Studio &mdash; Bali, Indonesia</p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p class="footer-text">
+            Rocana.Studio Deep Dive Strategy &mdash; 25 April 2026
+            <br><br>
+            Companion to: Business Model &amp; Strategy Deep Dive
+            <br><br>
+            This document is confidential and intended for internal use and approved partners only.
+            <br>
+            For questions, contact studio@rocana.studio
+        </p>
+    </footer>
+
+</body>
+</html>
