@@ -1,0 +1,2096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocana.Studio — Brand Guidelines</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           ROCANA.STUDIO BRAND GUIDELINES
+           Version 2.0 — 2026
+           ============================================ */
+
+        :root {
+            /* Brand Colors — Earth & Soul Palette */
+            --obsidian-black: #000000;
+            --sage-olive: #8B8660;
+            --sand-cream: #E5E2D1;
+            --deep-moss: #4A4D39;
+            --warm-stone: #A69F8A;
+            --ivory-white: #F5F3EC;
+            --charcoal: #2C2C2C;
+            --muted-gold: #B8A88A;
+
+            /* Functional Colors */
+            --text-primary: #000000;
+            --text-secondary: #4A4D39;
+            --text-muted: #8B8660;
+            --bg-primary: #F5F3EC;
+            --bg-secondary: #E5E2D1;
+            --border-color: #D4D0C2;
+
+            /* Typography */
+            --font-display: 'Cormorant', Georgia, serif;
+            --font-heading: 'Nunito', 'Helvetica Neue', sans-serif;
+            --font-body: 'Inter', 'Helvetica Neue', sans-serif;
+
+            /* Spacing */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --space-4xl: 96px;
+            --space-5xl: 128px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(245, 243, 236, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 0 var(--space-2xl);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 64px;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-brand img {
+            height: 32px;
+            width: auto;
+        }
+
+        .nav-brand-text {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--obsidian-black);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--space-lg);
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--obsidian-black);
+        }
+
+        /* ============================================
+           LAYOUT
+           ============================================ */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-2xl);
+        }
+
+        .section {
+            padding: var(--space-5xl) 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-number {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--sage-olive);
+            margin-bottom: var(--space-md);
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            line-height: 1.1;
+            color: var(--obsidian-black);
+            margin-bottom: var(--space-lg);
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-family: var(--font-body);
+            font-size: 16px;
+            font-weight: 400;
+            color: var(--text-muted);
+            max-width: 600px;
+            line-height: 1.7;
+            margin-bottom: var(--space-3xl);
+        }
+
+        /* ============================================
+           HERO / COVER
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: var(--obsidian-black);
+            color: var(--ivory-white);
+            padding: var(--space-4xl) var(--space-2xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(139, 134, 96, 0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse at 70% 50%, rgba(74, 77, 57, 0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-logo {
+            width: 200px;
+            margin-bottom: var(--space-3xl);
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-logo img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .hero-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--sage-olive);
+            margin: var(--space-lg) auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-subtitle {
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            font-weight: 400;
+            font-style: italic;
+            color: var(--sage-olive);
+            letter-spacing: 0.05em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-meta {
+            position: absolute;
+            bottom: var(--space-2xl);
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(245, 243, 236, 0.4);
+            z-index: 1;
+        }
+
+        /* ============================================
+           BRAND STORY
+           ============================================ */
+        .brand-story {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4xl);
+            align-items: start;
+        }
+
+        .brand-story-text h3 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 500;
+            margin-bottom: var(--space-lg);
+            color: var(--obsidian-black);
+        }
+
+        .brand-story-text p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-md);
+        }
+
+        .brand-values {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-lg);
+        }
+
+        .brand-value {
+            padding: var(--space-lg);
+            background: var(--sand-cream);
+            border-radius: 2px;
+        }
+
+        .brand-value-label {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--sage-olive);
+            margin-bottom: var(--space-sm);
+        }
+
+        .brand-value-text {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--obsidian-black);
+        }
+
+        /* ============================================
+           LOGO SECTION
+           ============================================ */
+        .logo-system-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-xl);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .logo-system-card {
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .logo-system-preview {
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-2xl);
+        }
+
+        .logo-system-preview img {
+            max-width: 220px;
+            max-height: 200px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .logo-system-preview--light {
+            background: var(--ivory-white);
+        }
+
+        .logo-system-preview--dark {
+            background: var(--obsidian-black);
+        }
+
+        .logo-system-preview--sage {
+            background: var(--sage-olive);
+        }
+
+        .logo-system-preview--cream {
+            background: var(--sand-cream);
+        }
+
+        .logo-system-info {
+            padding: var(--space-lg);
+            background: white;
+        }
+
+        .logo-system-name {
+            font-family: var(--font-heading);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--obsidian-black);
+            margin-bottom: 4px;
+        }
+
+        .logo-system-file {
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 11px;
+            color: var(--warm-stone);
+            margin-bottom: var(--space-sm);
+        }
+
+        .logo-system-desc {
+            font-size: 13px;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        /* Logo Variant Grid */
+        .logo-variant-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .logo-variant-card {
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .logo-variant-preview {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-lg);
+        }
+
+        .logo-variant-preview img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+
+        .logo-variant-label {
+            padding: var(--space-sm) var(--space-md);
+            background: white;
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Clear Space Diagram */
+        .clearspace-diagram {
+            margin: var(--space-3xl) 0;
+            padding: var(--space-3xl);
+            background: var(--ivory-white);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .clearspace-visual {
+            display: inline-block;
+            position: relative;
+            padding: 50px;
+            border: 2px dashed var(--sage-olive);
+            margin-bottom: var(--space-lg);
+        }
+
+        .clearspace-visual img {
+            height: 100px;
+            width: auto;
+        }
+
+        .clearspace-arrow {
+            position: absolute;
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--sage-olive);
+            letter-spacing: 0.05em;
+        }
+
+        .clearspace-arrow--top {
+            top: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .clearspace-arrow--right {
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        .clearspace-arrow--bottom {
+            bottom: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+        }
+
+        /* ============================================
+           COLOR PALETTE
+           ============================================ */
+        .color-palette {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-xl);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .color-swatch {
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .color-swatch--primary {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .color-swatch-preview {
+            aspect-ratio: 1;
+            position: relative;
+        }
+
+        .color-swatch--primary .color-swatch-preview {
+            aspect-ratio: auto;
+            height: 100%;
+            min-height: 280px;
+        }
+
+        .color-swatch-info {
+            padding: var(--space-md);
+            background: white;
+        }
+
+        .color-swatch-name {
+            font-family: var(--font-heading);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--obsidian-black);
+            margin-bottom: 4px;
+        }
+
+        .color-swatch-hex {
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .color-swatch-role {
+            font-family: var(--font-body);
+            font-size: 11px;
+            color: var(--warm-stone);
+            margin-top: 4px;
+        }
+
+        /* Color Usage */
+        .color-usage {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-xl);
+        }
+
+        .color-usage-card {
+            padding: var(--space-xl);
+            border-radius: 4px;
+            border: 1px solid var(--border-color);
+        }
+
+        .color-usage-card h4 {
+            font-family: var(--font-heading);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: var(--space-md);
+        }
+
+        .color-usage-card p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .color-do { background: rgba(139, 134, 96, 0.05); }
+        .color-dont { background: rgba(200, 50, 50, 0.03); }
+
+        .color-do h4 { color: var(--deep-moss); }
+        .color-dont h4 { color: #8B3A3A; }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        .type-specimen {
+            margin-bottom: var(--space-3xl);
+            padding-bottom: var(--space-3xl);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .type-specimen:last-child {
+            border-bottom: none;
+        }
+
+        .type-label {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--sage-olive);
+            margin-bottom: var(--space-sm);
+        }
+
+        .type-role {
+            font-family: var(--font-body);
+            font-size: 12px;
+            color: var(--warm-stone);
+            margin-bottom: var(--space-xl);
+        }
+
+        .type-display {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            font-weight: 400;
+            line-height: 1.05;
+            color: var(--obsidian-black);
+            margin-bottom: var(--space-md);
+            letter-spacing: -0.02em;
+        }
+
+        .type-display-italic {
+            font-style: italic;
+            color: var(--sage-olive);
+        }
+
+        .type-heading-demo {
+            font-family: var(--font-heading);
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--obsidian-black);
+            margin-bottom: var(--space-md);
+        }
+
+        .type-heading-demo--xl { font-size: 2.5rem; }
+        .type-heading-demo--lg { font-size: 1.5rem; }
+        .type-heading-demo--md { font-size: 1rem; }
+        .type-heading-demo--sm { font-size: 0.75rem; }
+
+        .type-body-demo {
+            font-family: var(--font-body);
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            max-width: 640px;
+        }
+
+        .type-scale {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: var(--space-md) var(--space-xl);
+            align-items: baseline;
+            margin-top: var(--space-xl);
+        }
+
+        .type-scale-size {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--sage-olive);
+            letter-spacing: 0.05em;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .type-scale-sample {
+            font-family: var(--font-heading);
+            font-weight: 800;
+            color: var(--obsidian-black);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        /* ============================================
+           VISUAL STYLE
+           ============================================ */
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .visual-card {
+            aspect-ratio: 3/4;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .visual-card--wide {
+            grid-column: span 2;
+            aspect-ratio: 16/9;
+        }
+
+        .visual-card-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .visual-card-placeholder--warm {
+            background: linear-gradient(135deg, #8B8660 0%, #4A4D39 100%);
+            color: var(--sand-cream);
+        }
+
+        .visual-card-placeholder--dark {
+            background: linear-gradient(135deg, #2C2C2C 0%, #000000 100%);
+            color: var(--sage-olive);
+        }
+
+        .visual-card-placeholder--cream {
+            background: linear-gradient(135deg, #E5E2D1 0%, #D4D0C2 100%);
+            color: var(--deep-moss);
+        }
+
+        .tone-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-xl);
+        }
+
+        .tone-card {
+            padding: var(--space-xl);
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .tone-card h4 {
+            font-family: var(--font-heading);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--obsidian-black);
+            margin-bottom: var(--space-md);
+        }
+
+        .tone-card p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-muted);
+        }
+
+        .tone-example {
+            margin-top: var(--space-md);
+            padding: var(--space-md);
+            background: var(--ivory-white);
+            border-left: 3px solid var(--sage-olive);
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-style: italic;
+            color: var(--deep-moss);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           PHOTOGRAPHY STYLE
+           ============================================ */
+        .photo-style-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-md);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .photo-style-card {
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .photo-style-preview {
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .photo-style-info {
+            padding: var(--space-md);
+            background: white;
+        }
+
+        .photo-style-info h4 {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--obsidian-black);
+            margin-bottom: 4px;
+        }
+
+        .photo-style-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ============================================
+           IMPLEMENTATION
+           ============================================ */
+        .impl-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--space-xl);
+            margin-bottom: var(--space-3xl);
+        }
+
+        .impl-card {
+            padding: var(--space-xl);
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+        }
+
+        .impl-card h4 {
+            font-family: var(--font-heading);
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--obsidian-black);
+            margin-bottom: var(--space-md);
+        }
+
+        .impl-card p {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-muted);
+            margin-bottom: var(--space-sm);
+        }
+
+        .impl-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .impl-card ul li {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-muted);
+            padding-left: var(--space-md);
+            position: relative;
+            margin-bottom: var(--space-xs);
+        }
+
+        .impl-card ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 4px;
+            height: 4px;
+            background: var(--sage-olive);
+            border-radius: 50%;
+        }
+
+        /* Social Media Mockup */
+        .social-mockup {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3px;
+            max-width: 480px;
+            margin: var(--space-xl) auto;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .social-cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-body);
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* Watermark Demo */
+        .watermark-demo {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-xl);
+            margin: var(--space-3xl) 0;
+        }
+
+        .watermark-card {
+            aspect-ratio: 16/10;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .watermark-card--dark {
+            background: linear-gradient(135deg, #3a3a3a 0%, #1a1a1a 100%);
+        }
+
+        .watermark-card--light {
+            background: linear-gradient(135deg, #d4d0c2 0%, #e5e2d1 100%);
+        }
+
+        .watermark-card img {
+            max-width: 160px;
+            height: auto;
+            opacity: 0.2;
+        }
+
+        .watermark-label {
+            position: absolute;
+            bottom: var(--space-md);
+            left: var(--space-md);
+            font-family: var(--font-body);
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .watermark-card--dark .watermark-label { color: rgba(255,255,255,0.4); }
+        .watermark-card--light .watermark-label { color: var(--text-muted); }
+
+        /* ============================================
+           TAGLINE
+           ============================================ */
+        .tagline-section {
+            text-align: center;
+            padding: var(--space-5xl) var(--space-2xl);
+            background: var(--obsidian-black);
+            color: var(--ivory-white);
+        }
+
+        .tagline-logo {
+            max-width: 80px;
+            margin: 0 auto var(--space-2xl);
+            opacity: 0.3;
+        }
+
+        .tagline-logo img {
+            width: 100%;
+            height: auto;
+        }
+
+        .tagline-main {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 400;
+            font-style: italic;
+            line-height: 1.2;
+            color: var(--sage-olive);
+            margin-bottom: var(--space-lg);
+            letter-spacing: 0.02em;
+        }
+
+        .tagline-brand {
+            font-family: var(--font-heading);
+            font-size: 14px;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: rgba(245, 243, 236, 0.4);
+        }
+
+        /* ============================================
+           DO / DON'T GRID
+           ============================================ */
+        .do-dont-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-xl);
+            margin-top: var(--space-3xl);
+        }
+
+        .do-dont-card {
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .do-dont-header {
+            padding: var(--space-md) var(--space-lg);
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .do-dont-header--do {
+            background: var(--deep-moss);
+            color: var(--sand-cream);
+        }
+
+        .do-dont-header--dont {
+            background: #5C3A3A;
+            color: #E5D1D1;
+        }
+
+        .do-dont-body {
+            padding: var(--space-lg);
+            background: white;
+        }
+
+        .do-dont-body ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .do-dont-body ul li {
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            padding-left: var(--space-md);
+            position: relative;
+            margin-bottom: var(--space-xs);
+        }
+
+        .do-dont-body ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+        }
+
+        .do-dont-header--do + .do-dont-body ul li::before { background: var(--deep-moss); }
+        .do-dont-header--dont + .do-dont-body ul li::before { background: #8B3A3A; }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            padding: var(--space-3xl) var(--space-2xl);
+            text-align: center;
+            background: var(--sand-cream);
+        }
+
+        .footer-text {
+            font-family: var(--font-body);
+            font-size: 12px;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* ============================================
+           CODE BLOCK
+           ============================================ */
+        .code-block {
+            background: var(--obsidian-black);
+            color: var(--sage-olive);
+            padding: var(--space-lg);
+            border-radius: 4px;
+            font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            overflow-x: auto;
+            margin: var(--space-lg) 0;
+        }
+
+        .code-block .comment { color: #6B7B3C; }
+        .code-block .property { color: #B8A88A; }
+        .code-block .value { color: #E5E2D1; }
+
+        /* ============================================
+           LOGO USAGE TABLE
+           ============================================ */
+        .usage-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--space-xl) 0;
+            font-size: 14px;
+        }
+
+        .usage-table th {
+            font-family: var(--font-heading);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--sage-olive);
+            text-align: left;
+            padding: var(--space-md);
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .usage-table td {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            vertical-align: top;
+            line-height: 1.6;
+        }
+
+        .usage-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .usage-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 3px;
+            font-family: var(--font-heading);
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .usage-badge--primary {
+            background: var(--sage-olive);
+            color: white;
+        }
+
+        .usage-badge--secondary {
+            background: var(--sand-cream);
+            color: var(--deep-moss);
+        }
+
+        .usage-badge--alt {
+            background: var(--obsidian-black);
+            color: var(--ivory-white);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .brand-story { grid-template-columns: 1fr; gap: var(--space-2xl); }
+            .color-palette { grid-template-columns: repeat(2, 1fr); }
+            .color-swatch--primary { grid-column: span 2; grid-row: span 1; }
+            .impl-grid { grid-template-columns: 1fr; }
+            .logo-variant-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .container { padding: 0 var(--space-lg); }
+            .section { padding: var(--space-4xl) 0; }
+            .logo-system-grid { grid-template-columns: 1fr; }
+            .logo-variant-grid { grid-template-columns: 1fr 1fr; }
+            .color-palette { grid-template-columns: 1fr; }
+            .color-swatch--primary { grid-column: span 1; }
+            .visual-grid { grid-template-columns: 1fr; }
+            .visual-card--wide { grid-column: span 1; }
+            .photo-style-grid { grid-template-columns: 1fr; }
+            .tone-grid { grid-template-columns: 1fr; }
+            .do-dont-grid { grid-template-columns: 1fr; }
+            .watermark-demo { grid-template-columns: 1fr; }
+            .color-usage { grid-template-columns: 1fr; }
+            .type-scale { grid-template-columns: 80px 1fr; }
+        }
+
+        /* ============================================
+           PRINT STYLES
+           ============================================ */
+        @media print {
+            .nav { display: none; }
+            .section { page-break-inside: avoid; }
+            body { background: white; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <img src="rocana studio logo mark.png" alt="Rocana Studio">
+                <span class="nav-brand-text">Rocana.Studio</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#brand-story">Story</a></li>
+                <li><a href="#logo">Logo</a></li>
+                <li><a href="#colors">Colors</a></li>
+                <li><a href="#typography">Typography</a></li>
+                <li><a href="#visual-style">Visual Style</a></li>
+                <li><a href="#photography">Photography</a></li>
+                <li><a href="#implementation">Implementation</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero / Cover -->
+    <header class="hero">
+        <div class="hero-logo">
+            <img src="rocana studio logo main.png" alt="Rocana Studio Logo">
+        </div>
+        <div class="hero-divider"></div>
+        <p class="hero-subtitle">Brand Guidelines</p>
+        <p class="hero-meta">Version 2.0 &mdash; 2026</p>
+    </header>
+
+    <!-- 01. Brand Story -->
+    <section id="brand-story" class="section">
+        <div class="container">
+            <span class="section-number">01 &mdash; Brand Story</span>
+            <h2 class="section-title">Capturing Souls in<br>the Island of Gods</h2>
+            <p class="section-subtitle">
+                Rocana.Studio is a Bali-based creative photography studio that captures the raw, 
+                authentic beauty of human emotion against the backdrop of nature's most breathtaking canvas.
+            </p>
+
+            <div class="brand-story">
+                <div class="brand-story-text">
+                    <h3>Our Philosophy</h3>
+                    <p>
+                        The name "Rocana" draws from the Sanskrit word meaning "bright, radiant, illuminating." 
+                        We believe every soul carries its own light &mdash; our craft is to reveal it through 
+                        the lens, framed by the organic beauty of Bali's landscapes.
+                    </p>
+                    <p>
+                        Our visual identity reflects the Wabi-sabi philosophy: finding beauty in imperfection. 
+                        The spiral logomark, with its deliberately rough edges, embodies the handmade, 
+                        authentic quality that defines our work. It is not polished to perfection &mdash; 
+                        it is alive, organic, and deeply human.
+                    </p>
+                    <p>
+                        We serve international clients &mdash; expats, destination wedding couples, luxury 
+                        brands, and creative agencies &mdash; who seek photography that tells stories rather 
+                        than simply captures moments.
+                    </p>
+                </div>
+                <div class="brand-values">
+                    <div class="brand-value">
+                        <div class="brand-value-label">Authenticity</div>
+                        <div class="brand-value-text">"We don't create moments. We reveal them."</div>
+                    </div>
+                    <div class="brand-value">
+                        <div class="brand-value-label">Artistry</div>
+                        <div class="brand-value-text">"Every frame is a conversation between light and soul."</div>
+                    </div>
+                    <div class="brand-value">
+                        <div class="brand-value-label">Connection</div>
+                        <div class="brand-value-text">"The island speaks. We listen. The camera remembers."</div>
+                    </div>
+                    <div class="brand-value">
+                        <div class="brand-value-label">Craft</div>
+                        <div class="brand-value-text">"Imperfection is not a flaw &mdash; it is a signature."</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 02. Logo System -->
+    <section id="logo" class="section">
+        <div class="container">
+            <span class="section-number">02 &mdash; Logo System</span>
+            <h2 class="section-title">Four Marks,<br>One Identity</h2>
+            <p class="section-subtitle">
+                The Rocana.Studio identity is built on a flexible system of four logo variants, 
+                each designed for specific contexts. Together they form a cohesive visual language 
+                that adapts from large-format prints to tiny social media avatars.
+            </p>
+
+            <!-- Logo Anatomy -->
+            <div style="margin-bottom: var(--space-3xl);">
+                <div class="type-label">Logo Anatomy</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin-top: var(--space-lg);">
+                    <div>
+                        <h4 style="font-family: var(--font-heading); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-sm);">Logomark (Spiral Symbol)</h4>
+                        <p style="font-size: 14px; line-height: 1.7; color: var(--text-muted);">
+                            An organic spiral circle resembling a water vortex, fingerprint, or natural element. 
+                            The letter "R" is seamlessly integrated into the center of the spiral. The deliberately 
+                            rough, imperfect outer edges convey a handmade, earthy, and authentic quality &mdash; 
+                            evoking the Wabi-sabi aesthetic prized by international clients. The spiral flows 
+                            inward, symbolizing the journey of capturing the soul within.
+                        </p>
+                    </div>
+                    <div>
+                        <h4 style="font-family: var(--font-heading); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: var(--space-sm);">Logotype (Wordmark)</h4>
+                        <p style="font-size: 14px; line-height: 1.7; color: var(--text-muted);">
+                            Set in a bold, rounded sans-serif typeface (Nunito Black), the logotype "ROCANA.STUDIO" 
+                            is warm yet authoritative. The rounded letterforms echo the organic curves of the 
+                            spiral symbol, creating visual harmony between mark and type. The period between 
+                            "ROCANA" and "STUDIO" acts as a deliberate pause &mdash; a breath between the 
+                            brand name and its craft.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The 4 Logo Variants -->
+            <div class="type-label">The Four Logo Variants</div>
+            <div class="logo-system-grid" style="margin-top: var(--space-lg);">
+
+                <!-- 1. Logo Main (Sage Olive) -->
+                <div class="logo-system-card">
+                    <div class="logo-system-preview logo-system-preview--light">
+                        <img src="rocana studio logo main.png" alt="Rocana Studio Logo Main">
+                    </div>
+                    <div class="logo-system-info">
+                        <div class="logo-system-name">Logo Main <span class="usage-badge usage-badge--primary">Primary</span></div>
+                        <div class="logo-system-file">rocana studio logo main.png</div>
+                        <div class="logo-system-desc">
+                            The primary brand mark in Sage Olive. Combines the spiral logomark with the 
+                            "ROCANA.STUDIO" logotype stacked below. Use this as the default logo on light 
+                            backgrounds, websites, proposals, and all primary brand touchpoints.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Logo Black -->
+                <div class="logo-system-card">
+                    <div class="logo-system-preview logo-system-preview--light">
+                        <img src="rocana studio logo black.png" alt="Rocana Studio Logo Black">
+                    </div>
+                    <div class="logo-system-info">
+                        <div class="logo-system-name">Logo Black <span class="usage-badge usage-badge--alt">Alternative</span></div>
+                        <div class="logo-system-file">rocana studio logo black.png</div>
+                        <div class="logo-system-desc">
+                            The full logo in Obsidian Black. Use when maximum contrast is needed: 
+                            print materials, formal documents, monochrome applications, and when the 
+                            Sage Olive version lacks sufficient contrast against the background.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Logo Mark (Symbol Only) -->
+                <div class="logo-system-card">
+                    <div class="logo-system-preview logo-system-preview--light">
+                        <img src="rocana studio logo mark.png" alt="Rocana Studio Logo Mark" style="max-width: 160px;">
+                    </div>
+                    <div class="logo-system-info">
+                        <div class="logo-system-name">Logo Mark <span class="usage-badge usage-badge--secondary">Symbol</span></div>
+                        <div class="logo-system-file">rocana studio logo mark.png</div>
+                        <div class="logo-system-desc">
+                            The spiral "R" symbol alone, without the logotype. Use for favicons, 
+                            social media avatars, app icons, watermarks, embossed prints, and any 
+                            context where the full logo is too complex or small to read clearly.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. Logotype (Text Only) -->
+                <div class="logo-system-card">
+                    <div class="logo-system-preview logo-system-preview--light">
+                        <img src="rocana studio logotype.png" alt="Rocana Studio Logotype">
+                    </div>
+                    <div class="logo-system-info">
+                        <div class="logo-system-name">Logotype <span class="usage-badge usage-badge--secondary">Wordmark</span></div>
+                        <div class="logo-system-file">rocana studio logotype.png</div>
+                        <div class="logo-system-desc">
+                            The "ROCANA.STUDIO" text alone, without the spiral symbol. Use for 
+                            horizontal layouts, email signatures, website navigation bars, photo 
+                            watermarks, and contexts where a compact, text-only mark is preferred.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo on Different Backgrounds -->
+            <div class="type-label">Logo on Backgrounds</div>
+            <div class="logo-variant-grid" style="margin-top: var(--space-lg);">
+                <div class="logo-variant-card">
+                    <div class="logo-variant-preview" style="background: var(--ivory-white);">
+                        <img src="rocana studio logo main.png" alt="Logo on Ivory">
+                    </div>
+                    <div class="logo-variant-label">On Ivory White</div>
+                </div>
+                <div class="logo-variant-card">
+                    <div class="logo-variant-preview" style="background: var(--sand-cream);">
+                        <img src="rocana studio logo main.png" alt="Logo on Sand Cream">
+                    </div>
+                    <div class="logo-variant-label">On Sand Cream</div>
+                </div>
+                <div class="logo-variant-card">
+                    <div class="logo-variant-preview" style="background: var(--obsidian-black);">
+                        <img src="rocana studio logo main.png" alt="Logo on Black" style="filter: brightness(0) invert(1);">
+                    </div>
+                    <div class="logo-variant-label">Inverted on Black</div>
+                </div>
+                <div class="logo-variant-card">
+                    <div class="logo-variant-preview" style="background: var(--sage-olive);">
+                        <img src="rocana studio logo black.png" alt="Logo on Sage" style="filter: brightness(0) invert(1);">
+                    </div>
+                    <div class="logo-variant-label">White on Sage</div>
+                </div>
+            </div>
+
+            <!-- Usage Matrix -->
+            <div class="type-label">When to Use Each Variant</div>
+            <table class="usage-table">
+                <thead>
+                    <tr>
+                        <th>Context</th>
+                        <th>Recommended Variant</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Website hero / header</td>
+                        <td><span class="usage-badge usage-badge--primary">Logo Main</span></td>
+                        <td>Use Sage Olive version on light backgrounds; invert for dark sections</td>
+                    </tr>
+                    <tr>
+                        <td>Navigation bar</td>
+                        <td><span class="usage-badge usage-badge--secondary">Logo Mark</span> + <span class="usage-badge usage-badge--secondary">Logotype</span></td>
+                        <td>Symbol left, text right &mdash; horizontal compact layout</td>
+                    </tr>
+                    <tr>
+                        <td>Business cards / Print</td>
+                        <td><span class="usage-badge usage-badge--alt">Logo Black</span></td>
+                        <td>Maximum contrast for print reproduction; consider foil stamping</td>
+                    </tr>
+                    <tr>
+                        <td>Social media avatar</td>
+                        <td><span class="usage-badge usage-badge--secondary">Logo Mark</span></td>
+                        <td>Symbol only at small sizes; ensure clear space is maintained</td>
+                    </tr>
+                    <tr>
+                        <td>Photo watermark</td>
+                        <td><span class="usage-badge usage-badge--secondary">Logotype</span></td>
+                        <td>Text-only at 15&ndash;25% opacity; position bottom-right or bottom-center</td>
+                    </tr>
+                    <tr>
+                        <td>Email signature</td>
+                        <td><span class="usage-badge usage-badge--secondary">Logotype</span></td>
+                        <td>Compact horizontal format; Sage Olive color</td>
+                    </tr>
+                    <tr>
+                        <td>Favicon / App icon</td>
+                        <td><span class="usage-badge usage-badge--secondary">Logo Mark</span></td>
+                        <td>Symbol only; works at 16px&ndash;512px</td>
+                    </tr>
+                    <tr>
+                        <td>Proposals / Invoices</td>
+                        <td><span class="usage-badge usage-badge--primary">Logo Main</span></td>
+                        <td>Full logo at top of document; Sage Olive on white paper</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Clear Space -->
+            <div class="type-label" style="margin-top: var(--space-3xl);">Clear Space</div>
+            <div class="clearspace-diagram">
+                <div class="clearspace-visual">
+                    <img src="rocana studio logo mark.png" alt="Clear Space Diagram">
+                    <span class="clearspace-arrow clearspace-arrow--top">x</span>
+                    <span class="clearspace-arrow clearspace-arrow--right">x</span>
+                    <span class="clearspace-arrow clearspace-arrow--bottom">x = width of the "R" in the logomark</span>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 560px; margin: var(--space-xl) auto 0;">
+                    Always maintain a minimum clear space around any logo variant equal to the width of the 
+                    letter "R" within the spiral logomark. This ensures the logo remains prominent and 
+                    uncluttered in all applications. No other graphic elements, text, or edges should 
+                    intrude into this protected zone.
+                </p>
+            </div>
+
+            <!-- Minimum Size -->
+            <div class="type-label" style="margin-top: var(--space-3xl);">Minimum Size</div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-xl); margin-top: var(--space-lg);">
+                <div style="text-align: center;">
+                    <img src="rocana studio logo main.png" alt="Full Logo Min" style="width: 80px; height: auto; margin-bottom: var(--space-sm);">
+                    <p style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Logo Main<br>Print: 30mm / Digital: 120px</p>
+                </div>
+                <div style="text-align: center;">
+                    <img src="rocana studio logo black.png" alt="Black Logo Min" style="width: 80px; height: auto; margin-bottom: var(--space-sm);">
+                    <p style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Logo Black<br>Print: 30mm / Digital: 120px</p>
+                </div>
+                <div style="text-align: center;">
+                    <img src="rocana studio logo mark.png" alt="Mark Min" style="width: 36px; height: auto; margin-bottom: var(--space-sm);">
+                    <p style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Logo Mark<br>Print: 10mm / Digital: 32px</p>
+                </div>
+                <div style="text-align: center;">
+                    <img src="rocana studio logotype.png" alt="Logotype Min" style="width: 80px; height: auto; margin-bottom: var(--space-sm);">
+                    <p style="font-size: 11px; color: var(--text-muted); font-weight: 500;">Logotype<br>Print: 25mm / Digital: 100px</p>
+                </div>
+            </div>
+
+            <!-- Logo Do's and Don'ts -->
+            <div class="do-dont-grid">
+                <div class="do-dont-card">
+                    <div class="do-dont-header do-dont-header--do">Do</div>
+                    <div class="do-dont-body">
+                        <ul>
+                            <li>Use the correct variant for each context (see usage table)</li>
+                            <li>Maintain the required clear space at all times</li>
+                            <li>Use the inverted (white) version on dark or busy backgrounds</li>
+                            <li>Use Logo Black for monochrome or high-contrast needs</li>
+                            <li>Use Logo Mark alone for small sizes (avatars, favicons)</li>
+                            <li>Use Logotype alone for horizontal, compact layouts</li>
+                            <li>Keep all logo files in their original proportions</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="do-dont-card">
+                    <div class="do-dont-header do-dont-header--dont">Don't</div>
+                    <div class="do-dont-body">
+                        <ul>
+                            <li>Stretch, skew, or distort any logo variant</li>
+                            <li>Change the logo colors outside the approved palette</li>
+                            <li>Add drop shadows, outlines, glows, or effects</li>
+                            <li>Place the logo on busy backgrounds without sufficient contrast</li>
+                            <li>Rotate the logo or rearrange the symbol and text</li>
+                            <li>Recreate the logotype using alternative fonts</li>
+                            <li>Combine the Logo Mark with a different typeface for the wordmark</li>
+                            <li>Use the full Logo Main at sizes below the minimum threshold</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 03. Color Palette -->
+    <section id="colors" class="section">
+        <div class="container">
+            <span class="section-number">03 &mdash; Color Palette</span>
+            <h2 class="section-title">Earth & Soul</h2>
+            <p class="section-subtitle">
+                Inspired by Bali's volcanic earth, ancient temple stones, and sun-bleached coastal sands. 
+                The Sage Olive &mdash; the primary color of the logo &mdash; anchors the entire palette.
+            </p>
+
+            <div class="color-palette">
+                <!-- Primary: Sage Olive -->
+                <div class="color-swatch color-swatch--primary">
+                    <div class="color-swatch-preview" style="background: #8B8660;"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Sage Olive</div>
+                        <div class="color-swatch-hex">#8B8660</div>
+                        <div class="color-swatch-role">Primary Brand Color &mdash; Logo color, organic, calm, premium</div>
+                    </div>
+                </div>
+
+                <!-- Obsidian Black -->
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: #000000;"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Obsidian Black</div>
+                        <div class="color-swatch-hex">#000000</div>
+                        <div class="color-swatch-role">Logo Alt &mdash; Professional, sharp, elegant</div>
+                    </div>
+                </div>
+
+                <!-- Sand Cream -->
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: #E5E2D1;"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Sand Cream</div>
+                        <div class="color-swatch-hex">#E5E2D1</div>
+                        <div class="color-swatch-role">Background &mdash; Clean, warm, breathing space</div>
+                    </div>
+                </div>
+
+                <!-- Deep Moss -->
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: #4A4D39;"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Deep Moss</div>
+                        <div class="color-swatch-hex">#4A4D39</div>
+                        <div class="color-swatch-role">Contrast &mdash; Depth, grounding, emphasis</div>
+                    </div>
+                </div>
+
+                <!-- Warm Stone -->
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: #A69F8A;"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Warm Stone</div>
+                        <div class="color-swatch-hex">#A69F8A</div>
+                        <div class="color-swatch-role">Secondary &mdash; Subtle, supportive, neutral</div>
+                    </div>
+                </div>
+
+                <!-- Ivory White -->
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: #F5F3EC; border: 1px solid #E5E2D1;"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Ivory White</div>
+                        <div class="color-swatch-hex">#F5F3EC</div>
+                        <div class="color-swatch-role">Canvas &mdash; Light background, whitespace</div>
+                    </div>
+                </div>
+
+                <!-- Charcoal -->
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: #2C2C2C;"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Charcoal</div>
+                        <div class="color-swatch-hex">#2C2C2C</div>
+                        <div class="color-swatch-role">Text &mdash; Softer alternative to pure black</div>
+                    </div>
+                </div>
+
+                <!-- Muted Gold -->
+                <div class="color-swatch">
+                    <div class="color-swatch-preview" style="background: #B8A88A;"></div>
+                    <div class="color-swatch-info">
+                        <div class="color-swatch-name">Muted Gold</div>
+                        <div class="color-swatch-hex">#B8A88A</div>
+                        <div class="color-swatch-role">Highlight &mdash; Luxury accent, foil printing</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color Ratios -->
+            <div class="type-label">Color Usage Ratio</div>
+            <div style="margin-top: var(--space-lg); margin-bottom: var(--space-3xl);">
+                <div style="display: flex; height: 48px; border-radius: 4px; overflow: hidden; margin-bottom: var(--space-md);">
+                    <div style="flex: 40; background: var(--ivory-white); border: 1px solid var(--border-color);"></div>
+                    <div style="flex: 25; background: var(--sand-cream);"></div>
+                    <div style="flex: 20; background: var(--sage-olive);"></div>
+                    <div style="flex: 10; background: var(--obsidian-black);"></div>
+                    <div style="flex: 5; background: var(--deep-moss);"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 11px; font-weight: 500; color: var(--text-muted); letter-spacing: 0.05em;">
+                    <span>Ivory White 40%</span>
+                    <span>Sand Cream 25%</span>
+                    <span>Sage Olive 20%</span>
+                    <span>Black 10%</span>
+                    <span>Moss 5%</span>
+                </div>
+            </div>
+
+            <!-- Color Usage Guidelines -->
+            <div class="type-label">Usage Guidelines</div>
+            <div class="color-usage" style="margin-top: var(--space-lg);">
+                <div class="color-usage-card color-do">
+                    <h4>Recommended Combinations</h4>
+                    <p>Sage Olive logo on Ivory White or Sand Cream backgrounds for the primary brand look.</p>
+                    <p>Obsidian Black text on light backgrounds for maximum readability.</p>
+                    <p>Deep Moss for secondary text and supporting UI elements.</p>
+                    <p>Muted Gold sparingly for luxury touches in print materials and foil stamping.</p>
+                    <p>Inverted (white) logo on Obsidian Black for dark-mode and cinematic contexts.</p>
+                </div>
+                <div class="color-usage-card color-dont">
+                    <h4>Avoid</h4>
+                    <p>Never use Sage Olive as a background for body text &mdash; contrast is insufficient.</p>
+                    <p>Avoid combining Warm Stone text on Sand Cream &mdash; too low contrast.</p>
+                    <p>Do not introduce bright, saturated colors outside this palette.</p>
+                    <p>Never use gradients that mix brand colors with non-palette colors.</p>
+                    <p>Do not use the Sage Olive logo on medium-toned backgrounds where it disappears.</p>
+                </div>
+            </div>
+
+            <!-- CSS Variables -->
+            <div class="type-label" style="margin-top: var(--space-3xl);">CSS Variables</div>
+            <div class="code-block">
+                <span class="comment">/* Rocana.Studio — Brand Colors */</span><br>
+                <span class="property">--sage-olive:</span> <span class="value">#8B8660;</span> <span class="comment">/* Primary Brand */</span><br>
+                <span class="property">--obsidian-black:</span> <span class="value">#000000;</span> <span class="comment">/* Logo Alt / Text */</span><br>
+                <span class="property">--sand-cream:</span> <span class="value">#E5E2D1;</span><br>
+                <span class="property">--deep-moss:</span> <span class="value">#4A4D39;</span><br>
+                <span class="property">--warm-stone:</span> <span class="value">#A69F8A;</span><br>
+                <span class="property">--ivory-white:</span> <span class="value">#F5F3EC;</span><br>
+                <span class="property">--charcoal:</span> <span class="value">#2C2C2C;</span><br>
+                <span class="property">--muted-gold:</span> <span class="value">#B8A88A;</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 04. Typography -->
+    <section id="typography" class="section">
+        <div class="container">
+            <span class="section-number">04 &mdash; Typography</span>
+            <h2 class="section-title">Type System</h2>
+            <p class="section-subtitle">
+                Three typefaces work in harmony: an elegant serif for artistic expression, 
+                a bold rounded sans-serif that matches the logo's warmth, and a clean body font for readability.
+            </p>
+
+            <!-- Display / Artistic Font -->
+            <div class="type-specimen">
+                <div class="type-label">Primary Display &mdash; Cormorant</div>
+                <div class="type-role">Headings, Titles, Artistic Statements &bull; Serif &bull; Google Fonts</div>
+                <div class="type-display">
+                    Capturing Souls<br>
+                    <span class="type-display-italic">in the Island of Gods</span>
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 500px; margin-top: var(--space-lg);">
+                    Cormorant brings high-end editorial elegance. Use for hero headlines, 
+                    section titles, and artistic statements. Its refined serifs evoke the 
+                    sophistication of luxury photography while remaining approachable.
+                </p>
+            </div>
+
+            <!-- Heading / UI Font -->
+            <div class="type-specimen">
+                <div class="type-label">Secondary Heading &mdash; Nunito</div>
+                <div class="type-role">Navigation, Labels, UI Elements, Logo Companion &bull; Rounded Sans-Serif &bull; Google Fonts</div>
+                <div class="type-heading-demo type-heading-demo--xl">ROCANA.STUDIO</div>
+                <div class="type-heading-demo type-heading-demo--lg">WEDDING &bull; PORTRAIT &bull; EDITORIAL</div>
+                <div class="type-heading-demo type-heading-demo--md">CAPTURING SOULS IN THE ISLAND OF GODS</div>
+                <div class="type-heading-demo type-heading-demo--sm" style="color: var(--sage-olive);">BALI, INDONESIA &bull; WORLDWIDE</div>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 540px; margin-top: var(--space-lg);">
+                    Nunito Black is chosen specifically to match the rounded, warm character of the 
+                    Rocana.Studio logotype. Its soft, rounded terminals echo the organic curves of the 
+                    spiral logomark, creating visual consistency between the logo and all supporting 
+                    typography. Use for navigation, labels, buttons, and section headers. 
+                    Always set in uppercase with moderate letter-spacing.
+                </p>
+
+                <div class="type-scale">
+                    <span class="type-scale-size">48px / 3rem</span>
+                    <span class="type-scale-sample" style="font-size: 48px;">Display</span>
+                    <span class="type-scale-size">32px / 2rem</span>
+                    <span class="type-scale-sample" style="font-size: 32px;">Heading 1</span>
+                    <span class="type-scale-size">24px / 1.5rem</span>
+                    <span class="type-scale-sample" style="font-size: 24px;">Heading 2</span>
+                    <span class="type-scale-size">18px / 1.125rem</span>
+                    <span class="type-scale-sample" style="font-size: 18px;">Heading 3</span>
+                    <span class="type-scale-size">14px / 0.875rem</span>
+                    <span class="type-scale-sample" style="font-size: 14px;">Label / Nav</span>
+                    <span class="type-scale-size">11px / 0.688rem</span>
+                    <span class="type-scale-sample" style="font-size: 11px;">Caption / Meta</span>
+                </div>
+            </div>
+
+            <!-- Body Font -->
+            <div class="type-specimen">
+                <div class="type-label">Body Text &mdash; Inter</div>
+                <div class="type-role">Paragraphs, Descriptions, Proposals, Captions &bull; Sans-Serif &bull; Google Fonts</div>
+                <div class="type-body-demo">
+                    Every photograph we create is a collaboration between the soul of our subject, 
+                    the spirit of the island, and the eye of the artist. We don't chase trends &mdash; 
+                    we chase truth. Our work lives in the space between light and shadow, between 
+                    the planned and the spontaneous, between the seen and the felt.
+                </div>
+                <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 500px; margin-top: var(--space-lg);">
+                    Inter provides exceptional readability across all screen sizes. 
+                    Use for body copy, proposals, social media captions, and any extended text. 
+                    Set at 16px minimum with 1.6&ndash;1.8 line-height for comfortable reading.
+                </p>
+            </div>
+
+            <!-- Font Loading -->
+            <div class="type-label">Font Import</div>
+            <div class="code-block">
+                <span class="comment">/* Google Fonts Import */</span><br>
+                <span class="property">@import</span> <span class="value">url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap');</span><br><br>
+                <span class="comment">/* Font Family Variables */</span><br>
+                <span class="property">--font-display:</span> <span class="value">'Cormorant', Georgia, serif;</span><br>
+                <span class="property">--font-heading:</span> <span class="value">'Nunito', 'Helvetica Neue', sans-serif;</span> <span class="comment">/* Matches logo */</span><br>
+                <span class="property">--font-body:</span> <span class="value">'Inter', 'Helvetica Neue', sans-serif;</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 05. Visual Style & Tone of Voice -->
+    <section id="visual-style" class="section">
+        <div class="container">
+            <span class="section-number">05 &mdash; Visual Style & Tone</span>
+            <h2 class="section-title">Sophisticated,<br>Artistic, Alive</h2>
+            <p class="section-subtitle">
+                Our visual language is rooted in the Nature Distilled aesthetic &mdash; muted earthy tones, 
+                organic textures, and warm shadows that feel both luxurious and grounded.
+            </p>
+
+            <!-- Visual Mood Board -->
+            <div class="type-label">Visual Mood</div>
+            <div class="visual-grid" style="margin-top: var(--space-lg);">
+                <div class="visual-card visual-card--wide">
+                    <div class="visual-card-placeholder visual-card-placeholder--warm">
+                        Warm Tones &bull; Deep Shadows &bull; Human Emotion
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-placeholder visual-card-placeholder--dark">
+                        Cinematic<br>Depth
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-placeholder visual-card-placeholder--cream">
+                        Natural<br>Texture
+                    </div>
+                </div>
+                <div class="visual-card">
+                    <div class="visual-card-placeholder visual-card-placeholder--dark">
+                        Organic<br>Detail
+                    </div>
+                </div>
+                <div class="visual-card visual-card--wide">
+                    <div class="visual-card-placeholder visual-card-placeholder--warm">
+                        Storytelling Through Light &bull; Wabi-sabi Beauty
+                    </div>
+                </div>
+            </div>
+
+            <!-- Design Principles -->
+            <div class="type-label">Design Principles</div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-xl); margin-top: var(--space-lg); margin-bottom: var(--space-3xl);">
+                <div>
+                    <h4 style="font-family: var(--font-heading); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm);">Whitespace</h4>
+                    <p style="font-size: 13px; line-height: 1.7; color: var(--text-muted);">
+                        Let the work breathe. Generous margins and padding create a gallery-like experience.
+                    </p>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-heading); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm);">Contrast</h4>
+                    <p style="font-size: 13px; line-height: 1.7; color: var(--text-muted);">
+                        Bold black against soft cream. Delicate serif against rounded sans-serif. Tension creates interest.
+                    </p>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-heading); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm);">Texture</h4>
+                    <p style="font-size: 13px; line-height: 1.7; color: var(--text-muted);">
+                        Subtle grain, natural paper textures, and organic shapes add depth and authenticity.
+                    </p>
+                </div>
+                <div>
+                    <h4 style="font-family: var(--font-heading); font-size: 12px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: var(--space-sm);">Restraint</h4>
+                    <p style="font-size: 13px; line-height: 1.7; color: var(--text-muted);">
+                        Less is more. Every element must earn its place. Remove until only the essential remains.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Tone of Voice -->
+            <div class="type-label">Tone of Voice</div>
+            <div class="tone-grid" style="margin-top: var(--space-lg);">
+                <div class="tone-card">
+                    <h4>Sophisticated</h4>
+                    <p>Speak with quiet confidence. Avoid exclamation marks and hyperbole. Let the work speak louder than the words.</p>
+                    <div class="tone-example">
+                        "A morning ceremony in Ubud, where incense met the first light and two souls became one."
+                    </div>
+                </div>
+                <div class="tone-card">
+                    <h4>Artistic</h4>
+                    <p>Use evocative, sensory language. Paint pictures with words. Reference light, texture, emotion, and place.</p>
+                    <div class="tone-example">
+                        "We found them at golden hour, barefoot on volcanic sand, the ocean writing their story in foam."
+                    </div>
+                </div>
+                <div class="tone-card">
+                    <h4>Professional</h4>
+                    <p>Be clear and direct in business communications. Proposals and emails should be warm but efficient.</p>
+                    <div class="tone-example">
+                        "Your gallery of 300+ edited images will be delivered within 21 working days via a private online gallery."
+                    </div>
+                </div>
+                <div class="tone-card">
+                    <h4>Storytelling</h4>
+                    <p>Every caption, every description should tell a micro-story. Focus on the "why" behind the moment, not just the "what."</p>
+                    <div class="tone-example">
+                        "She didn't know he was watching. That's when we pressed the shutter &mdash; in the space between awareness and abandon."
+                    </div>
+                </div>
+            </div>
+
+            <!-- Language -->
+            <div class="type-label" style="margin-top: var(--space-3xl);">Language Guidelines</div>
+            <div class="impl-grid" style="margin-top: var(--space-lg);">
+                <div class="impl-card">
+                    <h4>Primary Language</h4>
+                    <p>All client-facing communications in English. Use British English spelling for international appeal (colour, favourite, centre).</p>
+                    <ul>
+                        <li>Website copy in English</li>
+                        <li>Social media captions in English</li>
+                        <li>Proposals and contracts in English</li>
+                        <li>Occasional Bahasa Indonesia for local context</li>
+                    </ul>
+                </div>
+                <div class="impl-card">
+                    <h4>Words to Use / Avoid</h4>
+                    <p><strong style="color: var(--deep-moss);">Use:</strong> Capture, reveal, craft, soul, light, story, moment, authentic, intimate, timeless</p>
+                    <p><strong style="color: #8B3A3A;">Avoid:</strong> Cheap, discount, snap, pic, selfie, package deal, basic, standard, budget</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 06. Photography Style -->
+    <section id="photography" class="section">
+        <div class="container">
+            <span class="section-number">06 &mdash; Photography Style</span>
+            <h2 class="section-title">Through the Lens</h2>
+            <p class="section-subtitle">
+                Our photography style is the heart of the brand. Warm, emotive, and deeply human &mdash; 
+                every image should feel like a memory you can almost touch.
+            </p>
+
+            <!-- Photo Style Cards -->
+            <div class="photo-style-grid">
+                <div class="photo-style-card">
+                    <div class="photo-style-preview" style="background: linear-gradient(135deg, #8B7355 0%, #4A3728 100%);"></div>
+                    <div class="photo-style-info">
+                        <h4>Warm Tones</h4>
+                        <p>Rich, golden warmth. Skin tones glow. Shadows lean amber, not blue. The island's golden hour lives in every frame.</p>
+                    </div>
+                </div>
+                <div class="photo-style-card">
+                    <div class="photo-style-preview" style="background: linear-gradient(135deg, #3a3a3a 0%, #0a0a0a 100%);"></div>
+                    <div class="photo-style-info">
+                        <h4>Deep Shadows</h4>
+                        <p>Embrace darkness. Shadows add mystery and depth. Not crushed &mdash; rich. There is detail in the dark.</p>
+                    </div>
+                </div>
+                <div class="photo-style-card">
+                    <div class="photo-style-preview" style="background: linear-gradient(135deg, #C4B89A 0%, #8B8660 100%);"></div>
+                    <div class="photo-style-info">
+                        <h4>Natural Texture</h4>
+                        <p>Focus on skin, fabric, stone, water, leaves. Macro details that make the viewer feel the surface.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Color Grading -->
+            <div class="type-label">Color Grading Reference</div>
+            <div style="display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-sm); margin-top: var(--space-lg); margin-bottom: var(--space-3xl);">
+                <div style="aspect-ratio: 1; background: #D4A574; border-radius: 4px;"></div>
+                <div style="aspect-ratio: 1; background: #8B7355; border-radius: 4px;"></div>
+                <div style="aspect-ratio: 1; background: #5C4A3A; border-radius: 4px;"></div>
+                <div style="aspect-ratio: 1; background: #3A2E24; border-radius: 4px;"></div>
+                <div style="aspect-ratio: 1; background: #1A1410; border-radius: 4px;"></div>
+            </div>
+            <p style="font-size: 13px; color: var(--text-muted); text-align: center; margin-top: calc(-1 * var(--space-xl));">
+                Warm Highlight &rarr; Mid Tone &rarr; Rich Shadow &rarr; Deep Black
+            </p>
+
+            <!-- Photo Guidelines -->
+            <div class="type-label" style="margin-top: var(--space-3xl);">Photography Guidelines</div>
+            <div class="impl-grid" style="margin-top: var(--space-lg);">
+                <div class="impl-card">
+                    <h4>Composition</h4>
+                    <ul>
+                        <li>Prioritize negative space &mdash; let subjects breathe</li>
+                        <li>Use natural framing: doorways, foliage, architecture</li>
+                        <li>Shoot at eye level or slightly below for intimacy</li>
+                        <li>Include environmental context (Bali landscapes, temples, ocean)</li>
+                        <li>Candid over posed &mdash; capture the in-between moments</li>
+                    </ul>
+                </div>
+                <div class="impl-card">
+                    <h4>Post-Processing</h4>
+                    <ul>
+                        <li>Warm white balance (5800K&ndash;6500K range)</li>
+                        <li>Slightly desaturated &mdash; never oversaturated</li>
+                        <li>Lift blacks slightly for a filmic quality</li>
+                        <li>Add subtle grain for texture (15&ndash;25% in Lightroom)</li>
+                        <li>Consistent color grading across entire galleries</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07. Implementation -->
+    <section id="implementation" class="section">
+        <div class="container">
+            <span class="section-number">07 &mdash; Implementation</span>
+            <h2 class="section-title">Brand in Action</h2>
+            <p class="section-subtitle">
+                Practical guidelines for applying the Rocana.Studio brand consistently 
+                across all touchpoints &mdash; digital and print.
+            </p>
+
+            <!-- Watermark -->
+            <div class="type-label">Watermark Usage</div>
+            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-top: var(--space-sm); margin-bottom: var(--space-lg);">
+                Use the <strong>Logotype</strong> (text-only) or <strong>Logo Mark</strong> (symbol-only) as watermarks. 
+                Never use the full Logo Main as a watermark &mdash; it is too complex at low opacity.
+            </p>
+            <div class="watermark-demo">
+                <div class="watermark-card watermark-card--dark">
+                    <img src="rocana studio logotype.png" alt="Watermark Light" style="filter: brightness(0) invert(1);">
+                    <span class="watermark-label">Logotype &mdash; White 20% Opacity</span>
+                </div>
+                <div class="watermark-card watermark-card--light">
+                    <img src="rocana studio logotype.png" alt="Watermark Dark">
+                    <span class="watermark-label">Logotype &mdash; Sage Olive 20% Opacity</span>
+                </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="type-label">Instagram Grid Layout</div>
+            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-top: var(--space-sm); margin-bottom: var(--space-lg);">
+                Maintain a minimalist, curated grid. Alternate between cinematic Reels and 
+                portfolio images with consistent warm toning. Use the <strong>Logo Mark</strong> as your profile avatar.
+            </p>
+            <div class="social-mockup">
+                <div class="social-cell" style="background: linear-gradient(135deg, #8B7355, #4A3728); color: var(--sand-cream);">Photo</div>
+                <div class="social-cell" style="background: var(--obsidian-black); color: var(--sage-olive);">Reel</div>
+                <div class="social-cell" style="background: linear-gradient(135deg, #C4B89A, #8B8660); color: white;">Photo</div>
+                <div class="social-cell" style="background: var(--sand-cream); color: var(--deep-moss);">Quote</div>
+                <div class="social-cell" style="background: linear-gradient(135deg, #5C4A3A, #2C2C2C); color: var(--sand-cream);">Photo</div>
+                <div class="social-cell" style="background: var(--obsidian-black); color: var(--sage-olive);">Reel</div>
+                <div class="social-cell" style="background: linear-gradient(135deg, #8B7355, #4A3728); color: var(--sand-cream);">Photo</div>
+                <div class="social-cell" style="background: linear-gradient(135deg, #C4B89A, #8B8660); color: white;">Photo</div>
+                <div class="social-cell" style="background: var(--sand-cream); color: var(--deep-moss);">BTS</div>
+            </div>
+            <p style="font-size: 11px; color: var(--warm-stone); text-align: center; margin-top: var(--space-md); letter-spacing: 0.05em;">
+                Pattern: Photo &bull; Reel &bull; Photo &bull; Quote/BTS &mdash; Repeat with consistent warm toning
+            </p>
+
+            <!-- Application Grid -->
+            <div class="type-label" style="margin-top: var(--space-3xl);">Brand Applications</div>
+            <div class="impl-grid" style="margin-top: var(--space-lg);">
+                <div class="impl-card">
+                    <h4>Website</h4>
+                    <ul>
+                        <li>Navigation: Logo Mark + Logotype side by side</li>
+                        <li>Hero: Full Logo Main centered, or Logotype over full-bleed image</li>
+                        <li>Footer: Logo Main in Sage Olive on dark background (inverted)</li>
+                        <li>Gallery pages with generous whitespace between images</li>
+                        <li>Smooth scroll transitions (300ms ease-out)</li>
+                        <li>Lazy-loaded images with subtle fade-in</li>
+                    </ul>
+                </div>
+                <div class="impl-card">
+                    <h4>Business Cards</h4>
+                    <ul>
+                        <li>Front: Logo Mark centered on Obsidian Black with Muted Gold foil</li>
+                        <li>Back: Logotype + contact details on Sand Cream stock</li>
+                        <li>Paper: 400gsm uncoated with soft-touch lamination</li>
+                        <li>Typography: Nunito for name, Inter for details</li>
+                        <li>Optional: Debossed Logo Mark for tactile luxury</li>
+                    </ul>
+                </div>
+                <div class="impl-card">
+                    <h4>Proposals & Invoices</h4>
+                    <ul>
+                        <li>Logo Main (Sage Olive) top-left of first page</li>
+                        <li>Logotype in footer of subsequent pages</li>
+                        <li>Clean, minimal layout on Ivory White background</li>
+                        <li>Section headers in Nunito uppercase</li>
+                        <li>Body text in Inter at 11pt for print</li>
+                        <li>Accent lines in Sage Olive</li>
+                    </ul>
+                </div>
+                <div class="impl-card">
+                    <h4>Email Signature</h4>
+                    <ul>
+                        <li>Logotype (text-only) in Sage Olive, left-aligned</li>
+                        <li>Name in Nunito Bold, 14px</li>
+                        <li>Title in Inter Regular, 12px, Sage Olive</li>
+                        <li>Divider line in Sage Olive</li>
+                        <li>Contact details in Inter, 11px</li>
+                        <li>Tagline in italic Cormorant below</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- File Naming -->
+            <div class="type-label" style="margin-top: var(--space-3xl);">Logo Asset Files</div>
+            <div class="code-block">
+                <span class="comment">/* Primary Logo Files */</span><br>
+                <span class="value">rocana studio logo main.png</span> <span class="comment">/* Full logo — Sage Olive */</span><br>
+                <span class="value">rocana studio logo black.png</span> <span class="comment">/* Full logo — Black */</span><br>
+                <span class="value">rocana studio logo mark.png</span> <span class="comment">/* Symbol only — Sage Olive */</span><br>
+                <span class="value">rocana studio logotype.png</span> <span class="comment">/* Text only — Sage Olive */</span><br><br>
+                <span class="comment">/* Recommended Additional Exports */</span><br>
+                <span class="value">rocana-logo-main-white.svg</span> <span class="comment">/* Inverted for dark backgrounds */</span><br>
+                <span class="value">rocana-logo-mark-white.svg</span> <span class="comment">/* Symbol inverted */</span><br>
+                <span class="value">rocana-logotype-white.svg</span> <span class="comment">/* Text inverted */</span><br>
+                <span class="value">rocana-logotype-black.svg</span> <span class="comment">/* Text in black */</span><br><br>
+                <span class="comment">/* Social Media & Favicon */</span><br>
+                <span class="value">rocana-favicon-32.png</span> <span class="comment">/* Logo Mark at 32px */</span><br>
+                <span class="value">rocana-avatar-512.png</span> <span class="comment">/* Logo Mark at 512px */</span><br>
+                <span class="value">rocana-og-image.png</span> <span class="comment">/* 1200x630 social share */</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tagline Section -->
+    <div class="tagline-section">
+        <div class="tagline-logo">
+            <img src="rocana studio logo mark.png" alt="Rocana" style="filter: brightness(0) invert(1);">
+        </div>
+        <p class="tagline-main">"Capturing Souls in the Island of Gods"</p>
+        <p class="tagline-brand">Rocana.Studio &mdash; Bali, Indonesia</p>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">
+            Rocana.Studio Brand Guidelines &mdash; Version 2.0 &mdash; 2026
+            <br><br>
+            This document is confidential and intended for internal use and approved partners only.
+            <br>
+            For questions regarding brand usage, contact studio@rocana.studio
+        </p>
+    </footer>
+
+</body>
+</html>

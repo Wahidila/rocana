@@ -1,0 +1,1195 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocana.Studio — Business Model & Strategy Deep Dive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Nunito:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --obsidian-black: #000000;
+            --sage-olive: #8B8660;
+            --sand-cream: #E5E2D1;
+            --deep-moss: #4A4D39;
+            --warm-stone: #A69F8A;
+            --ivory-white: #F5F3EC;
+            --charcoal: #2C2C2C;
+            --muted-gold: #B8A88A;
+            --text-primary: #000000;
+            --text-secondary: #4A4D39;
+            --text-muted: #8B8660;
+            --bg-primary: #F5F3EC;
+            --bg-secondary: #E5E2D1;
+            --border-color: #D4D0C2;
+            --font-display: 'Cormorant', Georgia, serif;
+            --font-heading: 'Nunito', 'Helvetica Neue', sans-serif;
+            --font-body: 'Inter', 'Helvetica Neue', sans-serif;
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+            --space-4xl: 96px;
+            --space-5xl: 128px;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { font-family: var(--font-body); color: var(--text-primary); background-color: var(--bg-primary); line-height: 1.6; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        .nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(245, 243, 236, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); padding: 0 var(--space-2xl); }
+        .nav-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 64px; }
+        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .nav-brand img { height: 32px; width: auto; }
+        .nav-brand-text { font-family: var(--font-heading); font-weight: 900; font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--obsidian-black); }
+        .nav-links { display: flex; gap: var(--space-md); list-style: none; flex-wrap: wrap; }
+        .nav-links a { font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); text-decoration: none; transition: color 0.3s ease; }
+        .nav-links a:hover { color: var(--obsidian-black); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-2xl); }
+        .section { padding: var(--space-5xl) 0; border-bottom: 1px solid var(--border-color); }
+        .section:last-child { border-bottom: none; }
+        .section-number { font-family: var(--font-heading); font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-md); display: block; }
+        .section-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; line-height: 1.1; color: var(--obsidian-black); margin-bottom: var(--space-lg); letter-spacing: -0.02em; }
+        .section-subtitle { font-family: var(--font-body); font-size: 16px; font-weight: 400; color: var(--text-muted); max-width: 700px; line-height: 1.7; margin-bottom: var(--space-3xl); }
+        .sub-section-label { font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-sm); margin-top: var(--space-3xl); }
+        .sub-section-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 500; color: var(--obsidian-black); margin-bottom: var(--space-lg); }
+        .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--obsidian-black); color: var(--ivory-white); padding: var(--space-4xl) var(--space-2xl); position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(ellipse at 30% 50%, rgba(139, 134, 96, 0.08) 0%, transparent 60%), radial-gradient(ellipse at 70% 50%, rgba(74, 77, 57, 0.06) 0%, transparent 60%); pointer-events: none; }
+        .hero-logo { width: 200px; margin-bottom: var(--space-3xl); position: relative; z-index: 1; }
+        .hero-logo img { width: 100%; height: auto; object-fit: contain; filter: brightness(0) invert(1); }
+        .hero-divider { width: 60px; height: 1px; background: var(--sage-olive); margin: var(--space-lg) auto; position: relative; z-index: 1; }
+        .hero-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 400; line-height: 1.15; color: var(--ivory-white); margin-bottom: var(--space-lg); position: relative; z-index: 1; letter-spacing: -0.02em; }
+        .hero-title em { font-style: italic; color: var(--sage-olive); }
+        .hero-description { font-family: var(--font-body); font-size: 16px; font-weight: 400; color: rgba(245, 243, 236, 0.6); max-width: 640px; line-height: 1.8; margin-bottom: var(--space-3xl); position: relative; z-index: 1; }
+        .hero-stats { display: flex; gap: var(--space-3xl); position: relative; z-index: 1; margin-bottom: var(--space-3xl); }
+        .hero-stat { text-align: center; }
+        .hero-stat-value { font-family: var(--font-display); font-size: 2.5rem; font-weight: 600; color: var(--sage-olive); line-height: 1; margin-bottom: var(--space-xs); }
+        .hero-stat-label { font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245, 243, 236, 0.4); }
+        .hero-meta { position: absolute; bottom: var(--space-2xl); font-family: var(--font-body); font-size: 11px; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245, 243, 236, 0.4); z-index: 1; }
+        .data-table { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0; font-size: 14px; }
+        .data-table th { font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage-olive); text-align: left; padding: var(--space-md); border-bottom: 2px solid var(--border-color); }
+        .data-table td { padding: var(--space-md); border-bottom: 1px solid var(--border-color); color: var(--text-secondary); vertical-align: top; line-height: 1.6; }
+        .data-table tr:last-child td { border-bottom: none; }
+        .data-table tr:hover td { background: rgba(139, 134, 96, 0.04); }
+        .data-table td strong { color: var(--obsidian-black); }
+        .badge { display: inline-block; padding: 2px 10px; border-radius: 3px; font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+        .badge--high { background: var(--sage-olive); color: white; }
+        .badge--medium { background: var(--sand-cream); color: var(--deep-moss); }
+        .badge--low { background: rgba(139, 134, 96, 0.1); color: var(--warm-stone); }
+        .badge--critical { background: var(--deep-moss); color: var(--sand-cream); }
+        .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-xl); margin: var(--space-xl) 0; }
+        .card-grid--3 { grid-template-columns: repeat(3, 1fr); }
+        .card { padding: var(--space-xl); background: white; border: 1px solid var(--border-color); border-radius: 4px; }
+        .card-label { font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-sm); }
+        .card-title { font-family: var(--font-heading); font-size: 14px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--obsidian-black); margin-bottom: var(--space-md); }
+        .card-text { font-size: 14px; line-height: 1.7; color: var(--text-muted); }
+        .card-text ul { list-style: none; padding: 0; }
+        .card-text ul li { padding-left: var(--space-md); position: relative; margin-bottom: var(--space-xs); }
+        .card-text ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--sage-olive); border-radius: 50%; }
+        .blockquote { margin: var(--space-xl) 0; padding: var(--space-lg) var(--space-xl); background: var(--sand-cream); border-left: 3px solid var(--sage-olive); border-radius: 0 4px 4px 0; }
+        .blockquote p { font-family: var(--font-display); font-size: 1.15rem; font-style: italic; color: var(--deep-moss); line-height: 1.7; }
+        .blockquote p strong { font-style: normal; color: var(--obsidian-black); }
+        .insight-box { margin: var(--space-xl) 0; padding: var(--space-lg) var(--space-xl); background: var(--obsidian-black); border-radius: 4px; color: var(--ivory-white); }
+        .insight-box-label { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-sm); }
+        .insight-box p { font-size: 14px; line-height: 1.7; color: rgba(245, 243, 236, 0.8); }
+        .insight-box p strong { color: var(--sage-olive); }
+        .ranked-list { list-style: none; padding: 0; margin: var(--space-lg) 0; counter-reset: rank; }
+        .ranked-list li { counter-increment: rank; padding: var(--space-md) var(--space-lg); border-bottom: 1px solid var(--border-color); font-size: 14px; line-height: 1.7; color: var(--text-secondary); display: flex; align-items: baseline; gap: var(--space-md); }
+        .ranked-list li::before { content: counter(rank); font-family: var(--font-display); font-size: 1.5rem; font-weight: 600; color: var(--sage-olive); min-width: 28px; line-height: 1; }
+        .ranked-list li strong { color: var(--obsidian-black); }
+        .ranked-list li:last-child { border-bottom: none; }
+        .competitor-block { margin: var(--space-xl) 0; border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; }
+        .competitor-header { padding: var(--space-md) var(--space-lg); background: var(--sand-cream); display: flex; align-items: center; justify-content: space-between; }
+        .competitor-name { font-family: var(--font-heading); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--obsidian-black); }
+        .competitor-body { padding: 0; }
+        .competitor-body .data-table { margin: 0; }
+        .competitor-body .data-table td:first-child { font-weight: 600; color: var(--obsidian-black); width: 140px; }
+        .dead-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-lg); margin: var(--space-xl) 0; }
+        .dead-card { padding: var(--space-lg); background: rgba(139, 58, 58, 0.04); border: 1px solid rgba(139, 58, 58, 0.15); border-radius: 4px; }
+        .dead-card-name { font-family: var(--font-heading); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #8B3A3A; margin-bottom: var(--space-sm); }
+        .dead-card-text { font-size: 13px; line-height: 1.6; color: var(--text-muted); }
+        .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin: var(--space-xl) 0; }
+        .swot-card { border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); }
+        .swot-header { padding: var(--space-md) var(--space-lg); font-family: var(--font-heading); font-size: 12px; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: white; }
+        .swot-header--strengths { background: var(--deep-moss); }
+        .swot-header--weaknesses { background: #8B3A3A; }
+        .swot-header--opportunities { background: var(--sage-olive); }
+        .swot-header--threats { background: var(--charcoal); }
+        .swot-body { padding: 0; background: white; }
+        .swot-body .data-table { margin: 0; font-size: 13px; }
+        .swot-body .data-table td { padding: var(--space-sm) var(--space-md); }
+        .swot-body .data-table td:first-child { width: 36px; font-weight: 700; color: var(--sage-olive); font-family: var(--font-heading); font-size: 11px; }
+        .positioning-map { background: var(--obsidian-black); border-radius: 4px; padding: var(--space-2xl); position: relative; height: 480px; margin: var(--space-xl) 0; overflow: hidden; }
+        .positioning-map::before { content: ''; position: absolute; top: 50%; left: var(--space-2xl); right: var(--space-2xl); height: 1px; background: rgba(139, 134, 96, 0.3); }
+        .positioning-map::after { content: ''; position: absolute; top: var(--space-2xl); bottom: var(--space-2xl); left: 50%; width: 1px; background: rgba(139, 134, 96, 0.3); }
+        .map-label { position: absolute; font-family: var(--font-heading); font-size: 9px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(139, 134, 96, 0.5); }
+        .map-label--top { top: 12px; left: 50%; transform: translateX(-50%); }
+        .map-label--bottom { bottom: 12px; left: 50%; transform: translateX(-50%); }
+        .map-label--left { left: 12px; top: 50%; transform: translateY(-50%) rotate(-90deg); }
+        .map-label--right { right: 12px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+        .map-point { position: absolute; font-family: var(--font-body); font-size: 11px; font-weight: 500; color: rgba(245, 243, 236, 0.6); white-space: nowrap; }
+        .map-point--rocana { background: var(--sage-olive); color: white; padding: 6px 14px; border-radius: 3px; font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; box-shadow: 0 0 20px rgba(139, 134, 96, 0.4); }
+        .map-point--rocana::before { content: ''; position: absolute; inset: -4px; border: 1px dashed var(--sage-olive); border-radius: 6px; opacity: 0.5; }
+        .check-table { width: 100%; border-collapse: collapse; margin: var(--space-lg) 0; font-size: 13px; }
+        .check-table th { font-family: var(--font-heading); font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--sage-olive); text-align: center; padding: var(--space-md) var(--space-sm); border-bottom: 2px solid var(--border-color); }
+        .check-table th:first-child { text-align: left; }
+        .check-table td { padding: var(--space-sm); border-bottom: 1px solid var(--border-color); text-align: center; vertical-align: middle; }
+        .check-table td:first-child { text-align: left; font-weight: 500; color: var(--text-secondary); }
+        .check-table tr:last-child td { border-bottom: none; }
+        .check-yes { display: inline-block; padding: 2px 8px; background: var(--deep-moss); color: var(--sand-cream); border-radius: 3px; font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; }
+        .check-no { display: inline-block; padding: 2px 8px; background: rgba(139, 58, 58, 0.1); color: #8B3A3A; border-radius: 3px; font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; }
+        .check-partial { display: inline-block; padding: 2px 8px; background: var(--sand-cream); color: var(--warm-stone); border-radius: 3px; font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.05em; }
+        .package-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-xl); margin: var(--space-xl) 0; }
+        .package-card { border-radius: 4px; overflow: hidden; border: 1px solid var(--border-color); }
+        .package-header { padding: var(--space-lg) var(--space-xl); color: white; }
+        .package-header--t1 { background: linear-gradient(135deg, #A69F8A, #8B8660); }
+        .package-header--t2 { background: linear-gradient(135deg, #8B8660, #6B6A4E); }
+        .package-header--t3 { background: linear-gradient(135deg, #6B6A4E, #4A4D39); }
+        .package-header--t4 { background: linear-gradient(135deg, #4A4D39, #3A3D2E); }
+        .package-header--t5 { background: linear-gradient(135deg, #3A3D2E, #2C2C2C); }
+        .package-header--t6 { background: linear-gradient(135deg, #2C2C2C, #000000); }
+        .package-tier { font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; opacity: 0.7; margin-bottom: var(--space-xs); }
+        .package-name { font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; margin-bottom: var(--space-xs); }
+        .package-tagline { font-family: var(--font-body); font-size: 12px; opacity: 0.7; margin-bottom: var(--space-sm); }
+        .package-price { font-family: var(--font-display); font-size: 2rem; font-weight: 600; }
+        .package-body { padding: 0; background: white; }
+        .package-body .data-table { margin: 0; font-size: 13px; }
+        .package-body .data-table td:first-child { font-weight: 600; color: var(--obsidian-black); width: 120px; }
+        .funnel { background: var(--obsidian-black); border-radius: 4px; padding: var(--space-xl) var(--space-2xl); display: flex; align-items: center; justify-content: center; gap: var(--space-lg); margin: var(--space-xl) 0; flex-wrap: wrap; }
+        .funnel-step { text-align: center; flex: 1; min-width: 140px; }
+        .funnel-price { font-family: var(--font-display); font-size: 1.8rem; font-weight: 600; color: var(--sage-olive); margin-bottom: var(--space-xs); }
+        .funnel-label { font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245, 243, 236, 0.5); }
+        .funnel-sublabel { font-family: var(--font-body); font-size: 11px; color: rgba(245, 243, 236, 0.3); margin-top: 2px; }
+        .funnel-arrow { font-family: var(--font-body); font-size: 1.2rem; color: var(--sage-olive); opacity: 0.5; }
+        .timeline { position: relative; margin: var(--space-xl) 0; padding-left: var(--space-2xl); }
+        .timeline::before { content: ''; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: var(--border-color); }
+        .timeline-phase { position: relative; margin-bottom: var(--space-3xl); }
+        .timeline-phase:last-child { margin-bottom: 0; }
+        .timeline-dot { position: absolute; left: calc(-1 * var(--space-2xl) + 4px); top: 4px; width: 16px; height: 16px; background: var(--sage-olive); border-radius: 50%; border: 3px solid var(--bg-primary); }
+        .timeline-label { font-family: var(--font-heading); font-size: 10px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-xs); }
+        .timeline-title { font-family: var(--font-display); font-size: 1.5rem; font-weight: 500; color: var(--obsidian-black); margin-bottom: var(--space-sm); }
+        .timeline-goal { font-size: 14px; color: var(--text-muted); margin-bottom: var(--space-lg); font-style: italic; }
+        .playbook { background: var(--obsidian-black); padding: var(--space-4xl) var(--space-2xl); }
+        .playbook-inner { max-width: 1200px; margin: 0 auto; }
+        .playbook-title { font-family: var(--font-display); font-size: clamp(2rem, 4vw, 3rem); font-weight: 400; color: var(--ivory-white); margin-bottom: var(--space-2xl); text-align: center; letter-spacing: -0.02em; }
+        .playbook-steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-lg); margin-bottom: var(--space-2xl); }
+        .playbook-step { display: flex; gap: var(--space-md); align-items: flex-start; }
+        .playbook-step-number { font-family: var(--font-display); font-size: 2rem; font-weight: 600; color: var(--sage-olive); line-height: 1; min-width: 32px; }
+        .playbook-step-text { font-size: 14px; line-height: 1.7; color: rgba(245, 243, 236, 0.7); }
+        .playbook-step-text strong { color: var(--sage-olive); }
+        .tagline-section { text-align: center; padding: var(--space-5xl) var(--space-2xl); background: var(--obsidian-black); color: var(--ivory-white); }
+        .tagline-logo { max-width: 80px; margin: 0 auto var(--space-2xl); opacity: 0.3; }
+        .tagline-logo img { width: 100%; height: auto; filter: brightness(0) invert(1); }
+        .tagline-main { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 400; font-style: italic; line-height: 1.2; color: var(--sage-olive); margin-bottom: var(--space-lg); letter-spacing: 0.02em; }
+        .tagline-brand { font-family: var(--font-heading); font-size: 14px; font-weight: 800; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(245, 243, 236, 0.4); }
+        .footer { padding: var(--space-3xl) var(--space-2xl); text-align: center; background: var(--sand-cream); }
+        .footer-text { font-family: var(--font-body); font-size: 12px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+        .uvp-display { text-align: center; padding: var(--space-3xl) var(--space-2xl); margin: var(--space-xl) 0; }
+        .uvp-text { font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 400; font-style: italic; color: var(--sage-olive); margin-bottom: var(--space-lg); letter-spacing: 0.02em; }
+        .uvp-expanded { font-size: 15px; line-height: 1.8; color: var(--text-muted); max-width: 700px; margin: 0 auto; }
+        .revenue-card { padding: var(--space-xl); background: var(--sand-cream); border-radius: 4px; margin: var(--space-lg) 0; }
+        .revenue-card-value { font-family: var(--font-display); font-size: 2rem; font-weight: 600; color: var(--deep-moss); margin-bottom: var(--space-sm); }
+        .revenue-card-label { font-family: var(--font-heading); font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-sm); }
+        .revenue-card-text { font-size: 14px; line-height: 1.7; color: var(--text-muted); }
+        .ai-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); margin: var(--space-xl) 0; }
+        .ai-card { border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; }
+        .ai-card-header { padding: var(--space-lg) var(--space-xl); background: var(--deep-moss); color: var(--sand-cream); }
+        .ai-card-header h3 { font-family: var(--font-heading); font-size: 13px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+        .ai-card-body { padding: var(--space-xl); background: white; }
+        .ai-card-body h4 { font-family: var(--font-heading); font-size: 11px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-sm); margin-top: var(--space-lg); }
+        .ai-card-body h4:first-child { margin-top: 0; }
+        .ai-card-body ul { list-style: none; padding: 0; }
+        .ai-card-body ul li { font-size: 13px; line-height: 1.7; color: var(--text-muted); padding-left: var(--space-md); position: relative; margin-bottom: var(--space-xs); }
+        .ai-card-body ul li::before { content: ''; position: absolute; left: 0; top: 10px; width: 4px; height: 4px; background: var(--sage-olive); border-radius: 50%; }
+        .social-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-xl); margin: var(--space-xl) 0; }
+        .social-card { padding: var(--space-xl); background: white; border: 1px solid var(--border-color); border-radius: 4px; }
+        .social-card-platform { font-family: var(--font-heading); font-size: 13px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--obsidian-black); margin-bottom: var(--space-xs); }
+        .social-card-role { font-family: var(--font-body); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sage-olive); margin-bottom: var(--space-md); }
+        .social-card p { font-size: 13px; line-height: 1.7; color: var(--text-muted); margin-bottom: var(--space-sm); }
+        @media (max-width: 1024px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .card-grid--3 { grid-template-columns: 1fr; }
+            .swot-grid { grid-template-columns: 1fr; }
+            .package-grid { grid-template-columns: 1fr; }
+            .ai-grid { grid-template-columns: 1fr; }
+            .social-grid { grid-template-columns: 1fr; }
+            .dead-grid { grid-template-columns: 1fr; }
+            .playbook-steps { grid-template-columns: 1fr; }
+            .positioning-map { height: 400px; }
+            .check-table { font-size: 11px; }
+            .check-table th, .check-table td { padding: var(--space-xs); }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .container { padding: 0 var(--space-lg); }
+            .section { padding: var(--space-4xl) 0; }
+            .hero-stats { flex-direction: column; gap: var(--space-xl); }
+            .funnel { flex-direction: column; }
+            .funnel-arrow { transform: rotate(90deg); }
+            .positioning-map { height: 350px; }
+            .data-table { font-size: 12px; }
+            .data-table th, .data-table td { padding: var(--space-sm); }
+            .playbook { padding: var(--space-3xl) var(--space-lg); }
+        }
+        @media print {
+            .nav { display: none; }
+            .section { page-break-inside: avoid; }
+            body { background: white; }
+            .hero { min-height: auto; padding: var(--space-3xl); }
+            .positioning-map { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="nav-brand">
+                <img src="../../rocana studio logo mark.png" alt="Rocana Studio">
+                <span class="nav-brand-text">Rocana.Studio</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#executive">Summary</a></li>
+                <li><a href="#market">Market</a></li>
+                <li><a href="#competitive">Competitors</a></li>
+                <li><a href="#gap">Gaps</a></li>
+                <li><a href="#swot">SWOT</a></li>
+                <li><a href="#positioning">Positioning</a></li>
+                <li><a href="#packages">Packages</a></li>
+                <li><a href="#revenue">Revenue</a></li>
+                <li><a href="#roadmap">Roadmap</a></li>
+                <li><a href="#ai">AI</a></li>
+                <li><a href="#marketing">Marketing</a></li>
+                <li><a href="#risk">Risk</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero / Cover -->
+    <header class="hero">
+        <div class="hero-logo">
+            <img src="../../rocana studio logo main.png" alt="Rocana Studio Logo">
+        </div>
+        <div class="hero-divider"></div>
+        <h1 class="hero-title">Business Model &amp;<br><em>Strategy Deep Dive</em></h1>
+        <p class="hero-description">
+            A comprehensive analysis of market positioning, competitive landscape, pricing strategy, 
+            and growth roadmap for Bali&rsquo;s first full-service creative photography studio.
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">$59</div>
+                <div class="hero-stat-label">Entry Hook</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">$96K</div>
+                <div class="hero-stat-label">Year 1 Target</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">$300K</div>
+                <div class="hero-stat-label">Year 3 Target</div>
+            </div>
+        </div>
+        <p class="hero-meta">Draft v1.0 &mdash; 25 April 2026</p>
+    </header>
+
+    <!-- 01 — EXECUTIVE SUMMARY -->
+    <section id="executive" class="section">
+        <div class="container">
+            <span class="section-number">01 &mdash; Executive Summary</span>
+            <h2 class="section-title">The Complete Bali<br>Creative Studio</h2>
+            <p class="section-subtitle">
+                Rocana.Studio is a Bali-based photography &amp; videography studio targeting international tourists, 
+                expats, and destination event clients. The studio offers a full-service creative package &mdash; 
+                a combination that no single competitor in Bali currently provides under one brand.
+            </p>
+
+            <div class="blockquote">
+                <p>
+                    <strong>Core Strategy:</strong> Enter the market with an accessible &ldquo;hook&rdquo; price ($59 for a basic session) 
+                    to build volume, reviews, and SEO authority, then funnel clients into higher-value packages ($250&ndash;800+) 
+                    through upselling. Differentiate through AI-powered booking/planning tools, full-service capability, 
+                    and a distinctive earthy visual brand.
+                </p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <div class="card-label">Differentiator</div>
+                    <div class="card-title">Full-Service Offering</div>
+                    <p class="card-text">Photo + cinematic video + drone aerial + model/talent &mdash; all under one brand. No competitor in Bali offers this complete package.</p>
+                </div>
+                <div class="card">
+                    <div class="card-label">Innovation</div>
+                    <div class="card-title">AI-Powered Differentiator</div>
+                    <p class="card-text">AI booking assistant for 24/7 instant responses and an AI shoot planner that recommends locations, timing, and outfits. Zero competitors have this.</p>
+                </div>
+                <div class="card">
+                    <div class="card-label">Revenue</div>
+                    <div class="card-title">Funnel Pricing Strategy</div>
+                    <p class="card-text">$59 hook captures volume and reviews. $149&ndash;249 sweet spot drives main revenue. $399&ndash;799 premium packages deliver highest margins. $1,200+ weddings for top-tier revenue.</p>
+                </div>
+                <div class="card">
+                    <div class="card-label">Growth</div>
+                    <div class="card-title">SEO-First Acquisition</div>
+                    <p class="card-text">SEO specialist capability is the unfair advantage. Organic traffic compounds over time while paid ads cost money. Goal: dominate &ldquo;Bali photographer&rdquo; search results.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 02 — MARKET LANDSCAPE -->
+    <section id="market" class="section">
+        <div class="container">
+            <span class="section-number">02 &mdash; Market Landscape</span>
+            <h2 class="section-title">Understanding the Bali<br>Photography Market</h2>
+            <p class="section-subtitle">A detailed look at market tiers, demand patterns, seasonality, and the most popular shooting locations across the island.</p>
+
+            <div class="sub-section-label">2.1 Market Tiers</div>
+            <table class="data-table">
+                <thead><tr><th>Tier</th><th>Price Range</th><th>Players</th><th>Volume</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Budget</strong></td><td>$30&ndash;100</td><td>Airbnb Experiences, local freelancers</td><td><span class="badge badge--high">Very High</span></td></tr>
+                    <tr><td><strong>Mid-range</strong></td><td>$100&ndash;350</td><td>Local studios, direct-booking photographers</td><td><span class="badge badge--high">High</span></td></tr>
+                    <tr><td><strong>Premium Platform</strong></td><td>$325&ndash;715</td><td>Flytographer, Localgrapher</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                    <tr><td><strong>Premium Studio</strong></td><td>$350&ndash;650+</td><td>Gusmank, Bali Pixtura, Apel Photography</td><td><span class="badge badge--low">Medium-Low</span></td></tr>
+                    <tr><td><strong>Luxury Wedding</strong></td><td>$650&ndash;3,000+</td><td>Established wedding specialists</td><td><span class="badge badge--low">Low</span></td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label">2.2 Demand by Service Type</div>
+            <ol class="ranked-list">
+                <li><strong>Pre-wedding / Engagement</strong> &mdash; #1 volume driver. Massive demand from Asian couples (China, Korea, Singapore, Taiwan, Hong Kong)</li>
+                <li><strong>Honeymoon photography</strong> &mdash; Strong from Western couples (US, UK, Australia, Europe)</li>
+                <li><strong>Surprise proposals</strong> &mdash; Growing niche, high emotional value = high willingness to pay</li>
+                <li><strong>Destination weddings</strong> &mdash; Lower volume, highest revenue per client</li>
+                <li><strong>Family / vacation portraits</strong> &mdash; Steady, especially families with young children</li>
+                <li><strong>Solo / travel portraits</strong> &mdash; Growing, driven by social media culture</li>
+                <li><strong>Content creation</strong> &mdash; Emerging: influencers, brands wanting Bali-aesthetic content</li>
+                <li><strong>Corporate / industrial</strong> &mdash; Events, retreats, company documentation</li>
+            </ol>
+
+            <div class="sub-section-label">2.3 Seasonality</div>
+            <table class="data-table">
+                <thead><tr><th>Period</th><th>Season</th><th>Demand</th><th>Strategy</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Apr&ndash;Oct</strong></td><td>Dry / Peak</td><td><span class="badge badge--high">Highest</span></td><td>Maximize bookings, premium pricing</td></tr>
+                    <tr><td><strong>Dec&ndash;Jan</strong></td><td>Wet but Holiday Spike</td><td><span class="badge badge--high">High</span></td><td>Target holiday travelers</td></tr>
+                    <tr><td><strong>Jan&ndash;Feb</strong></td><td>CNY Mini-Peak</td><td><span class="badge badge--medium">Medium-High</span></td><td>Target Asian pre-wedding market</td></tr>
+                    <tr><td><strong>Nov, Feb&ndash;Mar</strong></td><td>Low Season</td><td><span class="badge badge--low">Lowest</span></td><td>Discount packages, content creation, portfolio building, review farming</td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label">2.4 Most Popular Locations</div>
+            <ol class="ranked-list">
+                <li><strong>Tegalalang Rice Terraces, Ubud</strong> &mdash; most booked on Flytographer</li>
+                <li><strong>Seminyak Beach</strong> &mdash; sunset sessions</li>
+                <li><strong>Blangsinga Waterfall</strong></li>
+                <li><strong>Ubud Monkey Forest</strong></li>
+                <li><strong>Uluwatu / Jimbaran</strong> &mdash; cliffside, sunset</li>
+                <li><strong>Kintamani / Mount Batur</strong> &mdash; adventure</li>
+                <li><strong>Nusa Penida</strong> &mdash; dramatic cliffs, Diamond Beach</li>
+                <li><strong>Bedugul / Lake Beratan Temple</strong></li>
+                <li><strong>Canggu</strong> &mdash; rice fields + beach</li>
+                <li><strong>Hidden gems</strong> &mdash; Rocana&rsquo;s local knowledge advantage</li>
+            </ol>
+        </div>
+    </section>
+
+    <!-- 03 — COMPETITIVE ANALYSIS -->
+    <section id="competitive" class="section">
+        <div class="container">
+            <span class="section-number">03 &mdash; Competitive Analysis</span>
+            <h2 class="section-title">Know the<br>Competition</h2>
+            <p class="section-subtitle">A detailed breakdown of direct competitors, platform players, and lessons from businesses that have failed in this market.</p>
+
+            <div class="sub-section-label">3.1 Direct Competitors</div>
+
+            <div class="competitor-block">
+                <div class="competitor-header">
+                    <span class="competitor-name">Gusmank Photography</span>
+                    <span class="badge badge--critical">Benchmark</span>
+                </div>
+                <div class="competitor-body">
+                    <table class="data-table"><tbody>
+                        <tr><td>Experience</td><td>15+ years, est. 2010</td></tr>
+                        <tr><td>Team</td><td>3 photographers</td></tr>
+                        <tr><td>Services</td><td>Wedding, elopement, engagement, honeymoon, family, travel &mdash; <strong>photo only</strong></td></tr>
+                        <tr><td>Pricing</td><td>Family from $220, Couple from $350, Wedding from $650, Destination from $2,000</td></tr>
+                        <tr><td>Awards</td><td>Junebug Weddings &ldquo;Best of the Best&rdquo; 2024, Fujifilm X-Photographer</td></tr>
+                        <tr><td>Press</td><td>Style Me Pretty, The Knot, One Fab Day</td></tr>
+                        <tr><td>Platform</td><td>Also listed on Flytographer</td></tr>
+                        <tr><td>Website</td><td>Excellent SEO, location guides, blog content</td></tr>
+                        <tr><td>Weakness</td><td><strong>No video, no drone, no content creation packages</strong></td></tr>
+                    </tbody></table>
+                </div>
+            </div>
+
+            <div class="competitor-block">
+                <div class="competitor-header">
+                    <span class="competitor-name">Bali Pixtura</span>
+                    <span class="badge badge--medium">Established</span>
+                </div>
+                <div class="competitor-body">
+                    <table class="data-table"><tbody>
+                        <tr><td>Experience</td><td>13+ years, est. 2012</td></tr>
+                        <tr><td>Team</td><td>Husband-wife + associate + video team</td></tr>
+                        <tr><td>Services</td><td>Wedding, pre-wedding, family, <strong>underwater photography</strong> (unique)</td></tr>
+                        <tr><td>Pricing</td><td>Inquiry-based (not public)</td></tr>
+                        <tr><td>Platform</td><td>Listed on Flytographer (92 reviews &mdash; most reviewed in Bali)</td></tr>
+                        <tr><td>Weakness</td><td>Less SEO visibility than Gusmank, limited service range</td></tr>
+                    </tbody></table>
+                </div>
+            </div>
+
+            <div class="competitor-block">
+                <div class="competitor-header">
+                    <span class="competitor-name">Flytographer</span>
+                    <span class="badge badge--medium">Platform</span>
+                </div>
+                <div class="competitor-body">
+                    <table class="data-table"><tbody>
+                        <tr><td>Model</td><td>Marketplace, &lt;3% photographer acceptance rate</td></tr>
+                        <tr><td>Bali Pricing</td><td>$325 (30min) &rarr; $425 (60min) &rarr; $590 (90min) &rarr; $715 (2hr)</td></tr>
+                        <tr><td>Bali Photographers</td><td>5 listed (including Gusmank and Bali Pixtura&rsquo;s Bayu)</td></tr>
+                        <tr><td>Strength</td><td>Global brand trust, standardized quality, easy booking, strong SEO</td></tr>
+                        <tr><td>Weakness</td><td><strong>No video, no weddings, no drone.</strong> Global pricing = expensive for Bali.</td></tr>
+                    </tbody></table>
+                </div>
+            </div>
+
+            <div class="competitor-block">
+                <div class="competitor-header">
+                    <span class="competitor-name">Localgrapher</span>
+                    <span class="badge badge--medium">Platform</span>
+                </div>
+                <div class="competitor-body">
+                    <table class="data-table"><tbody>
+                        <tr><td>Model</td><td>Marketplace, claims &ldquo;largest vacation photo company&rdquo;</td></tr>
+                        <tr><td>Pricing</td><td>$280 (30min) &rarr; $390 (60min) &rarr; $550 (100min) &rarr; $630 (120min)</td></tr>
+                        <tr><td>Strength</td><td>Offers videography + photo tours, money-back guarantee</td></tr>
+                        <tr><td>Weakness</td><td>Less brand recognition than Flytographer</td></tr>
+                    </tbody></table>
+                </div>
+            </div>
+
+            <div class="sub-section-label">3.2 Dead / Struggling Competitors</div>
+            <div class="dead-grid">
+                <div class="dead-card">
+                    <div class="dead-card-name">Maxtu Photography</div>
+                    <p class="dead-card-text">Domain for sale ($7,195). Business shut down completely.</p>
+                </div>
+                <div class="dead-card">
+                    <div class="dead-card-name">The Uppermost</div>
+                    <p class="dead-card-text">Website unreachable. Status unclear &mdash; likely ceased operations.</p>
+                </div>
+                <div class="dead-card">
+                    <div class="dead-card-name">Apel Photography</div>
+                    <p class="dead-card-text">Website returning 503 errors. Technical issues or business transition.</p>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <div class="insight-box-label">Insight</div>
+                <p>Even established names fail or struggle. The market rewards <strong>consistent online presence</strong> and <strong>brand maintenance</strong>. A website that goes down or a brand that stops posting is a brand that dies.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 04 — GAP ANALYSIS -->
+    <section id="gap" class="section">
+        <div class="container">
+            <span class="section-number">04 &mdash; Gap Analysis</span>
+            <h2 class="section-title">Where the Market<br>Falls Short</h2>
+            <p class="section-subtitle">Identifying what the market is missing and what competitors do well &mdash; to find Rocana&rsquo;s strategic opportunities.</p>
+
+            <div class="sub-section-label">4.1 What the Market is Missing</div>
+            <table class="data-table">
+                <thead><tr><th>Gap</th><th>Who&rsquo;s Missing It</th><th>Rocana Opportunity</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Photo + Video + Drone in one package</strong></td><td>Everyone. Gusmank = photo only. Flytographer = photo only. Bali Pixtura = photo + some video but no drone.</td><td>Rocana&rsquo;s #1 differentiator. Offer all-in-one creative packages.</td></tr>
+                    <tr><td><strong>Social media content packages</strong></td><td>No studio offers Reels/TikTok-ready vertical video + photo combo</td><td>Create &ldquo;Content Creator&rdquo; package: 30-sec Reel + photos optimized for Instagram</td></tr>
+                    <tr><td><strong>AI-powered booking &amp; planning</strong></td><td>Zero studios have this. All use basic contact forms or platform booking.</td><td>AI chatbot for 24/7 booking + AI shoot planner for location/time/outfit recommendations</td></tr>
+                    <tr><td><strong>Transparent pricing online</strong></td><td>Bali Pixtura = inquiry only. Many studios hide prices.</td><td>Show all prices on website. Tourists hate &ldquo;contact for pricing.&rdquo; Transparency = trust.</td></tr>
+                    <tr><td><strong>Same-day preview delivery</strong></td><td>Standard delivery is 2&ndash;6 weeks everywhere</td><td>Offer 5&ndash;10 &ldquo;sneak peek&rdquo; edited photos within 24 hours for social media posting while still in Bali</td></tr>
+                    <tr><td><strong>Model/talent inclusion</strong></td><td>No studio offers this as a standard add-on</td><td>Offer freelance model as add-on for content creation, fashion, or solo travelers</td></tr>
+                    <tr><td><strong>Low-entry funnel pricing</strong></td><td>Flytographer starts at $325. Gusmank at $220. No premium studio under $100.</td><td>$59 &ldquo;Bali Moment&rdquo; entry package captures budget-conscious tourists, then upsells</td></tr>
+                    <tr><td><strong>Multi-language SEO</strong></td><td>Most studios = English only. Asian market underserved in search.</td><td>Create content in English + Korean + Chinese + Japanese for pre-wedding market</td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label">4.2 What Competitors Do Well</div>
+            <table class="data-table">
+                <thead><tr><th>Competitor</th><th>What They Do Right</th><th>Rocana Should Adopt</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Gusmank</strong></td><td>SEO blog content (location guides, venue guides), award submissions, platform presence</td><td>Build SEO content strategy from day 1. Submit to Junebug, Fearless, etc.</td></tr>
+                    <tr><td><strong>Flytographer</strong></td><td>Curated &ldquo;routes&rdquo; (pre-planned shoot locations), standardized quality, easy UX</td><td>Create Rocana &ldquo;Routes&rdquo; &mdash; pre-designed shoot itineraries for popular locations</td></tr>
+                    <tr><td><strong>Bali Pixtura</strong></td><td>Underwater niche, husband-wife personal brand, Google Reviews (5.0)</td><td>Aggressively collect Google Reviews from every client</td></tr>
+                    <tr><td><strong>Localgrapher</strong></td><td>Money-back guarantee, photography tours</td><td>Consider satisfaction guarantee for entry-level packages</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 05 — SWOT ANALYSIS -->
+    <section id="swot" class="section">
+        <div class="container">
+            <span class="section-number">05 &mdash; SWOT Analysis</span>
+            <h2 class="section-title">Strengths, Weaknesses,<br>Opportunities &amp; Threats</h2>
+            <p class="section-subtitle">A comprehensive assessment of internal capabilities and external factors that will shape Rocana&rsquo;s strategic direction.</p>
+
+            <div class="swot-grid">
+                <div class="swot-card">
+                    <div class="swot-header swot-header--strengths">Strengths</div>
+                    <div class="swot-body">
+                        <table class="data-table"><tbody>
+                            <tr><td>S1</td><td><strong>Full-service: Photo + Video + Drone + Model</strong> &mdash; no competitor offers all four</td></tr>
+                            <tr><td>S2</td><td><strong>Signature editing style</strong> &mdash; earthy/warm Rocana look = instant brand recognition</td></tr>
+                            <tr><td>S3</td><td><strong>Diverse portfolio</strong> &mdash; wedding, couple, family, content, corporate/industrial</td></tr>
+                            <tr><td>S4</td><td><strong>Family team (2 founders)</strong> &mdash; high trust, low overhead, fast coordination</td></tr>
+                            <tr><td>S5</td><td><strong>Deep local knowledge</strong> &mdash; hidden spots, best times, cultural context</td></tr>
+                            <tr><td>S6</td><td><strong>SEO specialist capability</strong> &mdash; can build organic traffic without paid ads</td></tr>
+                            <tr><td>S7</td><td><strong>Digital marketing expertise</strong> &mdash; can execute own marketing, no agency needed</td></tr>
+                            <tr><td>S8</td><td><strong>Tech-savvy</strong> &mdash; can build AI-powered tools that no competitor has</td></tr>
+                        </tbody></table>
+                    </div>
+                </div>
+
+                <div class="swot-card">
+                    <div class="swot-header swot-header--weaknesses">Weaknesses</div>
+                    <div class="swot-body">
+                        <table class="data-table"><tbody>
+                            <tr><td>W1</td><td><strong>No website yet</strong> (building) &mdash; Priority #1: launch MVP within 4&ndash;6 weeks</td></tr>
+                            <tr><td>W2</td><td><strong>No online reviews</strong> &mdash; Aggressively collect from past freelance clients</td></tr>
+                            <tr><td>W3</td><td><strong>No platform presence</strong> (Flytographer, Localgrapher, Google Business)</td></tr>
+                            <tr><td>W4</td><td><strong>Small team (2 people)</strong> &mdash; capacity limited, hire freelance for large events</td></tr>
+                            <tr><td>W5</td><td><strong>No international awards/press</strong> &mdash; Submit to Junebug, Fearless within Year 1</td></tr>
+                            <tr><td>W6</td><td><strong>Brand is new</strong> &mdash; zero recognition. SEO + platforms + reviews = fastest path</td></tr>
+                        </tbody></table>
+                    </div>
+                </div>
+
+                <div class="swot-card">
+                    <div class="swot-header swot-header--opportunities">Opportunities</div>
+                    <div class="swot-body">
+                        <table class="data-table"><tbody>
+                            <tr><td>O1</td><td><strong>Video gap</strong> &mdash; Flytographer/Localgrapher don&rsquo;t offer video</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                            <tr><td>O2</td><td><strong>AI-powered tools</strong> &mdash; no competitor has AI booking/planning</td><td><span class="badge badge--high">High</span></td></tr>
+                            <tr><td>O3</td><td><strong>Social media content packages</strong> &mdash; unserved demand</td><td><span class="badge badge--high">High</span></td></tr>
+                            <tr><td>O4</td><td><strong>Pre-wedding Asian market</strong> &mdash; massive volume, underserved in English SEO</td><td><span class="badge badge--high">High</span></td></tr>
+                            <tr><td>O5</td><td><strong>Same-day sneak peek delivery</strong> &mdash; tourists want to post while in Bali</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                            <tr><td>O6</td><td><strong>Platform listing</strong> &mdash; instant credibility + lead pipeline</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                            <tr><td>O7</td><td><strong>Low-entry funnel</strong> &mdash; $59 hook captures market share from freelancers</td><td><span class="badge badge--high">High</span></td></tr>
+                            <tr><td>O8</td><td><strong>Corporate/industrial</strong> &mdash; existing portfolio, less seasonal</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                            <tr><td>O9</td><td><strong>Multi-language SEO</strong> &mdash; Korean, Chinese, Japanese content</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                            <tr><td>O10</td><td><strong>Drone aerial as standard</strong> &mdash; most charge extra or don&rsquo;t offer</td><td><span class="badge badge--high">High</span></td></tr>
+                        </tbody></table>
+                    </div>
+                </div>
+
+                <div class="swot-card">
+                    <div class="swot-header swot-header--threats">Threats</div>
+                    <div class="swot-body">
+                        <table class="data-table"><tbody>
+                            <tr><td>T1</td><td><strong>Freelancer price war</strong> &mdash; $30&ndash;50 photographers flooding market</td><td><span class="badge badge--high">High</span></td></tr>
+                            <tr><td>T2</td><td><strong>Platform commission</strong> &mdash; 25&ndash;40% cut from Flytographer/Localgrapher</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                            <tr><td>T3</td><td><strong>Seasonality</strong> &mdash; Nov&ndash;Mar demand drops significantly</td><td><span class="badge badge--high">High</span></td></tr>
+                            <tr><td>T4</td><td><strong>Established competitors</strong> &mdash; Gusmank has 15 years + awards</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                            <tr><td>T5</td><td><strong>Drone regulations</strong> &mdash; some locations restrict drone use</td><td><span class="badge badge--low">Low</span></td></tr>
+                            <tr><td>T6</td><td><strong>Economic downturn</strong> &mdash; tourism drops affect all players</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                        </tbody></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 06 — POSITIONING & VALUE PROPOSITION -->
+    <section id="positioning" class="section">
+        <div class="container">
+            <span class="section-number">06 &mdash; Positioning &amp; Value Proposition</span>
+            <h2 class="section-title">Where Rocana<br>Stands</h2>
+            <p class="section-subtitle">Defining the strategic position in the market, the unique value proposition, and the key differentiators that set Rocana apart from every competitor.</p>
+
+            <div class="blockquote">
+                <p><strong>Rocana.Studio</strong> is the only Bali photography studio that delivers <strong>photo, cinematic video, and aerial drone content in one seamless experience</strong> &mdash; powered by AI-assisted planning and a signature earthy visual style that captures the soul of the island.</p>
+            </div>
+
+            <div class="sub-section-label">6.2 Positioning Map</div>
+            <div class="positioning-map">
+                <span class="map-label map-label--top">Premium Price</span>
+                <span class="map-label map-label--bottom">Budget Price</span>
+                <span class="map-label map-label--left">Platform</span>
+                <span class="map-label map-label--right">Direct / Brand</span>
+                <span class="map-point" style="top: 22%; right: 28%;">Gusmank (photo only, awards)</span>
+                <span class="map-point" style="top: 28%; right: 22%;">Bali Pixtura (photo + some video)</span>
+                <span class="map-point" style="top: 25%; left: 18%;">Flytographer (platform, photo)</span>
+                <span class="map-point" style="top: 48%; left: 18%;">Localgrapher (platform, photo+vid)</span>
+                <span class="map-point" style="bottom: 22%; left: 22%;">Airbnb Experiences</span>
+                <span class="map-point" style="bottom: 18%; right: 25%;">Local freelancers</span>
+                <span class="map-point map-point--rocana" style="top: 38%; left: 50%; transform: translateX(-50%);">Rocana Target Zone</span>
+            </div>
+            <p style="font-size: 14px; color: var(--text-muted); line-height: 1.7; margin-top: var(--space-md);">
+                <strong>Rocana sits in the &ldquo;high value, mid-premium&rdquo; zone</strong> &mdash; offering MORE than premium competitors (video + drone + AI) at a LOWER entry price ($59 hook), with the ability to upsell to premium pricing ($400&ndash;800+) for full packages.
+            </p>
+
+            <div class="sub-section-label">6.3 Unique Value Proposition</div>
+            <div class="uvp-display">
+                <p class="uvp-text">&ldquo;Photo. Video. Aerial. One Studio. One Story.&rdquo;</p>
+                <p class="uvp-expanded">Most Bali photographers give you photos. We give you the complete story &mdash; cinematic video, breathtaking aerial drone footage, and stunning photography, all in one session, all with our signature warm Bali aesthetic. Plan your shoot in minutes with our AI assistant. Prices start from $59.</p>
+            </div>
+
+            <div class="sub-section-label">6.4 Key Differentiators</div>
+            <table class="check-table">
+                <thead><tr><th>Differentiator</th><th>Rocana</th><th>Gusmank</th><th>Flytographer</th><th>Bali Pixtura</th><th>Freelancers</th></tr></thead>
+                <tbody>
+                    <tr><td>Photography</td><td><span class="check-yes">Yes</span></td><td><span class="check-yes">Yes</span></td><td><span class="check-yes">Yes</span></td><td><span class="check-yes">Yes</span></td><td><span class="check-yes">Yes</span></td></tr>
+                    <tr><td>Cinematic Video</td><td><span class="check-yes">Yes</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-partial">Partial</span></td><td><span class="check-partial">Rare</span></td></tr>
+                    <tr><td>Drone Aerial</td><td><span class="check-yes">Yes</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-partial">Rare</span></td></tr>
+                    <tr><td>Model / Talent</td><td><span class="check-yes">Yes</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td></tr>
+                    <tr><td>AI Booking Assistant</td><td><span class="check-yes">Yes</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td></tr>
+                    <tr><td>AI Shoot Planner</td><td><span class="check-yes">Yes</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td></tr>
+                    <tr><td>Same-day Sneak Peek</td><td><span class="check-yes">Yes</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-partial">Rare</span></td></tr>
+                    <tr><td>Entry price under $100</td><td><span class="check-yes">Yes ($59)</span></td><td><span class="check-no">No ($220)</span></td><td><span class="check-no">No ($325)</span></td><td><span class="check-no">No (inquiry)</span></td><td><span class="check-yes">Yes</span></td></tr>
+                    <tr><td>Corporate / Industrial</td><td><span class="check-yes">Yes</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-no">No</span></td><td><span class="check-partial">Some</span></td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 07 — SERVICE PACKAGES & PRICING -->
+    <section id="packages" class="section">
+        <div class="container">
+            <span class="section-number">07 &mdash; Service Packages &amp; Pricing</span>
+            <h2 class="section-title">The Pricing<br>Architecture</h2>
+            <p class="section-subtitle">A strategic funnel-based pricing model designed to capture volume at the entry level and maximize revenue through upselling to premium packages.</p>
+
+            <div class="sub-section-label">7.1 The Funnel</div>
+            <div class="funnel">
+                <div class="funnel-step"><div class="funnel-price">$59</div><div class="funnel-label">Hook</div><div class="funnel-sublabel">(volume)</div></div>
+                <div class="funnel-arrow">&rarr;</div>
+                <div class="funnel-step"><div class="funnel-price">$149&ndash;249</div><div class="funnel-label">Sweet Spot</div><div class="funnel-sublabel">(main revenue)</div></div>
+                <div class="funnel-arrow">&rarr;</div>
+                <div class="funnel-step"><div class="funnel-price">$399&ndash;799</div><div class="funnel-label">Premium</div><div class="funnel-sublabel">(high margin)</div></div>
+                <div class="funnel-arrow">&rarr;</div>
+                <div class="funnel-step"><div class="funnel-price">$1,200+</div><div class="funnel-label">Luxury</div><div class="funnel-sublabel">(weddings)</div></div>
+            </div>
+
+            <div class="sub-section-label">7.2 Package Structure</div>
+            <div class="package-grid">
+                <div class="package-card">
+                    <div class="package-header package-header--t1"><div class="package-tier">Tier 1</div><div class="package-name">Bali Moment</div><div class="package-tagline">The hook. Gets them in the door.</div><div class="package-price">$59</div></div>
+                    <div class="package-body"><table class="data-table"><tbody>
+                        <tr><td>Duration</td><td>30 minutes</td></tr>
+                        <tr><td>Team</td><td>1 photographer</td></tr>
+                        <tr><td>Deliverables</td><td>15 edited photos, private online gallery</td></tr>
+                        <tr><td>Delivery</td><td>7 business days</td></tr>
+                        <tr><td>Locations</td><td>1 location (from curated route list)</td></tr>
+                        <tr><td>Best for</td><td>Solo travelers, quick couple shots, &ldquo;try before you buy&rdquo;</td></tr>
+                    </tbody></table></div>
+                </div>
+
+                <div class="package-card">
+                    <div class="package-header package-header--t2"><div class="package-tier">Tier 2</div><div class="package-name">Golden Hour</div><div class="package-tagline">The sweet spot. Best value.</div><div class="package-price">$149</div></div>
+                    <div class="package-body"><table class="data-table"><tbody>
+                        <tr><td>Duration</td><td>1 hour</td></tr>
+                        <tr><td>Team</td><td>1 photographer</td></tr>
+                        <tr><td>Deliverables</td><td>40 edited photos, private online gallery</td></tr>
+                        <tr><td>Delivery</td><td>5 business days</td></tr>
+                        <tr><td>Bonus</td><td>5 sneak peek photos within 24 hours</td></tr>
+                        <tr><td>Locations</td><td>1&ndash;2 locations</td></tr>
+                    </tbody></table></div>
+                </div>
+
+                <div class="package-card">
+                    <div class="package-header package-header--t3"><div class="package-tier">Tier 3</div><div class="package-name">Island Story</div><div class="package-tagline">Photo + Video combo. The differentiator.</div><div class="package-price">$249</div></div>
+                    <div class="package-body"><table class="data-table"><tbody>
+                        <tr><td>Duration</td><td>2 hours</td></tr>
+                        <tr><td>Team</td><td>1 photographer + 1 videographer</td></tr>
+                        <tr><td>Deliverables</td><td>60 edited photos + 60-second cinematic highlight video</td></tr>
+                        <tr><td>Delivery</td><td>7 days (photos), 14 days (video)</td></tr>
+                        <tr><td>Bonus</td><td>10 sneak peek photos within 24 hours</td></tr>
+                        <tr><td>Locations</td><td>2&ndash;3 locations</td></tr>
+                    </tbody></table></div>
+                </div>
+
+                <div class="package-card">
+                    <div class="package-header package-header--t4"><div class="package-tier">Tier 4</div><div class="package-name">Soul Cinema</div><div class="package-tagline">The flagship. Full creative experience.</div><div class="package-price">$399</div></div>
+                    <div class="package-body"><table class="data-table"><tbody>
+                        <tr><td>Duration</td><td>3 hours</td></tr>
+                        <tr><td>Team</td><td>1 photographer + 1 videographer + drone operator</td></tr>
+                        <tr><td>Deliverables</td><td>80 edited photos + 90s cinematic video + 30s Reel + drone aerial footage</td></tr>
+                        <tr><td>Delivery</td><td>7 days (photos), 14 days (video)</td></tr>
+                        <tr><td>Bonus</td><td>15 sneak peek photos within 24 hours</td></tr>
+                        <tr><td>Locations</td><td>3&ndash;4 locations (curated route)</td></tr>
+                    </tbody></table></div>
+                </div>
+
+                <div class="package-card">
+                    <div class="package-header package-header--t5"><div class="package-tier">Tier 5</div><div class="package-name">Eternal</div><div class="package-tagline">Half-day premium. For those who want everything.</div><div class="package-price">$799</div></div>
+                    <div class="package-body"><table class="data-table"><tbody>
+                        <tr><td>Duration</td><td>6 hours (half day)</td></tr>
+                        <tr><td>Team</td><td>2 photographers + 1 videographer + drone operator</td></tr>
+                        <tr><td>Deliverables</td><td>150+ edited photos + 3-min cinematic film + 3x Reels + drone footage + BTS content</td></tr>
+                        <tr><td>Delivery</td><td>10 days (photos), 21 days (video)</td></tr>
+                        <tr><td>Bonus</td><td>20 sneak peek photos within 24 hours, outfit change assistance, location scouting</td></tr>
+                        <tr><td>Locations</td><td>Unlimited within area</td></tr>
+                    </tbody></table></div>
+                </div>
+
+                <div class="package-card">
+                    <div class="package-header package-header--t6"><div class="package-tier">Tier 6</div><div class="package-name">Wedding</div><div class="package-tagline">Intimate to grand celebrations.</div><div class="package-price">From $1,200</div></div>
+                    <div class="package-body"><table class="data-table">
+                        <thead><tr><th>Package</th><th>Duration</th><th>Team</th><th>Price</th></tr></thead>
+                        <tbody>
+                            <tr><td><strong>Intimate</strong></td><td>4 hours</td><td>1 photo + 1 video</td><td><strong>$1,200</strong></td></tr>
+                            <tr><td><strong>Classic</strong></td><td>8 hours</td><td>2 photo + 1 video + drone</td><td><strong>$2,200</strong></td></tr>
+                            <tr><td><strong>Grand</strong></td><td>12 hours</td><td>2 photo + 2 video + drone</td><td><strong>$3,500</strong></td></tr>
+                        </tbody>
+                    </table></div>
+                </div>
+            </div>
+
+            <div class="sub-section-label">7.3 Add-Ons Menu</div>
+            <table class="data-table">
+                <thead><tr><th>Add-On</th><th>Price</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Extra 30 minutes</strong></td><td>+$50</td><td>Any package</td></tr>
+                    <tr><td><strong>Drone aerial footage</strong></td><td>+$75</td><td>If not included in package</td></tr>
+                    <tr><td><strong>Cinematic video (60s)</strong></td><td>+$100</td><td>Add to photo-only packages</td></tr>
+                    <tr><td><strong>Reel/TikTok edit (30s)</strong></td><td>+$50</td><td>Vertical, music, trending format</td></tr>
+                    <tr><td><strong>Professional model/talent</strong></td><td>+$150</td><td>Per model, per session</td></tr>
+                    <tr><td><strong>Professional MUA + hair</strong></td><td>+$120</td><td>Licensed makeup artist</td></tr>
+                    <tr><td><strong>Rush delivery (48 hours)</strong></td><td>+$100</td><td>Photos only</td></tr>
+                    <tr><td><strong>Same-day edit (1 photo)</strong></td><td>+$25</td><td>For immediate social posting</td></tr>
+                    <tr><td><strong>Extra location (transport)</strong></td><td>+$30&ndash;75</td><td>Depends on distance</td></tr>
+                    <tr><td><strong>Raw/unedited files</strong></td><td>+$50</td><td>All original files</td></tr>
+                    <tr><td><strong>Fine art album (20 pages)</strong></td><td>+$250</td><td>Premium printed album</td></tr>
+                    <tr><td><strong>Second photographer</strong></td><td>+$150</td><td>For larger events</td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label">7.4 Pricing Comparison vs. Competitors</div>
+            <table class="data-table">
+                <thead><tr><th>Service</th><th>Rocana</th><th>Gusmank</th><th>Flytographer</th><th>Localgrapher</th></tr></thead>
+                <tbody>
+                    <tr><td>30-min photo session</td><td><strong>$59</strong></td><td>N/A</td><td>$325</td><td>$280</td></tr>
+                    <tr><td>1-hour photo session</td><td><strong>$149</strong></td><td>$220 (family)</td><td>$425</td><td>$390</td></tr>
+                    <tr><td>2-hour photo + video</td><td><strong>$249</strong></td><td>N/A (no video)</td><td>N/A (no video)</td><td>~$500+</td></tr>
+                    <tr><td>3-hour photo + video + drone</td><td><strong>$399</strong></td><td>N/A</td><td>N/A</td><td>N/A</td></tr>
+                    <tr><td>Half-day premium</td><td><strong>$799</strong></td><td>~$500+</td><td>$715 (2hr photo only)</td><td>$630 (2hr photo only)</td></tr>
+                    <tr><td>Wedding (8 hours)</td><td><strong>$2,200</strong></td><td>$650+ (photo only)</td><td>N/A</td><td>N/A</td></tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <div class="insight-box-label">Key Insight</div>
+                <p>Rocana offers <strong>MORE</strong> (photo + video + drone) for <strong>LESS</strong> than what Flytographer charges for photos alone. This is the core competitive advantage.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 08 — REVENUE MODEL -->
+    <section id="revenue" class="section">
+        <div class="container">
+            <span class="section-number">08 &mdash; Revenue Model</span>
+            <h2 class="section-title">The Numbers Behind<br>the Vision</h2>
+            <p class="section-subtitle">Revenue streams, projections, and cost structure for the first three years of operation.</p>
+
+            <div class="sub-section-label">8.1 Revenue Streams</div>
+            <table class="data-table">
+                <thead><tr><th>Stream</th><th>Year 1 %</th><th>Year 3 %</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Direct bookings (website)</strong></td><td>30%</td><td>50%</td></tr>
+                    <tr><td><strong>Platform bookings (Flytographer, Localgrapher)</strong></td><td>30%</td><td>15%</td></tr>
+                    <tr><td><strong>Referrals (hotels, villas, wedding planners)</strong></td><td>20%</td><td>20%</td></tr>
+                    <tr><td><strong>Corporate / industrial</strong></td><td>10%</td><td>10%</td></tr>
+                    <tr><td><strong>Add-on upsells</strong></td><td>10%</td><td>5%</td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label">8.2 Year 1 Revenue Projection (Conservative)</div>
+            <table class="data-table">
+                <thead><tr><th>Quarter</th><th>Avg Bookings/Month</th><th>Avg Revenue/Booking</th><th>Monthly Revenue</th><th>Quarterly</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Q1 (Launch)</strong></td><td>8</td><td>$150</td><td>$1,200</td><td>$3,600</td></tr>
+                    <tr><td><strong>Q2 (Building)</strong></td><td>15</td><td>$180</td><td>$2,700</td><td>$8,100</td></tr>
+                    <tr><td><strong>Q3 (Peak season)</strong></td><td>25</td><td>$220</td><td>$5,500</td><td>$16,500</td></tr>
+                    <tr><td><strong>Q4 (Established)</strong></td><td>20</td><td>$250</td><td>$5,000</td><td>$15,000</td></tr>
+                    <tr><td><strong>Year 1 Total</strong></td><td></td><td></td><td></td><td><strong>$43,200</strong></td></tr>
+                </tbody>
+            </table>
+
+            <div class="card-grid">
+                <div class="revenue-card">
+                    <div class="revenue-card-label">With Weddings Added</div>
+                    <div class="revenue-card-value">$57,600 &ndash; $64,800</div>
+                    <p class="revenue-card-text">Adding 8&ndash;12 weddings per year at $1,800 average revenue adds $14,400&ndash;$21,600 to the base projection.</p>
+                </div>
+                <div class="revenue-card">
+                    <div class="revenue-card-label">Year 3 Target</div>
+                    <div class="revenue-card-value">$218,000 &ndash; $285,000</div>
+                    <p class="revenue-card-text">40&ndash;50 monthly bookings at $350 average, plus 20&ndash;30 weddings per year at $2,500 average revenue.</p>
+                </div>
+            </div>
+
+            <div class="sub-section-label">8.4 Cost Structure</div>
+            <table class="data-table">
+                <thead><tr><th>Cost Category</th><th>Monthly (Year 1)</th><th>Notes</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Equipment maintenance</strong></td><td>$100</td><td>Camera, drone, lenses</td></tr>
+                    <tr><td><strong>Transportation</strong></td><td>$200</td><td>Fuel, bike/car rental</td></tr>
+                    <tr><td><strong>Software (editing, CRM, hosting)</strong></td><td>$100</td><td>Lightroom, Premiere, website</td></tr>
+                    <tr><td><strong>Platform commissions</strong></td><td>~25&ndash;35% of platform bookings</td><td>Flytographer/Localgrapher cut</td></tr>
+                    <tr><td><strong>Freelance talent (as needed)</strong></td><td>$150&ndash;300/event</td><td>2nd photographer, model, MUA</td></tr>
+                    <tr><td><strong>Marketing (initial)</strong></td><td>$200</td><td>Google Ads, social media boost</td></tr>
+                    <tr><td><strong>Insurance</strong></td><td>$50</td><td>Equipment + liability</td></tr>
+                    <tr><td><strong>Total fixed monthly</strong></td><td><strong>~$650&ndash;800</strong></td><td>Before freelance costs</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- 09 — GROWTH STRATEGY & ROADMAP -->
+    <section id="roadmap" class="section">
+        <div class="container">
+            <span class="section-number">09 &mdash; Growth Strategy &amp; Roadmap</span>
+            <h2 class="section-title">From Launch<br>to Authority</h2>
+            <p class="section-subtitle">A phased approach to building Rocana.Studio from a new brand to a recognized authority in Bali&rsquo;s photography market.</p>
+
+            <div class="timeline">
+                <!-- Phase 1 -->
+                <div class="timeline-phase">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">Phase 1 &mdash; Month 1&ndash;3</div>
+                    <div class="timeline-title">Foundation</div>
+                    <p class="timeline-goal">Goal: Launch brand, build online presence, get first 20 reviews.</p>
+                    <table class="data-table">
+                        <thead><tr><th>Action</th><th>Priority</th><th>Timeline</th></tr></thead>
+                        <tbody>
+                            <tr><td>Launch website (MVP) with AI booking assistant</td><td><span class="badge badge--critical">Critical</span></td><td>Week 1&ndash;4</td></tr>
+                            <tr><td>Set up Google Business Profile</td><td><span class="badge badge--critical">Critical</span></td><td>Week 1</td></tr>
+                            <tr><td>Apply to Flytographer</td><td><span class="badge badge--critical">Critical</span></td><td>Week 2</td></tr>
+                            <tr><td>Apply to Localgrapher</td><td><span class="badge badge--critical">Critical</span></td><td>Week 2</td></tr>
+                            <tr><td>Create Instagram content strategy (3x/week)</td><td><span class="badge badge--high">High</span></td><td>Week 1</td></tr>
+                            <tr><td>Contact past freelance clients for Google Reviews</td><td><span class="badge badge--high">High</span></td><td>Week 1&ndash;2</td></tr>
+                            <tr><td>List on TripAdvisor, Yelp</td><td><span class="badge badge--medium">Medium</span></td><td>Week 3</td></tr>
+                            <tr><td>Create 5 SEO blog posts (location guides)</td><td><span class="badge badge--high">High</span></td><td>Week 2&ndash;6</td></tr>
+                            <tr><td>Set up booking/CRM system</td><td><span class="badge badge--high">High</span></td><td>Week 2&ndash;4</td></tr>
+                            <tr><td>Offer &ldquo;Bali Moment&rdquo; $59 package to first 20 clients at $39 (launch promo)</td><td><span class="badge badge--high">High</span></td><td>Month 2&ndash;3</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Phase 2 -->
+                <div class="timeline-phase">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">Phase 2 &mdash; Month 4&ndash;6</div>
+                    <div class="timeline-title">Traction</div>
+                    <p class="timeline-goal">Goal: Reach 15+ bookings/month, 50+ reviews, page 1 Google for key terms.</p>
+                    <table class="data-table">
+                        <thead><tr><th>Action</th><th>Priority</th><th>Timeline</th></tr></thead>
+                        <tbody>
+                            <tr><td>Publish 2 SEO articles per week</td><td><span class="badge badge--high">High</span></td><td>Ongoing</td></tr>
+                            <tr><td>Build referral network: 10 hotels/villas, 5 wedding planners</td><td><span class="badge badge--high">High</span></td><td>Month 4&ndash;5</td></tr>
+                            <tr><td>Launch &ldquo;Island Story&rdquo; (photo+video) as hero package</td><td><span class="badge badge--high">High</span></td><td>Month 4</td></tr>
+                            <tr><td>Submit portfolio to Junebug Weddings, Fearless Photographers</td><td><span class="badge badge--medium">Medium</span></td><td>Month 5</td></tr>
+                            <tr><td>Create Korean/Chinese landing pages for pre-wedding market</td><td><span class="badge badge--medium">Medium</span></td><td>Month 6</td></tr>
+                            <tr><td>Introduce &ldquo;Soul Cinema&rdquo; drone package</td><td><span class="badge badge--high">High</span></td><td>Month 5</td></tr>
+                            <tr><td>A/B test pricing on website</td><td><span class="badge badge--medium">Medium</span></td><td>Month 4&ndash;6</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Phase 3 -->
+                <div class="timeline-phase">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">Phase 3 &mdash; Month 7&ndash;12</div>
+                    <div class="timeline-title">Scale</div>
+                    <p class="timeline-goal">Goal: Reach 25+ bookings/month, establish as top-5 Bali photography brand in search.</p>
+                    <table class="data-table">
+                        <thead><tr><th>Action</th><th>Priority</th><th>Timeline</th></tr></thead>
+                        <tbody>
+                            <tr><td>Hire 1 freelance photographer (on-call)</td><td><span class="badge badge--high">High</span></td><td>Month 7</td></tr>
+                            <tr><td>Launch wedding packages</td><td><span class="badge badge--high">High</span></td><td>Month 7</td></tr>
+                            <tr><td>Build YouTube channel (behind-the-scenes, Bali guides)</td><td><span class="badge badge--medium">Medium</span></td><td>Month 8</td></tr>
+                            <tr><td>Develop corporate/industrial service page</td><td><span class="badge badge--medium">Medium</span></td><td>Month 9</td></tr>
+                            <tr><td>Explore Airbnb Experiences listing</td><td><span class="badge badge--low">Low</span></td><td>Month 10</td></tr>
+                            <tr><td>Introduce fine art album product</td><td><span class="badge badge--low">Low</span></td><td>Month 11</td></tr>
+                            <tr><td>Year 1 review: adjust pricing, packages, strategy</td><td><span class="badge badge--critical">Critical</span></td><td>Month 12</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Phase 4 -->
+                <div class="timeline-phase">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-label">Phase 4 &mdash; Year 2&ndash;3</div>
+                    <div class="timeline-title">Authority</div>
+                    <p class="timeline-goal">Goal: Become the recognized leader in full-service creative photography in Bali.</p>
+                    <table class="data-table">
+                        <thead><tr><th>Action</th><th>Timeline</th></tr></thead>
+                        <tbody>
+                            <tr><td>Hire 2nd full-time team member</td><td>Year 2 Q1</td></tr>
+                            <tr><td>Launch Rocana Academy (photography workshops for tourists)</td><td>Year 2 Q2</td></tr>
+                            <tr><td>Expand to Lombok, Nusa Penida as &ldquo;destinations&rdquo;</td><td>Year 2 Q3</td></tr>
+                            <tr><td>Build affiliate/referral program with commission</td><td>Year 2</td></tr>
+                            <tr><td>Target international press features</td><td>Year 2&ndash;3</td></tr>
+                            <tr><td>Consider franchise model for other Indonesian destinations</td><td>Year 3</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 10 — AI-POWERED DIFFERENTIATOR -->
+    <section id="ai" class="section">
+        <div class="container">
+            <span class="section-number">10 &mdash; AI-Powered Differentiator</span>
+            <h2 class="section-title">The Innovation<br>Moat</h2>
+            <p class="section-subtitle">AI-powered tools that no competitor in Bali offers &mdash; creating a technology moat that is difficult to replicate.</p>
+
+            <div class="ai-grid">
+                <div class="ai-card">
+                    <div class="ai-card-header"><h3>10.1 AI Booking Assistant</h3></div>
+                    <div class="ai-card-body">
+                        <h4>What It Does</h4>
+                        <ul>
+                            <li>24/7 chatbot on website (WhatsApp integration optional)</li>
+                            <li>Answers FAQs: pricing, availability, locations, weather</li>
+                            <li>Guides client through package selection based on their needs</li>
+                            <li>Handles booking flow: date selection &rarr; package &rarr; add-ons &rarr; payment</li>
+                            <li>Sends confirmation + pre-shoot questionnaire automatically</li>
+                            <li>Follows up post-shoot for reviews</li>
+                        </ul>
+                        <h4>Why It Matters</h4>
+                        <ul>
+                            <li>Tourists browse at all hours (different time zones)</li>
+                            <li>Reduces response time from hours to seconds</li>
+                            <li>Professional impression &mdash; &ldquo;this studio has their act together&rdquo;</li>
+                            <li>No competitor in Bali has this</li>
+                        </ul>
+                        <h4>Tech Stack</h4>
+                        <ul>
+                            <li>Website chatbot (Tidio, Crisp, or custom)</li>
+                            <li>Connected to booking calendar (Calendly or custom)</li>
+                            <li>AI powered by GPT/Claude API with Rocana-specific knowledge base</li>
+                            <li>WhatsApp Business API for direct messaging</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="ai-card">
+                    <div class="ai-card-header"><h3>10.2 AI Shoot Planner</h3></div>
+                    <div class="ai-card-body">
+                        <h4>What It Does</h4>
+                        <ul>
+                            <li>Client inputs: date, time preference, group size, style preference, occasion</li>
+                            <li>Recommends <strong>best locations</strong> based on time of day, weather forecast, crowd levels</li>
+                            <li>Calculates <strong>optimal timing</strong> for golden hour at specific locations</li>
+                            <li>Suggests <strong>outfit colors</strong> based on location palette and brand aesthetic</li>
+                            <li>Generates a visual &ldquo;shoot plan&rdquo; PDF with route plan and weather backup alternatives</li>
+                        </ul>
+                        <h4>Why It Matters</h4>
+                        <ul>
+                            <li>Reduces pre-shoot planning time for the team</li>
+                            <li>Impresses clients with professionalism</li>
+                            <li>Creates a &ldquo;wow&rdquo; moment before the shoot even starts</li>
+                            <li>Increases confidence in booking (reduces cancellations)</li>
+                            <li>No competitor offers anything remotely like this</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="blockquote">
+                <p>&ldquo;Your AI-powered shoot planner will design the perfect Bali photography experience &mdash; from golden hour timing to outfit colors that complement the rice terraces.&rdquo;</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 11 — MARKETING & ACQUISITION STRATEGY -->
+    <section id="marketing" class="section">
+        <div class="container">
+            <span class="section-number">11 &mdash; Marketing &amp; Acquisition Strategy</span>
+            <h2 class="section-title">Reaching the<br>Right Clients</h2>
+            <p class="section-subtitle">A multi-channel acquisition strategy with SEO as the primary driver, supported by social media, referral networks, and platform listings.</p>
+
+            <div class="sub-section-label">11.1 SEO Strategy (Primary Channel)</div>
+            <table class="data-table">
+                <thead><tr><th>Keyword Cluster</th><th>Search Intent</th><th>Priority</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>&ldquo;bali photographer&rdquo; / &ldquo;photographer in bali&rdquo;</strong></td><td>High intent, high volume</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                    <tr><td><strong>&ldquo;bali wedding photographer&rdquo;</strong></td><td>High intent, high value</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                    <tr><td><strong>&ldquo;bali pre-wedding photographer&rdquo;</strong></td><td>High intent, Asian market</td><td><span class="badge badge--high">High</span></td></tr>
+                    <tr><td><strong>&ldquo;bali honeymoon photographer&rdquo;</strong></td><td>High intent, Western market</td><td><span class="badge badge--high">High</span></td></tr>
+                    <tr><td><strong>&ldquo;bali couple photoshoot&rdquo;</strong></td><td>High intent</td><td><span class="badge badge--high">High</span></td></tr>
+                    <tr><td><strong>&ldquo;bali family photographer&rdquo;</strong></td><td>Medium intent</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                    <tr><td><strong>&ldquo;best photo spots in bali&rdquo;</strong></td><td>Informational, top-of-funnel</td><td><span class="badge badge--high">High</span></td></tr>
+                    <tr><td><strong>&ldquo;bali photography packages price&rdquo;</strong></td><td>Transactional</td><td><span class="badge badge--critical">Critical</span></td></tr>
+                    <tr><td><strong>&ldquo;bali videographer&rdquo;</strong></td><td>High intent, low competition</td><td><span class="badge badge--high">High</span></td></tr>
+                    <tr><td><strong>&ldquo;bali drone photography&rdquo;</strong></td><td>Niche, low competition</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                    <tr><td><strong>&ldquo;bali content creator photographer&rdquo;</strong></td><td>Emerging</td><td><span class="badge badge--medium">Medium</span></td></tr>
+                </tbody>
+            </table>
+
+            <div style="margin-top: var(--space-xl);">
+                <div class="sub-section-label" style="margin-top: 0;">Content Strategy</div>
+                <table class="data-table">
+                    <thead><tr><th>Content Type</th><th>Frequency</th><th>Purpose</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Location guides</strong> (&ldquo;Best Photo Spots in Ubud&rdquo;)</td><td>2x/week</td><td>SEO traffic, showcase expertise</td></tr>
+                        <tr><td><strong>Client stories</strong> (mini case studies)</td><td>1x/week</td><td>Social proof, long-tail SEO</td></tr>
+                        <tr><td><strong>&ldquo;What to Wear&rdquo; guides</strong></td><td>1x/month</td><td>Helpful content, outfit planning</td></tr>
+                        <tr><td><strong>Pricing transparency pages</strong></td><td>Evergreen</td><td>Capture &ldquo;price&rdquo; searches</td></tr>
+                        <tr><td><strong>Bali travel tips</strong> (related)</td><td>1x/month</td><td>Top-of-funnel traffic</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="sub-section-label">11.2 Social Media</div>
+            <div class="social-grid">
+                <div class="social-card">
+                    <div class="social-card-platform">Instagram</div>
+                    <div class="social-card-role">Primary</div>
+                    <p>3&ndash;4 posts/week: portfolio shots with storytelling captions</p>
+                    <p>3&ndash;5 Reels/week: behind-the-scenes, location reveals, before/after edits</p>
+                    <p>Stories daily: real-time shoots, polls, Q&amp;A</p>
+                    <p>Consistent warm/earthy color grading per brand guidelines</p>
+                </div>
+                <div class="social-card">
+                    <div class="social-card-platform">TikTok</div>
+                    <div class="social-card-role">Secondary</div>
+                    <p>Repurpose Reels content</p>
+                    <p>Focus on &ldquo;satisfying&rdquo; editing transformations</p>
+                    <p>Location reveal videos (&ldquo;POV: shooting at a hidden waterfall in Bali&rdquo;)</p>
+                </div>
+                <div class="social-card">
+                    <div class="social-card-platform">Pinterest</div>
+                    <div class="social-card-role">SEO Play</div>
+                    <p>Pin every blog post and portfolio image</p>
+                    <p>Target &ldquo;Bali wedding inspiration&rdquo;, &ldquo;Bali photo ideas&rdquo; boards</p>
+                    <p>Long-tail traffic driver</p>
+                </div>
+            </div>
+
+            <div class="sub-section-label">11.3 Referral Network</div>
+            <table class="data-table">
+                <thead><tr><th>Partner Type</th><th>Value Exchange</th><th>Target</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Hotels &amp; villas</strong></td><td>Commission per referral (10&ndash;15%) or free lobby photos</td><td>10 properties in Year 1</td></tr>
+                    <tr><td><strong>Wedding planners</strong></td><td>Commission (10&ndash;15%) or preferred vendor status</td><td>5 planners in Year 1</td></tr>
+                    <tr><td><strong>Tour operators</strong></td><td>Cross-promotion, combo packages</td><td>3 operators in Year 1</td></tr>
+                    <tr><td><strong>MUA / stylists</strong></td><td>Mutual referral, portfolio collaboration</td><td>3&ndash;5 freelancers</td></tr>
+                    <tr><td><strong>Travel bloggers</strong></td><td>Free session in exchange for review/feature</td><td>2&ndash;3 per quarter</td></tr>
+                </tbody>
+            </table>
+
+            <div class="sub-section-label">11.4 Platform Strategy</div>
+            <table class="data-table">
+                <thead><tr><th>Platform</th><th>Purpose</th><th>Priority</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Flytographer</strong></td><td>Credibility + reviews + international leads</td><td>Apply Month 1</td></tr>
+                    <tr><td><strong>Localgrapher</strong></td><td>Additional lead source</td><td>Apply Month 1</td></tr>
+                    <tr><td><strong>Google Business</strong></td><td>Local SEO + reviews</td><td>Set up Week 1</td></tr>
+                    <tr><td><strong>TripAdvisor</strong></td><td>Tourist discovery</td><td>Set up Month 1</td></tr>
+                    <tr><td><strong>Airbnb Experiences</strong></td><td>Budget tier lead gen</td><td>Consider Month 6+</td></tr>
+                    <tr><td><strong>The Knot / WeddingWire</strong></td><td>Wedding market</td><td>Consider Month 6+</td></tr>
+                </tbody>
+            </table>
+
+            <div class="insight-box">
+                <div class="insight-box-label">Platform vs. Direct Strategy</div>
+                <p>Use platforms to build initial reviews and credibility (accept the commission hit). Simultaneously build direct booking through website SEO. <strong>Goal: shift from 50/50 platform/direct to 20/80 by Year 3.</strong> Every platform client gets a business card with &ldquo;Book direct next time for 10% off.&rdquo;</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 12 — RISK MITIGATION -->
+    <section id="risk" class="section">
+        <div class="container">
+            <span class="section-number">12 &mdash; Risk Mitigation</span>
+            <h2 class="section-title">Preparing for<br>the Unexpected</h2>
+            <p class="section-subtitle">Identifying potential risks and proactive mitigation strategies to ensure business resilience.</p>
+
+            <table class="data-table">
+                <thead><tr><th>Risk</th><th>Probability</th><th>Impact</th><th>Mitigation</th></tr></thead>
+                <tbody>
+                    <tr><td><strong>Slow initial traction</strong></td><td><span class="badge badge--high">High</span></td><td><span class="badge badge--medium">Medium</span></td><td>Launch promo ($39 intro), platform listings, past client reviews</td></tr>
+                    <tr><td><strong>Flytographer rejection</strong></td><td><span class="badge badge--medium">Medium</span></td><td><span class="badge badge--medium">Medium</span></td><td>Apply to Localgrapher simultaneously. Build direct channel.</td></tr>
+                    <tr><td><strong>Price war with freelancers</strong></td><td><span class="badge badge--high">High</span></td><td><span class="badge badge--low">Low</span></td><td>Don&rsquo;t compete at bottom. $59 hook is strategic. Differentiate on value.</td></tr>
+                    <tr><td><strong>Equipment failure during shoot</strong></td><td><span class="badge badge--low">Low</span></td><td><span class="badge badge--high">High</span></td><td>Backup camera body + lenses always on hand. Insurance.</td></tr>
+                    <tr><td><strong>Bad weather cancellation</strong></td><td><span class="badge badge--medium">Medium</span></td><td><span class="badge badge--medium">Medium</span></td><td>Flexible rescheduling policy. Indoor backup locations list. AI planner includes weather.</td></tr>
+                    <tr><td><strong>Negative review</strong></td><td><span class="badge badge--low">Low</span></td><td><span class="badge badge--high">High</span></td><td>Respond professionally within 24 hours. Offer reshoot or partial refund.</td></tr>
+                    <tr><td><strong>Burnout (2-person team)</strong></td><td><span class="badge badge--medium">Medium</span></td><td><span class="badge badge--high">High</span></td><td>Set max 2 bookings/day. Block 1 day/week for rest. Hire freelance help early.</td></tr>
+                    <tr><td><strong>Seasonality revenue dip</strong></td><td><span class="badge badge--high">High</span></td><td><span class="badge badge--medium">Medium</span></td><td>Corporate work fills gaps. Rainy season promos. Content creation packages.</td></tr>
+                    <tr><td><strong>Copycat competitors</strong></td><td><span class="badge badge--medium">Medium</span></td><td><span class="badge badge--low">Low</span></td><td>AI tools + brand + SEO moat are hard to replicate quickly.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- SUMMARY PLAYBOOK -->
+    <div class="playbook">
+        <div class="playbook-inner">
+            <h2 class="playbook-title">The Rocana Playbook</h2>
+            <div class="playbook-steps">
+                <div class="playbook-step">
+                    <div class="playbook-step-number">1</div>
+                    <p class="playbook-step-text"><strong>ENTER</strong> cheap ($59 hook) &rarr; <strong>BUILD</strong> reviews fast &rarr; <strong>UPSELL</strong> to $249&ndash;799 packages</p>
+                </div>
+                <div class="playbook-step">
+                    <div class="playbook-step-number">2</div>
+                    <p class="playbook-step-text"><strong>DIFFERENTIATE</strong> with Photo+Video+Drone combo nobody else offers</p>
+                </div>
+                <div class="playbook-step">
+                    <div class="playbook-step-number">3</div>
+                    <p class="playbook-step-text"><strong>AUTOMATE</strong> with AI booking + shoot planner (innovation moat)</p>
+                </div>
+                <div class="playbook-step">
+                    <div class="playbook-step-number">4</div>
+                    <p class="playbook-step-text"><strong>DOMINATE</strong> SEO with specialist skills (cost-free acquisition channel)</p>
+                </div>
+                <div class="playbook-step">
+                    <div class="playbook-step-number">5</div>
+                    <p class="playbook-step-text"><strong>LEVERAGE</strong> platforms for credibility, then shift to direct bookings</p>
+                </div>
+                <div class="playbook-step">
+                    <div class="playbook-step-number">6</div>
+                    <p class="playbook-step-text"><strong>SCALE</strong> from 2-person team to small agency over 3 years</p>
+                </div>
+            </div>
+
+            <div class="insight-box" style="background: rgba(139, 134, 96, 0.15); border: 1px solid rgba(139, 134, 96, 0.3);">
+                <div class="insight-box-label">The Single Most Important Thing</div>
+                <p><strong>Launch the website</strong> with transparent pricing, AI assistant, and start collecting Google Reviews from past clients. Everything else builds on this foundation.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAGLINE SECTION -->
+    <div class="tagline-section">
+        <div class="tagline-logo">
+            <img src="../../rocana studio logo mark.png" alt="Rocana">
+        </div>
+        <p class="tagline-main">&ldquo;Photo. Video. Aerial. One Studio. One Story.&rdquo;</p>
+        <p class="tagline-brand">Rocana.Studio &mdash; Bali, Indonesia</p>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p class="footer-text">
+            Rocana.Studio Business Model &amp; Strategy &mdash; Draft v1.0 &mdash; 25 April 2026
+            <br><br>
+            This document is confidential and intended for internal use and approved partners only.
+            <br>
+            For questions, contact studio@rocana.studio
+        </p>
+    </footer>
+
+</body>
+</html>
